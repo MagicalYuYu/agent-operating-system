@@ -18,9 +18,13 @@
 
 ---
 
-## 2. 克隆与打开项目
+## 2. 获取与打开项目
 
-### 2.1 克隆仓库
+### 2.1 获取 AOS
+
+两种方式任选其一：
+
+**方式一：Git 克隆**（推荐，方便后续更新）
 
 打开终端（Windows 可使用 PowerShell），执行以下命令：
 
@@ -28,7 +32,11 @@
 git clone https://github.com/MagicalYuYu/agent-operating-system.git
 ```
 
-克隆完成后，记住项目所在的本地路径，例如 `D:\agent-operating-system`。
+**方式二：下载压缩包**
+
+在 GitHub 仓库页面点击 **Code → Download ZIP**，解压到任意位置即可。AOS 是纯文件结构，无需安装任何依赖。
+
+获取完成后，记住项目所在的本地路径，例如 `D:\agent-operating-system`。
 
 ### 2.2 在 Trae 中打开项目
 

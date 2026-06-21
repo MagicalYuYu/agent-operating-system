@@ -112,6 +112,15 @@ AOS 管理多个项目，每个项目在 `01_PROJECTS/{name}/` 下有独立的 `
 
 ⚠ 缺少 AGENTS.md 的项目视为未完成初始化，Agent 在操作该项目时必须先提醒用户补全
 
+### 导入已有项目流程
+
+对于已有运行服务的项目导入（非从零创建），需额外执行以下步骤：
+
+1. **服务发现与采集**：扫描 NSSM 服务（`nssm list`）、Docker 容器（`docker ps -a`）、端口监听（`netstat -tlnp`），自动生成项目配置清单
+2. **凭据提取**：从运行中的配置文件提取端口/Token/密码，自动填入 AGENTS.md 敏感信息表，同时写入 `04_MEMORY/credentials.json`（引用路径，不复制内容）
+3. **依赖关系推断**：根据端口连接关系、配置文件引用、环境变量自动推断项目间依赖（如 NapCat → AstrBot 的 WS 连接），记录到项目 AGENTS.md 的"相关项目"部分
+4. **执行新建项目流程**：完成上述采集后，按标准 6 步流程创建项目目录和文件
+
 ### 项目内标准结构
 
 ```
@@ -142,6 +151,17 @@ AOS 管理多个项目，每个项目在 `01_PROJECTS/{name}/` 下有独立的 `
 
 ---
 
+## 凭据管理规则（强制）
+
+凭据（密码/Token/密钥）必须集中管理，禁止多处复制：
+
+1. **唯一存储点**：所有凭据存储在 `04_MEMORY/credentials.json`，遵循铁律 6（Reference 唯一化）
+2. **引用而非复制**：项目 AGENTS.md 的敏感信息表必须引用 `04_MEMORY/credentials.json` 中的路径，不复制内容
+3. **Schema 定义**：credentials.json 必须包含 `schema_version`、`updated_at`、`credentials` 数组（每项含 `id`、`type`、`project`、`description`、`value`、`source_path`）
+4. **安全提醒**：credentials.json 为明文存储，禁止上传至 GitHub（.gitignore 已排除），后续版本应引入加密机制
+
+---
+
 ## 项目状态同步规则（强制）
 
 当对 01_PROJECTS/ 下任何项目执行修改操作时，必须同步更新（不限于 Skill 调用，包括直接代码修改、配置调整、文档更新等所有操作）：
@@ -159,7 +179,7 @@ AOS 管理多个项目，每个项目在 `01_PROJECTS/{name}/` 下有独立的 `
 |------|----------|------|
 | 07_EXPORTS/ | 按项目名分层 | 07_EXPORTS/{project_name}/{deliverable}/ |
 | 08_INBOX/raw/ | 按日期分层 | 08_INBOX/raw/{YYYYMMDD}/ |
-| 06_LOGS/ | 按日期分层 | 06_LOGS/{YYYYMMDD}/{source}.log |
+| 06_LOGS/ | 按项目名+日期分层 | 06_LOGS/{project_name}/{YYYYMMDD}.log |
 
 ---
 

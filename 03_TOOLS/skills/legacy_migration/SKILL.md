@@ -32,6 +32,11 @@
 | 备份未验证就迁移 | 备份可能损坏 | 备份后必须验证文件数/大小/校验和 |
 | 敏感信息遗漏 | 迁移后服务无法启动 | 强制提取端口/接口/路径/环境变量清单 |
 | 无回滚方案 | 迁移失败无法恢复 | 迁移前必须制定回滚方案 |
+| NSSM服务注册表路径未更新 | Windows服务ImagePath仍指向旧目录 | 使用nssm edit或直接修改注册表HKLM\SYSTEM\CurrentControlSet\Services下的ImagePath/Application/AppDirectory |
+| Docker bind mount绝对路径硬编码 | 容器内路径指向旧主机路径 | 需docker stop/rm后重新docker run，更新-v参数中的主机路径 |
+| Docker Compose工作目录切换 | compose down必须在旧目录执行 | 先在旧目录docker compose down，再在新目录docker compose up -d |
+| PowerShell 5.1编码兼容性 | 脚本含中文在GBK默认环境下乱码 | 脚本使用纯ASCII或UTF-8 BOM编码，运行前执行$OutputEncoding=[Text.Encoding]::UTF8 |
+| $ErrorActionPreference="Stop"与Docker CLI冲突 | Docker进度信息输出到stderr被误判为终止错误 | 对Docker命令单独设置$ErrorActionPreference="Continue"或使用2>$null重定向 |
 
 ---
 

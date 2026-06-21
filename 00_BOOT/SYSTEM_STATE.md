@@ -19,7 +19,7 @@
 
 | 组件 | 状态 | 说明 |
 |------|------|------|
-| Skill System | ACTIVE | 2 Skill 已注册 (WKIS v2.0, Migration v1.0)，文件夹结构标准化 |
+| Skill System | ACTIVE | 2 Skill 已注册 (WKIS v1.0, Migration v1.0)，文件夹结构标准化 |
 | Loop Engine | READY | 3 种 Loop 类型已定义（Goal/Scheduled/Event），0 个活跃 Loop |
 | Agent Scheduler | READY | 3 种执行模式（PLAN/EXECUTE/VERIFY），多会话协同协议已设计 |
 | Memory System | ACTIVE | INDEX.md + 四类记忆（user/feedback/reference/project）已建立 |
@@ -33,14 +33,14 @@
 
 | 指标 | 值 |
 |------|-----|
-| 已注册 Skill 数 | 1 |
+| 已注册 Skill 数 | 2 |
 | 活跃 Loop 数 | 0 |
 | 已完成 Loop 周期 | 0 |
 | 活跃 Agent 数 | 0 |
 | 已处理任务数 | 1 |
 | 系统错误数 | 0 |
-| 记忆索引条目数 | 8 |
-| 反馈记录数 | 3 |
+| 记忆索引条目数 | 9 |
+| 反馈记录数 | 5 |
 
 ---
 
@@ -77,6 +77,11 @@
 | 2026-06-21 | PROJECT_CREATE | 示例项目(_example_project)创建：游戏本地化示例，含AGENTS.md/README.md/STATUS.md及示例翻译文件 |
 | 2026-06-21 | SYSTEM_PATCH | 铁律2修正：Memory区分记录型(追加)与状态型(覆盖+变更注释)；新增用户画像更新规则、项目状态同步规则、文件分层规则、功能触发机制一览表；项目内标准结构(docs/src/config) |
 | 2026-06-21 | README_PATCH | 6个目录README更新：01_PROJECTS项目标准结构、06_LOGS外部组件日志+分层、07_EXPORTS分层、08_INBOX分层、loop_memory低频标注、05_CACHE低频标注 |
+| 2026-06-21 | BUGFIX | INDEX.md空洞引用修复：补全8个缺失文件（user/feedback/reference/project目录下），修复proj_aos_v2→v1文件名 |
+| 2026-06-21 | BUGFIX | aos_check.py修复：schema_version类型假设（isinstance前置检查）+版本号正则误匹配（排除01_PROJECTS/05_CACHE/02_SANDBOX） |
+| 2026-06-21 | SKILL_PATCH | SK_0002补充Windows/Docker/PowerShell坑点：NSSM服务注册表、Docker bind mount、Compose工作目录、PS编码、EA冲突 |
+| 2026-06-21 | SYSTEM_PATCH | AGENTS.md新增：导入已有项目流程、凭据管理规则、06_LOGS按项目分层规则 |
+| 2026-06-21 | FEATURE | credentials.json创建：凭据集中管理schema定义，项目AGENTS.md敏感信息表改为引用路径 |
 
 ---
 

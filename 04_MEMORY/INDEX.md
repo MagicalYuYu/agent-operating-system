@@ -13,10 +13,11 @@
 - [fb-context-strategy](feedback/fb_context_strategy.md) — 上下文到60-70%时主动压缩；纠正两次失败后建议新会话；压缩时保留任务目标+修改文件+错误消息+架构决策+用户约束
 - [fb-skill-trigger](feedback/fb_skill_trigger.md) — Skill的description必须写触发条件而非摘要；单个description不超过250字符；验证类Skill回报最大
 - [fb-runtime-iron-rules](feedback/fb_runtime_iron_rules.md) — 用户是唯一调度器；状态更新是Skill步骤的一部分而非事后动作；事前声明优于事后记录；禁止假设Agent会自觉更新文件
+- [fb-v11-roadmap](feedback/fb_v11_roadmap.md) — v1.0部署实践反馈：INDEX空洞引用已修复、自检脚本Bug已修复、迁移Skill已补充Windows/Docker坑点；待实现：Loop引擎、凭据加密、CI/CD
 
 ## reference
 - [ref-trae-settings](reference/ref_trae_settings.md) — Trae CODE模式设置：AGENTS.md开启、MCP自动运行、命令自动运行（沙箱外）、内置浏览器、记忆已开启
 
 ## project
-- [proj-aos-v1-status](project/proj_aos_v2_status.md) — AOS v1.0.0 GitHub首发版，截至2026-06-21有1个Skill(WKIS)已注册，0个活跃Loop，0个活跃Agent
+- [proj-aos-v1-status](project/proj_aos_v1_status.md) — AOS v1.0.0 GitHub首发版，截至2026-06-21有2个Skill(WKIS+Migration)已注册，0个活跃Loop，0个活跃Agent
 - [proj-example-project](project/proj__example_project.md) — 示例项目（游戏本地化），展示AOS项目目录标准结构，6个阶段均pending

@@ -14,22 +14,26 @@
 - 修改已有日志（只追加）
 
 ## 分层规则
-按日期分层存放：
+按项目名+日期分层存放：
 ```
 06_LOGS/
-├── 20260621/
-│   ├── agent.log           ← Agent 执行日志
-│   ├── python_script.log   ← Python 脚本日志
-│   └── docker_game.log     ← Docker 容器日志
-└── 20260622/
-    └── ...
+├── napcat/
+│   ├── 20260621.log        ← NapCat 项目当日日志
+│   └── 20260622.log
+├── astrbot/
+│   ├── 20260621.log        ← AstrBot 项目当日日志
+│   └── 20260622.log
+├── agent/                  ← Agent 执行日志
+│   └── 20260621.log
+└── _system/                ← AOS 系统自身日志
+    └── 20260621.log
 ```
 
 ## 日志写入方式
-1. **Agent 写入**：Skill 流程中的强制步骤，将操作记录写入当日日志
-2. **脚本写入**：Python/Shell 脚本运行时输出到 06_LOGS/{YYYYMMDD}/
-3. **外部组件写入**：Docker、数据库、Web服务器等组件的日志文件可存放于此
-4. **手动写入**：用户可手动将日志文件放入对应日期目录
+1. **Agent 写入**：Skill 流程中的强制步骤，将操作记录写入 `06_LOGS/agent/{YYYYMMDD}.log`
+2. **脚本写入**：Python/Shell 脚本运行时输出到 `06_LOGS/_system/{YYYYMMDD}.log`
+3. **外部组件写入**：Docker、数据库、Web服务器等组件的日志存放在 `06_LOGS/{project_name}/`
+4. **手动写入**：用户可手动将日志文件放入对应项目目录
 
 ## 实际使用频率
 ⚠ Agent 不会主动生成日志，日志写入依赖 Skill 流程中的强制步骤或外部组件主动输出。此目录主要服务于脚本和外部组件的日志管理。

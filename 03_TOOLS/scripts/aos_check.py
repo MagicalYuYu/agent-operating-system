@@ -21,6 +21,9 @@ AOS_ROOT = SCRIPT_DIR.parent.parent
 # 排除目录
 EXCLUDE_DIRS = {".git", ".trae", "99_ARCHIVE", "__pycache__", "node_modules"}
 
+# 版本号检查排除目录（第三方项目文件可能包含非AOS版本号）
+VERSION_EXCLUDE_DIRS = {"01_PROJECTS", "05_CACHE", "02_SANDBOX"}
+
 # 当前版本号
 CURRENT_VERSION = "1.0.0"
 VERSION_PATTERNS = [
@@ -59,6 +62,10 @@ def check_version_consistency():
         # 检查是否包含旧版本号
         rel_path = f.relative_to(AOS_ROOT)
 
+        # 跳过第三方项目目录（可能包含非AOS版本号如插件版本）
+        if any(part in VERSION_EXCLUDE_DIRS for part in rel_path.parts):
+            continue
+
         # 检查标题中的版本号
         if f.suffix == ".md":
             # 第一行标题中的版本号
@@ -84,6 +91,13 @@ def check_version_consistency():
                 data = json.loads(content)
                 if "schema_version" in data:
                     sv = data["schema_version"]
+                    # schema_version 可能是 str/dict/number，统一转为字符串处理
+                    if isinstance(sv, dict):
+                        sv = sv.get("version", str(sv))
+                    elif isinstance(sv, (int, float)):
+                        sv = str(sv)
+                    if not isinstance(sv, str):
+                        sv = str(sv)
                     if not sv.startswith("1.0"):
                         issues.append(f"[版本号] {rel_path}: schema_version={sv} (应为1.0.x)")
             except json.JSONDecodeError:

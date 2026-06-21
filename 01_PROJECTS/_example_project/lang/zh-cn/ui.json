@@ -1,0 +1,8 @@
+{
+  "menu.start": "开始游戏",
+  "menu.settings": "设置",
+  "menu.quit": "退出",
+  "dialog.welcome": "欢迎来到游戏！",
+  "item.sword": "铁剑",
+  "item.potion": "生命药水"
+}

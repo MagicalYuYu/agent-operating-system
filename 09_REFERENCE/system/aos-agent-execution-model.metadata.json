@@ -1,0 +1,10 @@
+{
+  "source_url": "AOS内部设计",
+  "topic": "AOS Agent执行模式与多会话协同",
+  "tags": ["aos", "agent", "execution-model", "multi-session", "collaboration"],
+  "project_binding": "AOS",
+  "confidence_score": 1.0,
+  "system_level_reference": true,
+  "ingested_at": "2026-06-21T16:00:00+08:00",
+  "raw_file": null
+}

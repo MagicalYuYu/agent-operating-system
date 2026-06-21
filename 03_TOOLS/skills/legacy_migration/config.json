@@ -1,0 +1,17 @@
+{
+  "skill_id": "SK_0002",
+  "name": "Legacy Migration Skill",
+  "trigger": "当用户要求迁移/导入历史项目、对话记录、存量内容到AOS时使用",
+  "version": "1.0.0",
+  "created_at": "2026-06-21T16:30:00+08:00",
+  "updated_at": "2026-06-21T16:30:00+08:00",
+  "call_count": 0,
+  "success_rate": null,
+  "path": "03_TOOLS/skills/legacy_migration/",
+  "trae_skill_path": ".trae/skills/legacy-migration/SKILL.md",
+  "structure_version": "1.0",
+  "has_gotchas": true,
+  "has_scripts": true,
+  "has_templates": true,
+  "has_references": false
+}

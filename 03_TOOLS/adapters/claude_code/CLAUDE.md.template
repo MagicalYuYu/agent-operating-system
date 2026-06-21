@@ -1,0 +1,25 @@
+# AOS v1.0 — Claude Code 适配模板
+
+> 将此文件复制到 AOS 根目录并重命名为 CLAUDE.md，然后根据实际情况调整
+
+## 核心规则
+
+- 执行模型、铁律、约束详见 AGENTS.md
+- 项目识别规则详见 AGENTS.md
+- Skill 规范详见 03_TOOLS/skills/{skill}/SKILL.md
+
+## 目录约束
+
+- 00_BOOT/ 系统规则，不可被业务污染
+- 01_PROJECTS/ 项目隔离，引用知识用路径
+- 04_MEMORY/ 状态持久化，区分记录型与状态型
+- 09_REFERENCE/ 知识只存一份，禁止重复
+
+## 记忆规则
+
+- 读取 04_MEMORY/ 时遵循 aos-memory-rules
+- 修改文件时遵循 aos-consistency-guard
+
+## Skill 规则
+
+- 读取或修改 03_TOOLS/skills/ 时遵循 aos-skill-rules

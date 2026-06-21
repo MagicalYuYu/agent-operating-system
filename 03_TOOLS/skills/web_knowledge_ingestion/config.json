@@ -1,0 +1,17 @@
+{
+  "skill_id": "SK_0001",
+  "name": "Web Knowledge Ingestion Skill",
+  "trigger": "当用户提供URL并要求抓取/入库/归档/知识提取时使用",
+  "version": "2.0.0",
+  "created_at": "2026-06-21T12:43:00+08:00",
+  "updated_at": "2026-06-21T16:00:00+08:00",
+  "call_count": 1,
+  "success_rate": 1.0,
+  "path": "03_TOOLS/skills/web_knowledge_ingestion/",
+  "trae_skill_path": ".trae/skills/web-knowledge-ingestion/SKILL.md",
+  "structure_version": "1.0",
+  "has_gotchas": true,
+  "has_scripts": false,
+  "has_templates": false,
+  "has_references": false
+}

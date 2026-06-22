@@ -370,7 +370,7 @@
   }
 
   .hero-title {
-    font-size: clamp(2.8rem, 6.5vw, 6rem);
+    font-size: clamp(2.38rem, 5.525vw, 5.1rem);
     font-weight: 900;
     line-height: 1.08;
     margin-bottom: 1.5rem;
@@ -576,7 +576,7 @@
   .section-label.red { color: var(--accent-red); background: rgba(248, 113, 113, 0.06); border-color: rgba(248, 113, 113, 0.15); }
 
   .section-title {
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-size: clamp(1.53rem, 2.975vw, 2.55rem);
     font-weight: 800;
     margin-bottom: 0.8rem;
     letter-spacing: -0.02em;
@@ -1436,63 +1436,63 @@
 
   <div class="pain-marquee">
     <div class="pain-track">
-      <div class="pain-card" data-tooltip="痛点|每次新对话都要重新说明项目背景，浪费30%+时间">
+      <div class="pain-card" data-tooltip="实测数据|平均每次新对话浪费 3-5 分钟介绍项目背景。AOS 通过 04_MEMORY/ 自动加载项目上下文，新对话 0 秒启动">
         <div class="pain-icon">🔄</div>
         <div class="pain-title">重复介绍，浪费 30%+ 时间</div>
         <div class="pain-desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|多项目并行时AI容易把A项目配置写到B项目">
+      <div class="pain-card" data-tooltip="典型场景|AI 把 A 项目的 .env 配置写到 B 项目。AOS 通过 01_PROJECTS/ 目录隔离 + 项目级 AGENTS.md 杜绝串台">
         <div class="pain-icon">🔀</div>
         <div class="pain-title">多项目上下文混淆</div>
         <div class="pain-desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|AI没有机制记住上次犯过的错误，会重复犯错">
+      <div class="pain-card" data-tooltip="AOS 方案|feedback 记忆采用只追加策略，每条含规则+Why+How to apply 三要素，新对话自动读取">
         <div class="pain-icon">🕳️</div>
         <div class="pain-title">同一个坑踩两次</div>
         <div class="pain-desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|好不容易摸索出的经验随对话关闭而消失">
+      <div class="pain-card" data-tooltip="AOS 方案|经验写入 04_MEMORY/feedback/，区分记录型（只追加）和状态型（覆盖+变更注释）">
         <div class="pain-icon">📦</div>
         <div class="pain-title">经验无法沉淀和复用</div>
         <div class="pain-desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|AI的所有决策和进度无法延续到下次对话">
+      <div class="pain-card" data-tooltip="AOS 方案|所有状态写入磁盘：项目状态在 STATUS.md，系统状态在 SYSTEM_STATE.md，会话结束自动落盘">
         <div class="pain-icon">🔇</div>
         <div class="pain-title">对话一关，一切归零</div>
         <div class="pain-desc">AI 之前做的所有事情、所有决策，对话关闭后全部消失，无法延续到下次。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|每次让AI干活都要从头描述流程">
+      <div class="pain-card" data-tooltip="AOS 方案|Skill 模块把工作流封装成步骤序列，每个 Skill 有 SKILL.md + gotchas.md，一次定义反复调用">
         <div class="pain-icon">🧩</div>
         <div class="pain-title">工作流无法标准化</div>
         <div class="pain-desc">每次让 AI 干活都要从头描述流程，没有标准化的操作手册可复用。</div>
       </div>
       <!-- 复制一份实现无缝循环 -->
-      <div class="pain-card" data-tooltip="痛点|每次新对话都要重新说明项目背景，浪费30%+时间">
+      <div class="pain-card" data-tooltip="实测数据|平均每次新对话浪费 3-5 分钟介绍项目背景。AOS 通过 04_MEMORY/ 自动加载项目上下文，新对话 0 秒启动">
         <div class="pain-icon">🔄</div>
         <div class="pain-title">重复介绍，浪费 30%+ 时间</div>
         <div class="pain-desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|多项目并行时AI容易把A项目配置写到B项目">
+      <div class="pain-card" data-tooltip="典型场景|AI 把 A 项目的 .env 配置写到 B 项目。AOS 通过 01_PROJECTS/ 目录隔离 + 项目级 AGENTS.md 杜绝串台">
         <div class="pain-icon">🔀</div>
         <div class="pain-title">多项目上下文混淆</div>
         <div class="pain-desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|AI没有机制记住上次犯过的错误，会重复犯错">
+      <div class="pain-card" data-tooltip="AOS 方案|feedback 记忆采用只追加策略，每条含规则+Why+How to apply 三要素，新对话自动读取">
         <div class="pain-icon">🕳️</div>
         <div class="pain-title">同一个坑踩两次</div>
         <div class="pain-desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|好不容易摸索出的经验随对话关闭而消失">
+      <div class="pain-card" data-tooltip="AOS 方案|经验写入 04_MEMORY/feedback/，区分记录型（只追加）和状态型（覆盖+变更注释）">
         <div class="pain-icon">📦</div>
         <div class="pain-title">经验无法沉淀和复用</div>
         <div class="pain-desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|AI的所有决策和进度无法延续到下次对话">
+      <div class="pain-card" data-tooltip="AOS 方案|所有状态写入磁盘：项目状态在 STATUS.md，系统状态在 SYSTEM_STATE.md，会话结束自动落盘">
         <div class="pain-icon">🔇</div>
         <div class="pain-title">对话一关，一切归零</div>
         <div class="pain-desc">AI 之前做的所有事情、所有决策，对话关闭后全部消失，无法延续到下次。</div>
       </div>
-      <div class="pain-card" data-tooltip="痛点|每次让AI干活都要从头描述流程">
+      <div class="pain-card" data-tooltip="AOS 方案|Skill 模块把工作流封装成步骤序列，每个 Skill 有 SKILL.md + gotchas.md，一次定义反复调用">
         <div class="pain-icon">🧩</div>
         <div class="pain-title">工作流无法标准化</div>
         <div class="pain-desc">每次让 AI 干活都要从头描述流程，没有标准化的操作手册可复用。</div>
@@ -1560,7 +1560,7 @@
 
   <div class="flow-container reveal">
     <div class="flow-steps">
-      <div class="flow-step" data-tooltip="步骤1|通过文件路径匹配或关键词匹配自动识别当前项目">
+      <div class="flow-step" data-tooltip="识别优先级|1.文件路径匹配 2.上下文关键词匹配 3.项目目录扫描。匹配后读取 01_PROJECTS/{name}/AGENTS.md">
         <div class="flow-step-indicator">
           <div class="flow-step-num" style="background:linear-gradient(135deg,#4f8fff,#3b82f6);">1</div>
           <div class="flow-step-line"></div>
@@ -1571,7 +1571,7 @@
           <span class="flow-step-tag" style="background:rgba(79,143,255,0.12);color:var(--accent-blue);">自动触发</span>
         </div>
       </div>
-      <div class="flow-step" data-tooltip="步骤2|从04_MEMORY/加载历史经验、坑点、用户偏好">
+      <div class="flow-step" data-tooltip="加载内容|用户画像、项目事实、反馈经验、知识索引。INDEX.md 是索引不是内容，硬上限 200 行/25KB">
         <div class="flow-step-indicator">
           <div class="flow-step-num" style="background:linear-gradient(135deg,#a855f7,#8b5cf6);">2</div>
           <div class="flow-step-line"></div>
@@ -1582,7 +1582,7 @@
           <span class="flow-step-tag" style="background:rgba(168,85,247,0.12);color:var(--accent-purple);">04_MEMORY/</span>
         </div>
       </div>
-      <div class="flow-step" data-tooltip="步骤3|调用03_TOOLS/skills/中的Skill模块按步骤执行">
+      <div class="flow-step" data-tooltip="Skill 结构|SKILL.md（必须）+ gotchas.md（必须）+ 可选 scripts/templates。步骤序列最后一步必须是状态更新">
         <div class="flow-step-indicator">
           <div class="flow-step-num" style="background:linear-gradient(135deg,#00d4ff,#06b6d4);">3</div>
           <div class="flow-step-line"></div>
@@ -1593,7 +1593,7 @@
           <span class="flow-step-tag" style="background:rgba(0,212,255,0.12);color:var(--accent-cyan);">03_TOOLS/skills/</span>
         </div>
       </div>
-      <div class="flow-step" data-tooltip="步骤4|新经验追加到反馈记录，项目状态更新落盘">
+      <div class="flow-step" data-tooltip="铁律 2|记录型只追加不覆盖；状态型覆盖旧值并保留变更注释（如 React（2026-06-15 更新，原为 Vue））">
         <div class="flow-step-indicator">
           <div class="flow-step-num" style="background:linear-gradient(135deg,#34d399,#10b981);">4</div>
           <div class="flow-step-line"></div>
@@ -1604,7 +1604,7 @@
           <span class="flow-step-tag" style="background:rgba(52,211,153,0.12);color:var(--accent-green);">强制步骤</span>
         </div>
       </div>
-      <div class="flow-step" data-tooltip="步骤5|检查版本一致性、交叉引用完整性、目录合规性">
+      <div class="flow-step" data-tooltip="检查项|版本号同步、交叉引用同步、状态同步。用 Grep 扫描残留旧版本号引用，输出一致性验证结果">
         <div class="flow-step-indicator">
           <div class="flow-step-num" style="background:linear-gradient(135deg,#fb923c,#f97316);">5</div>
           <div class="flow-step-line"></div>
@@ -1615,7 +1615,7 @@
           <span class="flow-step-tag" style="background:rgba(251,146,60,0.12);color:var(--accent-orange);">自动检查</span>
         </div>
       </div>
-      <div class="flow-step" data-tooltip="步骤6|最终交付物进入07_EXPORTS/按项目分层存放">
+      <div class="flow-step" data-tooltip="分层规则|07_EXPORTS/{project_name}/{deliverable}/。禁止直接 export，必须经过 Project→Export 流程">
         <div class="flow-step-indicator">
           <div class="flow-step-num" style="background:linear-gradient(135deg,#f472b6,#ec4899);">6</div>
         </div>
@@ -1638,52 +1638,52 @@
   <p class="section-desc reveal">AOS 用 10 个目录搭建 AI 的"办公桌"——每个抽屉只放一类东西，绝不混装。</p>
 
   <div class="dir-visual reveal-stagger" data-magnetic>
-    <div class="dir-card" data-magnetic-item data-tooltip="系统规则层|AGENTS.md、SKILL_REGISTRY.md、SYSTEM_STATE.md">
+    <div class="dir-card" data-magnetic-item data-tooltip="核心文件|AGENTS.md（系统规则）、SKILL_REGISTRY.md（技能注册表）、SYSTEM_STATE.md（系统状态）。不可被业务污染">
       <div class="dir-card-icon">📋</div>
       <div class="dir-card-name" style="color:var(--accent-blue)">00_BOOT/</div>
       <div class="dir-card-desc">系统规则层<br>AI 的"行为准则"</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="项目工作台|每个项目独立配置、状态、文档">
+    <div class="dir-card" data-magnetic-item data-tooltip="标准结构|每个项目含 AGENTS.md + README.md + STATUS.md + docs/ + src/ + config/。缺少 AGENTS.md 视为未完成初始化">
       <div class="dir-card-icon">📁</div>
       <div class="dir-card-name" style="color:var(--accent-purple)">01_PROJECTS/</div>
       <div class="dir-card-desc">项目工作台<br>每个项目独立隔间</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="实验区|不确定的操作先试再定，不影响正式环境">
+    <div class="dir-card" data-magnetic-item data-tooltip="典型用途|测试新 Skill、验证迁移脚本、实验性代码。所有不确定操作必须先进入这里">
       <div class="dir-card-icon">🧪</div>
       <div class="dir-card-name" style="color:var(--accent-orange)">02_SANDBOX/</div>
       <div class="dir-card-desc">实验区<br>不确定的操作先试再定</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="技能库|Skill模块、脚本、适配器模板">
+    <div class="dir-card" data-magnetic-item data-tooltip="目录结构|含 skills/（Skill 模块）、scripts/（脚本）、adapters/（平台适配器）。禁止 skill/loop/project 混合存储">
       <div class="dir-card-icon">🔧</div>
       <div class="dir-card-name" style="color:var(--accent-cyan)">03_TOOLS/</div>
       <div class="dir-card-desc">技能库<br>可复用的 AI 工作流</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="记忆中心|用户画像、项目事实、反馈经验、知识索引">
+    <div class="dir-card" data-magnetic-item data-tooltip="子目录|user/（用户画像）、project/（项目事实）、feedback/（反馈经验）、INDEX.md（索引）。所有状态必须写入此目录">
       <div class="dir-card-icon">🧠</div>
       <div class="dir-card-name" style="color:var(--accent-green)">04_MEMORY/</div>
       <div class="dir-card-desc">记忆中心<br>经验、反馈、知识索引</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="临时数据|纯临时文件，可随时删除">
+    <div class="dir-card" data-magnetic-item data-tooltip="典型用途|克隆的仓库、临时下载、中间产物。可随时删除，不可存放重要数据">
       <div class="dir-card-icon">💨</div>
       <div class="dir-card-name" style="color:var(--text-muted)">05_CACHE/</div>
       <div class="dir-card-desc">临时数据<br>可随时清空</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="运行日志|只追加不修改，按项目+日期分层">
+    <div class="dir-card" data-magnetic-item data-tooltip="分层规则|06_LOGS/{project_name}/{YYYYMMDD}.log。只追加不修改，用于审计和问题排查">
       <div class="dir-card-icon">📝</div>
       <div class="dir-card-name" style="color:var(--text-muted)">06_LOGS/</div>
       <div class="dir-card-desc">运行日志<br>只追加不修改</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="成果输出|最终交付物，按项目名+交付类型分层">
+    <div class="dir-card" data-magnetic-item data-tooltip="分层规则|07_EXPORTS/{project_name}/{deliverable}/。所有输出必须从这里导出，禁止直接 export">
       <div class="dir-card-icon">📤</div>
       <div class="dir-card-name" style="color:var(--accent-pink)">07_EXPORTS/</div>
       <div class="dir-card-desc">成果输出<br>最终交付物</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="外部输入|网页抓取、迁移数据，按日期分层">
+    <div class="dir-card" data-magnetic-item data-tooltip="子目录|raw/（按日期分层 raw/{YYYYMMDD}/）、migration/（迁移数据）。所有外部输入必须先进这里">
       <div class="dir-card-icon">📥</div>
       <div class="dir-card-name" style="color:var(--accent-orange)">08_INBOX/</div>
       <div class="dir-card-desc">外部输入<br>网页抓取、迁移数据</div>
     </div>
-    <div class="dir-card" data-magnetic-item data-tooltip="知识库|唯一参考源，禁止重复存储">
+    <div class="dir-card" data-magnetic-item data-tooltip="铁律 6|所有知识只允许存在一份，其他位置只能引用路径。含 system/、web/、_index.md">
       <div class="dir-card-icon">📚</div>
       <div class="dir-card-name" style="color:var(--accent-blue)">09_REFERENCE/</div>
       <div class="dir-card-desc">知识库<br>唯一参考源，禁止重复</div>
@@ -1700,19 +1700,19 @@
   <p class="section-desc reveal">解决 AI 助手最根本的三个问题——</p>
 
   <div class="ability-grid reveal-stagger">
-    <div class="ability-card" data-tooltip="核心能力|AI每次对话自动读写记忆文件，新对话从磁盘恢复全部上下文">
+    <div class="ability-card" data-tooltip="技术实现|AI 每次对话首条消息读取 04_MEMORY/INDEX.md，会话结束时状态落盘。不依赖 AI 运行时记忆">
       <div class="ability-icon">🧠</div>
       <div class="ability-title">跨会话记忆</div>
       <div class="ability-analogy">→ 助手的笔记本</div>
       <div class="ability-desc">AI 每次对话自动读写记忆文件，新对话从磁盘恢复全部上下文。不再"失忆"，经验持续积累。</div>
     </div>
-    <div class="ability-card" data-tooltip="核心能力|每个项目独立配置和状态，切换时自动加载对应上下文">
+    <div class="ability-card" data-tooltip="隔离机制|每个项目有独立 AGENTS.md（项目级约束优先于系统默认）+ STATUS.md + reference_links.md（只存指针）">
       <div class="ability-icon">📁</div>
       <div class="ability-title">项目隔离</div>
       <div class="ability-analogy">→ 独立办公桌</div>
       <div class="ability-desc">每个项目有独立的配置、状态、文档。切换项目时自动加载对应上下文，杜绝"张冠李戴"。</div>
     </div>
-    <div class="ability-card" data-tooltip="核心能力|常用工作流封装成Skill，一次定义反复调用">
+    <div class="ability-card" data-tooltip="Skill 生命周期|新建→注册到 SKILL_REGISTRY.md→调用时更新 call_count→持续追加 gotchas.md 坑点清单">
       <div class="ability-icon">🔧</div>
       <div class="ability-title">技能复用</div>
       <div class="ability-analogy">→ 标准操作手册</div>
@@ -1808,18 +1808,18 @@
   <p class="section-desc reveal">纯文件系统，无需安装任何依赖——</p>
 
   <div class="quick-grid reveal-stagger">
-    <div class="quick-card" data-tooltip="Step 1|git clone 或下载ZIP，纯文件结构无需安装依赖">
+    <div class="quick-card" data-tooltip="替代方案|下载 ZIP 解压即可。无需 git，无需 Node.js，无需任何运行时环境">
       <div class="quick-step">Step 1</div>
       <div class="quick-title">获取 AOS</div>
       <div class="quick-desc">克隆仓库或下载压缩包，AOS 是纯文件结构，无需安装任何依赖。</div>
       <code class="quick-code">git clone https://github.com/MagicalYuYu/agent-operating-system.git</code>
     </div>
-    <div class="quick-card" data-tooltip="Step 2|用TRAE Work打开AOS目录，切换到Code模式">
+    <div class="quick-card" data-tooltip="自动行为|AI 会自动读取 AGENTS.md + 识别当前项目 + 加载项目级 AGENTS.md。TRAE Work 的 Code 模式最优">
       <div class="quick-step">Step 2</div>
       <div class="quick-title">在 AI 工具中打开</div>
       <div class="quick-desc">用 TRAE Work（推荐）、Claude Code 或 Codex 打开 AOS 目录，AI 会自动读取根目录的 AGENTS.md。</div>
     </div>
-    <div class="quick-card" data-tooltip="Step 3|添加3条Rules，运行aos_check.py验证">
+    <div class="quick-card" data-tooltip="3 条 Rules|aos-consistency-guard（版本一致性）、aos-memory-rules（记忆规则）、aos-skill-rules（Skill 规则）。自检脚本扫描目录合规性">
       <div class="quick-step">Step 3</div>
       <div class="quick-title">配置 Rules 并验证</div>
       <div class="quick-desc">添加 3 条 Rules（详见配置指南），然后运行自检脚本验证安装。</div>
@@ -1841,17 +1841,17 @@
   <p class="section-desc reveal">AOS 基于文件系统设计，天然跨平台——</p>
 
   <div class="platform-grid reveal-stagger">
-    <div class="platform-card best" data-tooltip="推荐平台|规则体系原生支持，最优适配">
+    <div class="platform-card best" data-tooltip="最优原因|原生支持 Rules 体系（3 条核心 Rules）+ Skill 调用 + Schedule 定时任务。推荐使用 Code 模式">
       <div class="platform-name">TRAE Work</div>
       <div class="platform-status">最优适配，规则体系原生支持</div>
       <span class="platform-badge recommended">推荐</span>
     </div>
-    <div class="platform-card" data-tooltip="支持平台|通过CLAUDE.md模板适配">
+    <div class="platform-card" data-tooltip="适配方式|通过 CLAUDE.md 模板映射 AOS 规则。需手动维护 Rules 到 CLAUDE.md 的同步">
       <div class="platform-name">Claude Code</div>
       <div class="platform-status">通过 CLAUDE.md 模板适配</div>
       <span class="platform-badge supported">支持</span>
     </div>
-    <div class="platform-card" data-tooltip="支持平台|通过配置映射适配">
+    <div class="platform-card" data-tooltip="适配方式|通过配置映射适配。03_TOOLS/adapters/ 提供 Codex 专用适配器模板">
       <div class="platform-name">Codex</div>
       <div class="platform-status">通过配置映射适配</div>
       <span class="platform-badge supported">支持</span>

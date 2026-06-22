@@ -310,11 +310,30 @@
 
   .section-desc strong { color: var(--text-primary); font-weight: 600; }
 
-  /* ===== PAIN CARDS ===== */
-  .pain-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* ===== PAIN CARDS - 横向无限滚动 ===== */
+  .pain-marquee {
+    position: relative;
+    overflow: hidden;
+    margin: 0 -2rem;
+    padding: 1rem 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .pain-track {
+    display: flex;
     gap: 18px;
+    width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+  }
+
+  .pain-marquee:hover .pain-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 9px)); }
   }
 
   .pain-card {
@@ -325,6 +344,8 @@
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
+    width: 280px;
+    flex-shrink: 0;
   }
 
   .pain-card::before {
@@ -344,7 +365,7 @@
   .pain-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
   .pain-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
 
-  /* ===== COMPARISON ===== */
+  /* ===== COMPARISON - 呼吸感浮动 ===== */
   .comparison-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -360,10 +381,23 @@
     padding: 2rem;
     position: relative;
     overflow: hidden;
+    animation: breathe 6s ease-in-out infinite;
   }
 
-  .comparison-col.before { border-color: rgba(248,113,113,0.1); }
-  .comparison-col.after { border-color: rgba(52,211,153,0.1); }
+  .comparison-col.before {
+    border-color: rgba(248,113,113,0.1);
+    animation-delay: 0s;
+  }
+
+  .comparison-col.after {
+    border-color: rgba(52,211,153,0.1);
+    animation-delay: 3s;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: translateY(0); box-shadow: 0 0 0 rgba(0,0,0,0); }
+    50% { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+  }
 
   .comparison-col::before {
     content: '';
@@ -843,26 +877,69 @@
   <h2 class="section-title">AI 助手很聪明，但它"没有记忆"</h2>
   <p class="section-desc">如果你经常用 AI 助手工作，这些场景一定不陌生——</p>
 
-  <div class="pain-grid">
-    <div class="pain-card">
-      <div class="pain-icon">🔄</div>
-      <div class="pain-title">重复介绍，浪费 30%+ 时间</div>
-      <div class="pain-desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">🔀</div>
-      <div class="pain-title">多项目上下文混淆</div>
-      <div class="pain-desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">🕳️</div>
-      <div class="pain-title">同一个坑踩两次</div>
-      <div class="pain-desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">📦</div>
-      <div class="pain-title">经验无法沉淀和复用</div>
-      <div class="pain-desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
+  <div class="pain-marquee">
+    <div class="pain-track">
+      <div class="pain-card">
+        <div class="pain-icon">🔄</div>
+        <div class="pain-title">重复介绍，浪费 30%+ 时间</div>
+        <div class="pain-desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔀</div>
+        <div class="pain-title">多项目上下文混淆</div>
+        <div class="pain-desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🕳️</div>
+        <div class="pain-title">同一个坑踩两次</div>
+        <div class="pain-desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📦</div>
+        <div class="pain-title">经验无法沉淀和复用</div>
+        <div class="pain-desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔇</div>
+        <div class="pain-title">对话一关，一切归零</div>
+        <div class="pain-desc">AI 之前做的所有事情、所有决策，对话关闭后全部消失，无法延续到下次。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🧩</div>
+        <div class="pain-title">工作流无法标准化</div>
+        <div class="pain-desc">每次让 AI 干活都要从头描述流程，没有标准化的操作手册可复用。</div>
+      </div>
+      <!-- 复制一份实现无缝循环 -->
+      <div class="pain-card">
+        <div class="pain-icon">🔄</div>
+        <div class="pain-title">重复介绍，浪费 30%+ 时间</div>
+        <div class="pain-desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔀</div>
+        <div class="pain-title">多项目上下文混淆</div>
+        <div class="pain-desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🕳️</div>
+        <div class="pain-title">同一个坑踩两次</div>
+        <div class="pain-desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📦</div>
+        <div class="pain-title">经验无法沉淀和复用</div>
+        <div class="pain-desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔇</div>
+        <div class="pain-title">对话一关，一切归零</div>
+        <div class="pain-desc">AI 之前做的所有事情、所有决策，对话关闭后全部消失，无法延续到下次。</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🧩</div>
+        <div class="pain-title">工作流无法标准化</div>
+        <div class="pain-desc">每次让 AI 干活都要从头描述流程，没有标准化的操作手册可复用。</div>
+      </div>
     </div>
   </div>
 </section>

@@ -37,7 +37,7 @@
 | 活跃 Loop 数 | 0 |
 | 已完成 Loop 周期 | 0 |
 | 活跃 Agent 数 | 0 |
-| 已处理任务数 | 1 |
+| 已处理任务数 | 2 |
 | 系统错误数 | 0 |
 | 记忆索引条目数 | 9 |
 | 反馈记录数 | 5 |
@@ -81,7 +81,8 @@
 | 2026-06-21 | BUGFIX | aos_check.py修复：schema_version类型假设（isinstance前置检查）+版本号正则误匹配（排除01_PROJECTS/05_CACHE/02_SANDBOX） |
 | 2026-06-21 | SKILL_PATCH | SK_0002补充Windows/Docker/PowerShell坑点：NSSM服务注册表、Docker bind mount、Compose工作目录、PS编码、EA冲突 |
 | 2026-06-21 | SYSTEM_PATCH | AGENTS.md新增：导入已有项目流程、凭据管理规则、06_LOGS按项目分层规则 |
-| 2026-06-21 | FEATURE | credentials.json创建：凭据集中管理schema定义，项目AGENTS.md敏感信息表改为引用路径 |
+| 2026-06-21 | FEATURE | credentials.json创建：凭据集中管理schema定义，项目AGENTS.md敏感信息表改为引用路径
+| 2026-06-21 | PROJECT_CREATE | AstrBot项目创建：从D:\AI\AstrBot\Plugin Development\迁移6个插件(5活跃+1归档)，归档15个ZIP备份，废弃angel_heart
 
 ---
 

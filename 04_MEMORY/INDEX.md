@@ -21,3 +21,4 @@
 ## project
 - [proj-aos-v1-status](project/proj_aos_v1_status.md) — AOS v1.0.0 GitHub首发版，截至2026-06-21有2个Skill(WKIS+Migration)已注册，0个活跃Loop，0个活跃Agent
 - [proj-example-project](project/proj__example_project.md) — 示例项目（游戏本地化），展示AOS项目目录标准结构，6个阶段均pending
+- [proj-astrbot](project/proj_astrbot.md) — AstrBot群聊交互插件集合，6个插件(5活跃+1归档)：bishoujo/dnd_zero/soupai/smart_wakeup/mudae_qq(归档)/sowing_discord

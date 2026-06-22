@@ -79,7 +79,8 @@
 | 2026-06-21 | SK_0001 | CREATE | WKIS 初始注册 |
 | 2026-06-21 | SK_0001 | V2.2 | 重构：description改为触发条件式；新增gotchas.md；新增可视化执行规范 |
 | 2026-06-21 | SK_0001 | PATCH | v2.2.1：运行时铁律适配——状态更新嵌入Skill步骤 |
-| 2026-06-21 | SK_0002 | CREATE | Legacy Migration Skill 初始注册 |
+| 2026-06-21 | SK_0002 | CREATE | Legacy Migration Skill 初始注册
+| 2026-06-21 | SK_0002 | EXEC | AstrBot项目迁移：6个插件(5活跃+1归档)+15个ZIP备份+2个教程文档迁入AOS |
 
 ---
 

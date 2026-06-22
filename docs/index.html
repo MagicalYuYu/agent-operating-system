@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOS — Agent Operating System</title>
+<meta name="description" content="AOS 是一套纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力。零代码依赖，适用于 TRAE、Claude Code、Codex 等任何 AI 编程助手。">
+<meta property="og:title" content="AOS — Agent Operating System">
+<meta property="og:description" content="给 AI 助手装上记忆大脑和工作台">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://magicalyuyu.github.io/agent-operating-system/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg-primary: #08080d;
+    --bg-secondary: #0f0f18;
+    --bg-card: #151522;
+    --bg-card-hover: #1c1c30;
+    --accent-blue: #4f8fff;
+    --accent-cyan: #00d4ff;
+    --accent-purple: #a855f7;
+    --accent-pink: #f472b6;
+    --accent-green: #34d399;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+    --accent-yellow: #fbbf24;
+    --text-primary: #eeeef2;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --border-color: rgba(255,255,255,0.06);
+    --border-hover: rgba(79,143,255,0.2);
+    --glow-blue: 0 0 60px rgba(79,143,255,0.12);
+    --glow-purple: 0 0 60px rgba(168,85,247,0.12);
+    --glow-cyan: 0 0 60px rgba(0,212,255,0.12);
+    --glow-green: 0 0 60px rgba(52,211,153,0.12);
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8,8,13,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s;
+  }
+
+  .nav-logo {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav-logo .g { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    padding: 8px 20px !important;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    border-radius: 100px !important;
+    color: white !important;
+    font-weight: 600 !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(79,143,255,0.3);
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding-top: 64px;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 40%, rgba(79,143,255,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 25% 60%, rgba(168,85,247,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 40% at 75% 50%, rgba(0,212,255,0.04) 0%, transparent 50%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 10%, transparent 70%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    background: rgba(79,143,255,0.08);
+    border: 1px solid rgba(79,143,255,0.15);
+    border-radius: 100px;
+    font-size: 0.82rem;
+    color: var(--accent-blue);
+    margin-bottom: 2rem;
+    letter-spacing: 0.3px;
+  }
+
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 6.5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-title .gradient-text {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 40%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+    line-height: 1.9;
+  }
+
+  .hero-subtitle strong { color: var(--text-primary); font-weight: 600; }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 100px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(79,143,255,0.25);
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--border-hover);
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: 1rem;
+  }
+
+  .section-label.blue { color: var(--accent-blue); }
+  .section-label.purple { color: var(--accent-purple); }
+  .section-label.cyan { color: var(--accent-cyan); }
+  .section-label.green { color: var(--accent-green); }
+  .section-label.orange { color: var(--accent-orange); }
+  .section-label.pink { color: var(--accent-pink); }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  .section-desc strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ===== PAIN CARDS ===== */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .pain-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pain-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .pain-card:hover::before { opacity: 1; }
+  .pain-card:hover { border-color: rgba(248,113,113,0.15); transform: translateY(-3px); }
+
+  .pain-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+  .pain-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .pain-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+
+  /* ===== COMPARISON ===== */
+  .comparison-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) { .comparison-wrapper { grid-template-columns: 1fr; } }
+
+  .comparison-col {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .comparison-col.before { border-color: rgba(248,113,113,0.1); }
+  .comparison-col.after { border-color: rgba(52,211,153,0.1); }
+
+  .comparison-col::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .comparison-col.before::before { background: linear-gradient(90deg, var(--accent-red), var(--accent-orange)); }
+  .comparison-col.after::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
+
+  .comparison-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .comparison-header.before-h { color: var(--accent-red); }
+  .comparison-header.after-h { color: var(--accent-green); }
+
+  .chat-bubble {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .chat-bubble.user {
+    background: rgba(79,143,255,0.08);
+    border: 1px solid rgba(79,143,255,0.1);
+    margin-left: 15%;
+  }
+
+  .chat-bubble.ai {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-color);
+    margin-right: 15%;
+  }
+
+  .chat-bubble .label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .chat-bubble.user .label { color: var(--accent-blue); }
+  .chat-bubble.ai .label { color: var(--accent-purple); }
+
+  .chat-tag {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .chat-tag.auto { background: rgba(0,212,255,0.1); color: var(--accent-cyan); }
+  .chat-tag.mem { background: rgba(52,211,153,0.1); color: var(--accent-green); }
+
+  /* ===== FLOW ===== */
+  .flow-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flow-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(79,143,255,0.02) 0%, transparent 70%);
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 1rem 0;
+  }
+
+  .flow-step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .flow-step-num {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-step-line {
+    width: 2px;
+    flex: 1;
+    min-height: 16px;
+    background: linear-gradient(180deg, rgba(79,143,255,0.2), rgba(168,85,247,0.2));
+  }
+
+  .flow-step:last-child .flow-step-line { display: none; }
+
+  .flow-step-content { flex: 1; padding-top: 6px; }
+  .flow-step-title { font-weight: 700; font-size: 1rem; margin-bottom: 3px; }
+  .flow-step-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+
+  .flow-step-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+
+  /* ===== DIR VISUAL ===== */
+  .dir-visual {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .dir-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.4rem;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .dir-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+    box-shadow: var(--glow-blue);
+  }
+
+  .dir-card-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+  .dir-card-name { font-weight: 700; font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 3px; }
+  .dir-card-desc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; }
+
+  /* ===== ABILITIES ===== */
+  .ability-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  @media (max-width: 768px) { .ability-grid { grid-template-columns: 1fr; } }
+
+  .ability-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 1.8rem;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ability-card:hover { transform: translateY(-5px); }
+  .ability-card:nth-child(1):hover { border-color: rgba(79,143,255,0.25); box-shadow: var(--glow-blue); }
+  .ability-card:nth-child(2):hover { border-color: rgba(168,85,247,0.25); box-shadow: var(--glow-purple); }
+  .ability-card:nth-child(3):hover { border-color: rgba(0,212,255,0.25); box-shadow: var(--glow-cyan); }
+
+  .ability-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .ability-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.3rem; }
+  .ability-analogy { font-size: 0.82rem; color: var(--accent-blue); font-weight: 500; margin-bottom: 0.7rem; }
+  .ability-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+
+  /* ===== VALUE ===== */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+  }
+
+  .value-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+
+  .value-card:hover { transform: translateY(-3px); border-color: var(--border-hover); }
+
+  .value-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .value-card-icon { font-size: 1.3rem; }
+  .value-card-title { font-weight: 700; font-size: 1.05rem; }
+
+  .value-card-list { list-style: none; }
+
+  .value-card-list li {
+    padding: 7px 0;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+  }
+
+  .value-card-list li:last-child { border-bottom: none; }
+  .value-card-list li .check { color: var(--accent-green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .compare-table th, .compare-table td {
+    padding: 14px 22px;
+    text-align: left;
+    font-size: 0.88rem;
+  }
+
+  .compare-table thead th {
+    background: rgba(255,255,255,0.02);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .compare-table thead th:nth-child(2) { color: var(--accent-cyan); }
+
+  .compare-table tbody td {
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+
+  .compare-table tbody tr:last-child td { border-bottom: none; }
+  .compare-table tbody td:nth-child(2) { color: var(--accent-cyan); font-weight: 600; }
+  .compare-table tbody td:nth-child(3) { color: var(--text-muted); }
+
+  /* ===== QUICK START ===== */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .quick-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+
+  .quick-card:hover { transform: translateY(-3px); border-color: var(--border-hover); }
+
+  .quick-step {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+
+  .quick-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+
+  .quick-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .quick-code {
+    display: block;
+    margin-top: 0.8rem;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--accent-cyan);
+    overflow-x: auto;
+  }
+
+  /* ===== PLATFORMS ===== */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .platform-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .platform-card:hover { transform: translateY(-3px); border-color: var(--border-hover); }
+
+  .platform-card.best { border-color: rgba(79,143,255,0.2); }
+  .platform-card.best:hover { box-shadow: var(--glow-blue); }
+
+  .platform-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.3rem; }
+  .platform-status { font-size: 0.78rem; color: var(--text-muted); }
+  .platform-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .platform-badge.recommended { background: rgba(79,143,255,0.1); color: var(--accent-blue); }
+  .platform-badge.supported { background: rgba(52,211,153,0.1); color: var(--accent-green); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .footer-logo {
+    font-size: 1.3rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-logo .g {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .footer-desc { font-size: 0.85rem; color: var(--text-muted); max-width: 400px; margin: 0 auto 1.5rem; }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent-blue); }
+
+  /* ===== DIVIDER ===== */
+  .divider { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+  .divider-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span class="g">AOS</span></a>
+  <ul class="nav-links">
+    <li><a href="#pain">痛点</a></li>
+    <li><a href="#how">原理</a></li>
+    <li><a href="#structure">结构</a></li>
+    <li><a href="#ability">能力</a></li>
+    <li><a href="#value">价值</a></li>
+    <li><a href="#start">快速开始</a></li>
+    <li><a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank" class="nav-cta">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      v1.0.0 已发布 · MIT 协议
+    </div>
+    <h1 class="hero-title">
+      给 AI 助手装上<br><span class="gradient-text">记忆大脑和工作台</span>
+    </h1>
+    <p class="hero-subtitle">
+      AOS 是一套<strong>纯文件系统</strong>的 Agent 运行时框架——<br>
+      让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>
+    </p>
+    <div class="hero-actions">
+      <a href="#start" class="btn btn-primary">快速开始</a>
+      <a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank" class="btn btn-secondary">查看源码</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-label">代码依赖</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">10</div>
+        <div class="hero-stat-label">标准化目录</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3+</div>
+        <div class="hero-stat-label">适配平台</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">∞</div>
+        <div class="hero-stat-label">记忆持久化</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- PAIN POINTS -->
+<section class="section" id="pain">
+  <div class="section-label red">❌ 痛点</div>
+  <h2 class="section-title">AI 助手很聪明，但它"没有记忆"</h2>
+  <p class="section-desc">如果你经常用 AI 助手工作，这些场景一定不陌生——</p>
+
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">🔄</div>
+      <div class="pain-title">重复介绍，浪费 30%+ 时间</div>
+      <div class="pain-desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🔀</div>
+      <div class="pain-title">多项目上下文混淆</div>
+      <div class="pain-desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🕳️</div>
+      <div class="pain-title">同一个坑踩两次</div>
+      <div class="pain-desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📦</div>
+      <div class="pain-title">经验无法沉淀和复用</div>
+      <div class="pain-desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- BEFORE/AFTER -->
+<section class="section">
+  <div class="section-label green">✨ 对比</div>
+  <h2 class="section-title">有 AOS vs 没有 AOS</h2>
+  <p class="section-desc">同样的任务，完全不同的体验——</p>
+
+  <div class="comparison-wrapper">
+    <div class="comparison-col before">
+      <div class="comparison-header before-h">😫 没有 AOS</div>
+      <div class="chat-bubble user">
+        <div class="label">你</div>
+        帮我改一下用户认证模块
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label">AI</div>
+        好的，请问你用什么语言？什么框架？数据库是什么？认证方案是 JWT 还是 Session？
+      </div>
+      <div class="chat-bubble user">
+        <div class="label">你</div>
+        ……（第 N 次重复介绍项目背景）
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label">AI</div>
+        好的，我来处理……（把配置写到了错误的项目路径）
+      </div>
+    </div>
+
+    <div class="comparison-col after">
+      <div class="comparison-header after-h">😎 有了 AOS</div>
+      <div class="chat-bubble user">
+        <div class="label">你</div>
+        帮我改一下用户认证模块
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label">AI</div>
+        <span class="chat-tag auto">[自动加载项目上下文]</span><br>
+        好的，你的 Next.js 项目，使用 Prisma + PostgreSQL，上次认证模块改过 JWT 策略，我继续在这个基础上调整。
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label">AI</div>
+        <span class="chat-tag mem">[读取反馈记忆]</span><br>
+        注意到上次误把 refreshToken 写进响应体，这次会严格检查。
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-label purple">⚙️ 原理</div>
+  <h2 class="section-title">AOS 是怎么工作的</h2>
+  <p class="section-desc">核心理念：<strong>AI 的记忆不靠"记住"，靠"读文件"</strong>。每次对话自动读写磁盘，新对话从文件恢复全部上下文。</p>
+
+  <div class="flow-container">
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#4f8fff,#3b82f6);">1</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">🔍 识别项目</div>
+          <div class="flow-step-desc">自动检测当前操作涉及哪个项目，加载该项目的专属配置和状态</div>
+          <span class="flow-step-tag" style="background:rgba(79,143,255,0.1);color:var(--accent-blue);">自动触发</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#a855f7,#8b5cf6);">2</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">🧠 读取记忆</div>
+          <div class="flow-step-desc">加载历史经验、已知坑点、用户偏好、项目事实——AI 瞬间"想起"一切</div>
+          <span class="flow-step-tag" style="background:rgba(168,85,247,0.1);color:var(--accent-purple);">04_MEMORY/</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#00d4ff,#06b6d4);">3</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">🔧 执行任务</div>
+          <div class="flow-step-desc">调用技能模块（Skill），按标准化步骤序列执行，每步都有可视化输出</div>
+          <span class="flow-step-tag" style="background:rgba(0,212,255,0.1);color:var(--accent-cyan);">03_TOOLS/skills/</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#34d399,#10b981);">4</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">💾 写入记忆</div>
+          <div class="flow-step-desc">新经验追加到反馈记录，项目状态更新落盘——不依赖 AI 的"记忆力"</div>
+          <span class="flow-step-tag" style="background:rgba(52,211,153,0.1);color:var(--accent-green);">强制步骤</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#fb923c,#f97316);">5</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">✅ 自检验证</div>
+          <div class="flow-step-desc">检查版本一致性、交叉引用完整性、目录合规性——确保没有遗漏</div>
+          <span class="flow-step-tag" style="background:rgba(251,146,60,0.1);color:var(--accent-orange);">自动检查</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#f472b6,#ec4899);">6</div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">📤 输出成果</div>
+          <div class="flow-step-desc">最终交付物进入 07_EXPORTS/，按项目名和交付类型分层存放</div>
+          <span class="flow-step-tag" style="background:rgba(244,114,182,0.1);color:var(--accent-pink);">07_EXPORTS/</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- DIRECTORY STRUCTURE -->
+<section class="section" id="structure">
+  <div class="section-label cyan">📂 结构</div>
+  <h2 class="section-title">标准化工作台：每个目录一个职责</h2>
+  <p class="section-desc">AOS 用 10 个目录搭建 AI 的"办公桌"——每个抽屉只放一类东西，绝不混装。</p>
+
+  <div class="dir-visual">
+    <div class="dir-card">
+      <div class="dir-card-icon">📋</div>
+      <div class="dir-card-name" style="color:var(--accent-blue)">00_BOOT/</div>
+      <div class="dir-card-desc">系统规则层<br>AI 的"行为准则"</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">📁</div>
+      <div class="dir-card-name" style="color:var(--accent-purple)">01_PROJECTS/</div>
+      <div class="dir-card-desc">项目工作台<br>每个项目独立隔间</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">🧪</div>
+      <div class="dir-card-name" style="color:var(--accent-orange)">02_SANDBOX/</div>
+      <div class="dir-card-desc">实验区<br>不确定的操作先试再定</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">🔧</div>
+      <div class="dir-card-name" style="color:var(--accent-cyan)">03_TOOLS/</div>
+      <div class="dir-card-desc">技能库<br>可复用的 AI 工作流</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">🧠</div>
+      <div class="dir-card-name" style="color:var(--accent-green)">04_MEMORY/</div>
+      <div class="dir-card-desc">记忆中心<br>经验、反馈、知识索引</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">💨</div>
+      <div class="dir-card-name" style="color:var(--text-muted)">05_CACHE/</div>
+      <div class="dir-card-desc">临时数据<br>可随时清空</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">📝</div>
+      <div class="dir-card-name" style="color:var(--text-muted)">06_LOGS/</div>
+      <div class="dir-card-desc">运行日志<br>只追加不修改</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">📤</div>
+      <div class="dir-card-name" style="color:var(--accent-pink)">07_EXPORTS/</div>
+      <div class="dir-card-desc">成果输出<br>最终交付物</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">📥</div>
+      <div class="dir-card-name" style="color:var(--accent-orange)">08_INBOX/</div>
+      <div class="dir-card-desc">外部输入<br>网页抓取、迁移数据</div>
+    </div>
+    <div class="dir-card">
+      <div class="dir-card-icon">📚</div>
+      <div class="dir-card-name" style="color:var(--accent-blue)">09_REFERENCE/</div>
+      <div class="dir-card-desc">知识库<br>唯一参考源，禁止重复</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- CORE ABILITIES -->
+<section class="section" id="ability">
+  <div class="section-label orange">🛡️ 能力</div>
+  <h2 class="section-title">三大核心能力</h2>
+  <p class="section-desc">解决 AI 助手最根本的三个问题——</p>
+
+  <div class="ability-grid">
+    <div class="ability-card">
+      <div class="ability-icon">🧠</div>
+      <div class="ability-title">跨会话记忆</div>
+      <div class="ability-analogy">→ 助手的笔记本</div>
+      <div class="ability-desc">AI 每次对话自动读写记忆文件，新对话从磁盘恢复全部上下文。不再"失忆"，经验持续积累。</div>
+    </div>
+    <div class="ability-card">
+      <div class="ability-icon">📁</div>
+      <div class="ability-title">项目隔离</div>
+      <div class="ability-analogy">→ 独立办公桌</div>
+      <div class="ability-desc">每个项目有独立的配置、状态、文档。切换项目时自动加载对应上下文，杜绝"张冠李戴"。</div>
+    </div>
+    <div class="ability-card">
+      <div class="ability-icon">🔧</div>
+      <div class="ability-title">技能复用</div>
+      <div class="ability-analogy">→ 标准操作手册</div>
+      <div class="ability-desc">把常用工作流封装成 Skill，一次定义、反复调用。团队共享最佳实践，避免重复造轮子。</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- VALUE -->
+<section class="section" id="value">
+  <div class="section-label green">💎 价值</div>
+  <h2 class="section-title">价值与差异化</h2>
+  <p class="section-desc">AOS 让 AI 助手从"一次性工具"升级为"可持续协作伙伴"——</p>
+
+  <div class="value-grid" style="margin-bottom:2.5rem;">
+    <div class="value-card">
+      <div class="value-card-header">
+        <span class="value-card-icon">📈</span>
+        <span class="value-card-title">效率提升</span>
+      </div>
+      <ul class="value-card-list">
+        <li><span class="check">✓</span>减少 60%+ 重复沟通成本</li>
+        <li><span class="check">✓</span>项目隔离消除上下文混淆</li>
+        <li><span class="check">✓</span>反馈记忆避免重复犯错</li>
+        <li><span class="check">✓</span>技能一次定义、反复复用</li>
+      </ul>
+    </div>
+    <div class="value-card">
+      <div class="value-card-header">
+        <span class="value-card-icon">🌍</span>
+        <span class="value-card-title">社会价值</span>
+      </div>
+      <ul class="value-card-list">
+        <li><span class="check">✓</span>开源 AI 工作流管理标准</li>
+        <li><span class="check">✓</span>零代码依赖降低使用门槛</li>
+        <li><span class="check">✓</span>跨平台通用（TRAE/Claude/Codex）</li>
+        <li><span class="check">✓</span>推动 AI 辅助开发规范化</li>
+      </ul>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>对比维度</th>
+        <th>AOS</th>
+        <th>传统方案</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>技术依赖</td>
+        <td>纯文件系统，零代码</td>
+        <td>需要安装框架/运行时</td>
+      </tr>
+      <tr>
+        <td>上手成本</td>
+        <td>创建目录即可开始</td>
+        <td>学习 API、配置环境</td>
+      </tr>
+      <tr>
+        <td>跨工具兼容</td>
+        <td>任何 AI 助手都能用</td>
+        <td>绑定特定平台</td>
+      </tr>
+      <tr>
+        <td>可审计性</td>
+        <td>所有状态都是可读文件</td>
+        <td>状态藏在数据库/内存中</td>
+      </tr>
+      <tr>
+        <td>记忆持久化</td>
+        <td>磁盘写入，永不过期</td>
+        <td>内存存储，会话结束即消失</td>
+      </tr>
+      <tr>
+        <td>团队协作</td>
+        <td>文件即协议，Git 友好</td>
+        <td>需要额外同步机制</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- QUICK START -->
+<section class="section" id="start">
+  <div class="section-label pink">🚀 快速开始</div>
+  <h2 class="section-title">三步上手 AOS</h2>
+  <p class="section-desc">纯文件系统，无需安装任何依赖——</p>
+
+  <div class="quick-grid">
+    <div class="quick-card">
+      <div class="quick-step">Step 1</div>
+      <div class="quick-title">获取 AOS</div>
+      <div class="quick-desc">克隆仓库或下载压缩包，AOS 是纯文件结构，无需安装任何依赖。</div>
+      <code class="quick-code">git clone https://github.com/MagicalYuYu/agent-operating-system.git</code>
+    </div>
+    <div class="quick-card">
+      <div class="quick-step">Step 2</div>
+      <div class="quick-title">在 AI 工具中打开</div>
+      <div class="quick-desc">用 TRAE Work（推荐）、Claude Code 或 Codex 打开 AOS 目录，AI 会自动读取根目录的 AGENTS.md。</div>
+    </div>
+    <div class="quick-card">
+      <div class="quick-step">Step 3</div>
+      <div class="quick-title">配置 Rules 并验证</div>
+      <div class="quick-desc">添加 3 条 Rules（详见配置指南），然后运行自检脚本验证安装。</div>
+      <code class="quick-code">python 03_TOOLS/scripts/aos_check.py</code>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:2.5rem;">
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/docs/trae-setup-guide.md" target="_blank" class="btn btn-secondary">📖 完整配置指南</a>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- PLATFORMS -->
+<section class="section">
+  <div class="section-label blue">🖥️ 平台</div>
+  <h2 class="section-title">适配平台</h2>
+  <p class="section-desc">AOS 基于文件系统设计，天然跨平台——</p>
+
+  <div class="platform-grid">
+    <div class="platform-card best">
+      <div class="platform-name">TRAE Work</div>
+      <div class="platform-status">最优适配，规则体系原生支持</div>
+      <span class="platform-badge recommended">推荐</span>
+    </div>
+    <div class="platform-card">
+      <div class="platform-name">Claude Code</div>
+      <div class="platform-status">通过 CLAUDE.md 模板适配</div>
+      <span class="platform-badge supported">支持</span>
+    </div>
+    <div class="platform-card">
+      <div class="platform-name">Codex</div>
+      <div class="platform-status">通过配置映射适配</div>
+      <span class="platform-badge supported">支持</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span class="g">AOS</span></div>
+  <div class="footer-desc">Agent Operating System — 给 AI 助手装上记忆大脑和工作台</div>
+  <div class="footer-links">
+    <a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank">GitHub</a>
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/docs/trae-setup-guide.md" target="_blank">配置指南</a>
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/AGENTS.md" target="_blank">系统规则</a>
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/LICENSE" target="_blank">MIT 协议</a>
+  </div>
+</footer>
+
+</body>
+</html>

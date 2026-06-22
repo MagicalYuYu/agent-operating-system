@@ -99,6 +99,9 @@
 !/09_REFERENCE/system/aos-*.md
 # 允许：对应的 metadata.json
 !/09_REFERENCE/system/*.metadata.json
+# 允许：网页模板规范文档
+!/09_REFERENCE/web/
+!/09_REFERENCE/web/**
 
 # === 99_ARCHIVE 仅目录说明 ===
 !/99_ARCHIVE/

@@ -5,13 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AOS — Agent Operating System</title>
 <meta name="description" content="AOS 是一套纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力。零代码依赖，适用于 TRAE、Claude Code、Codex 等任何 AI 编程助手。">
+<meta name="keywords" content="AOS, Agent Operating System, AI 助手, 跨会话记忆, 项目隔离, 技能复用, TRAE, Claude Code, Codex, 纯文件系统">
+<meta name="author" content="MagicalYuYu">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://magicalyuyu.github.io/agent-operating-system/">
+<!-- Open Graph -->
 <meta property="og:title" content="AOS — Agent Operating System">
-<meta property="og:description" content="给 AI 助手装上记忆大脑和工作台">
+<meta property="og:description" content="给 AI 助手装上记忆大脑和工作台 — 纯文件系统的 Agent 运行时框架">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://magicalyuyu.github.io/agent-operating-system/">
+<meta property="og:image" content="https://magicalyuyu.github.io/agent-operating-system/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AOS — Agent Operating System">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AOS — Agent Operating System">
+<meta name="twitter:description" content="给 AI 助手装上记忆大脑和工作台 — 纯文件系统的 Agent 运行时框架">
+<meta name="twitter:image" content="https://magicalyuyu.github.io/agent-operating-system/og-image.png">
+<meta name="twitter:creator" content="@MagicalYuYu">
+<!-- 结构化数据 JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AOS — Agent Operating System",
+  "description": "纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力",
+  "url": "https://magicalyuyu.github.io/agent-operating-system/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Cross-platform",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "license": "https://github.com/MagicalYuYu/agent-operating-system/blob/main/LICENSE",
+  "author": {
+    "@type": "Person",
+    "name": "MagicalYuYu",
+    "url": "https://github.com/MagicalYuYu"
+  }
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<!-- 性能优化：预加载关键资源 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<!-- PWA 支持 -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#08080d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+  /* 字体已通过 <link> 预加载，无需 @import */
 
   :root {
     --bg-primary: #08080d;
@@ -1377,13 +1427,48 @@
     border-right: none;
     border-top: none;
   }
+
+  /* ===== 可访问性：跳转到主内容 ===== */
+  .skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--accent-blue, #4f8fff);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 0 0 8px 0;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 10000;
+    transition: top 0.3s ease;
+  }
+  .skip-to-content:focus {
+    top: 0;
+  }
+
+  /* ===== 性能优化：字体显示策略 ===== */
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Noto Sans SC';
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-display: swap;
+  }
 </style>
 </head>
 <body>
 
+<!-- 可访问性：跳转到主内容 -->
+<a href="#main-content" class="skip-to-content" aria-label="跳转到主内容">跳转到主内容</a>
+
 <!-- 鼠标光晕 -->
-<div class="cursor-glow" id="cursorGlow"></div>
-<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -1407,7 +1492,7 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="main-content">
   <div class="aurora">
     <div class="aurora-blob b1"></div>
     <div class="aurora-blob b2"></div>

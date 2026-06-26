@@ -356,7 +356,7 @@ def parse_single_project(proj_dir, aos_root):
             if plugin_info:
                 plugins.append(plugin_info)
 
-    # 检查是否有 modules（如 clash_omega 的 modules 字段）
+    # 检查是否有 modules（如 example_proxy 的 modules 字段）
     if agents_content and 'modules:' in agents_content.lower():
         # 尝试从 AGENTS.md 提取 modules
         modules = extract_modules_from_agents(agents_content)
@@ -572,7 +572,7 @@ def extract_project_desc(readme_content):
 def extract_plugin_info(plugin_dir, project_name):
     """从插件目录提取信息（增强版：支持 metadata.yaml / manifest.json / README.md 多源提取）"""
     name = plugin_dir.name
-    # 尝试读取 metadata.yaml（AstrBot 插件标准）
+    # 尝试读取 metadata.yaml（ExampleBot 插件标准）
     metadata_path = plugin_dir / "metadata.yaml"
     metadata = read_file(metadata_path)
 
@@ -669,7 +669,7 @@ def extract_plugin_info(plugin_dir, project_name):
 
 
 def extract_modules_from_agents(agents_content):
-    """从 AGENTS.md 提取模块信息（如 clash_omega 的 modules）"""
+    """从 AGENTS.md 提取模块信息（如 example_proxy 的 modules）"""
     modules = []
     # 简单提取：查找模块相关表格
     for row in parse_md_table(agents_content, 0):

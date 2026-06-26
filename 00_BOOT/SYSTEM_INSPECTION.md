@@ -53,7 +53,7 @@
 | 层级 | 含义 | 示例 |
 |------|------|------|
 | 第1层 | AOS 顶级目录 | 06_LOGS/、07_EXPORTS/、08_INBOX/ |
-| 第2层 | 项目名（或 aos_system 表示系统级） | astrbot/、bishoujo-web/、aos_system/ |
+| 第2层 | 项目名（或 aos_system 表示系统级） | example_bot/、example_web/、aos_system/ |
 | 第3层 | 模块名（按功能划分） | engine/、platform/、renderer/、inspection/ |
 | 第4层 | 类型（按日志/文件类型细分，按需） | runtime/、error/、access/、review/ |
 | 文件名 | 日期+描述 | 20260625_inspection_review.md |
@@ -68,29 +68,29 @@
 │   ├── inspection/                # 巡检日志
 │   │   └── 20260625_system.md
 │   ├── migration/                 # 迁移日志
-│   │   └── 20260621_astrbot.log
+│   │   └── 20260621_example_bot.log
 │   └── startup/                   # 启动自检日志
 │       └── 20260625_boot.log
-├── astrbot/                       # AstrBot 项目日志
+├── example_bot/                       # example_bot 项目日志
 │   ├── engine/                    # 引擎模块日志
 │   │   ├── runtime/               # 运行时日志
 │   │   │   └── 20260625.log
 │   │   └── error/                 # 错误日志
 │   │       └── 20260625.log
 │   ├── platform/                  # 平台适配模块日志
-│   │   └── napcat/                # NapCat 连接日志
+│   │   └── example_protocol/       # example_protocol 连接日志
 │   │       └── 20260625.log
 │   └── renderer/                  # 渲染模块日志
 │       └── 20260625.log
-├── bishoujo-web/                  # bishoujo-web 项目日志
+├── example_web/                  # example_web 项目日志
 │   ├── backend/                   # 后端日志
 │   │   └── 20260625.log
 │   └── deploy/                    # 部署日志
 │       └── 20260625.log
-├── clash_omega/                   # clash_omega 项目日志
+├── example_proxy/                   # example_proxy 项目日志
 │   └── extension/                 # 扩展模块日志
 │       └── 20260625.log
-├── oncepad/                       # oncepad 项目日志
+├── example_notes/                       # example_notes 项目日志
 │   └── development/               # 开发日志
 │       └── 20260625.log
 └── README.md
@@ -107,9 +107,9 @@
 │   │       └── _internal/
 │   └── debug/                     # 类型：调试版本
 │       └── 20260624/
-├── astrbot/                       # 项目名
+├── example_bot/                       # 项目名
 │   ├── plugin/                    # 类型：插件包
-│   │   └── bishoujo_adventure/
+│   │   └── example_game_adventure/
 │   │       └── v1.0.0.zip
 │   └── docs/                      # 类型：文档
 │       └── 20260625_design.md
@@ -128,7 +128,7 @@
 │   ├── chat_extracts/             # 对话提取
 │   │   └── 20260621/
 │   ├── project_scans/             # 项目扫描
-│   │   └── astrbot/
+│   │   └── example_bot/
 │   ├── migration_state.json       # 迁移状态（顶层）
 │   └── project_map.json           # 项目映射（顶层）
 └── README.md

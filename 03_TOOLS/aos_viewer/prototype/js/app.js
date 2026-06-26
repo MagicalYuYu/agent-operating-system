@@ -1917,7 +1917,6 @@ function buildSearchIndex() {
     { icon: '📋', title: t('module.logs'), desc: t('search.desc.logs'), type: t('search.type.module'), action: () => switchModule('logs') },
     { icon: '🖥', title: t('module.console'), desc: t('search.desc.console'), type: t('search.type.module'), action: () => switchModule('console') },
     { icon: '🔧', title: t('menu.tools.check'), desc: 'aos_check.py', type: t('search.type.script'), action: () => { switchModule('console'); setTimeout(() => runScript('check'), 300); } },
-    { icon: '📤', title: t('menu.tools.sync'), desc: 'aos_sync_github.py', type: t('search.type.script'), action: () => { switchModule('console'); setTimeout(() => runScript('sync'), 300); } },
     { icon: '📥', title: t('menu.tools.migrate'), desc: 'aos_migrate_collect.py', type: t('search.type.script'), action: () => { switchModule('console'); setTimeout(() => runScript('migrate'), 300); } },
   ];
 
@@ -2666,10 +2665,6 @@ function handleMenuAction(action, el) {
     case 'run-check':
       switchModule('console');
       setTimeout(() => runScript('check'), 300);
-      break;
-    case 'run-sync':
-      switchModule('console');
-      setTimeout(() => runScript('sync'), 300);
       break;
     case 'run-migrate':
       switchModule('console');

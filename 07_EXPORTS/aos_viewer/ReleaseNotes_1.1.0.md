@@ -85,13 +85,12 @@ python aos_migrate_to_1.1.0.py --aos-root /path/to/aos
 - `00_BOOT/SYSTEM_INSPECTION.md` + `00_BOOT/PROJECT_INSPECTION.md`（巡检规范拆分）
 - `07_EXPORTS/aos_viewer/`（发布物料，6 个文件）
 
-### 修改文件（11 个）
+### 修改文件（10 个）
 
 - `AGENTS.md`（项目内标准结构 + 双机环境章节）
 - `00_BOOT/SYSTEM_STATE.md` + `00_BOOT/CORE.md`（版本号）
 - `README.md`（版本徽章）
 - `04_MEMORY/INDEX.md` + `04_MEMORY/project/proj_aos_v1_status.md`
-- `03_TOOLS/scripts/aos_sync_github.py`（脱敏逻辑增强）
 - `03_TOOLS/scripts/aos_generate_data.py`（fallback 版本号）
 - `docs/index.html` + `docs/AOS_creative_proposal.html`（版本徽章）
 - `09_REFERENCE/web/web-template-specification.md`（示例版本号）

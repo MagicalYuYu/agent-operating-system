@@ -67,7 +67,7 @@ Agent 执行项目级巡检前，**必须先检查系统级巡检是否已完成
 | 层级 | 含义 | 示例 |
 |------|------|------|
 | 第1层 | AOS 顶级目录 | 06_LOGS/、07_EXPORTS/、08_INBOX/ |
-| 第2层 | 项目名（或 aos_system 表示系统级） | astrbot/、bishoujo-web/、aos_system/ |
+| 第2层 | 项目名（或 aos_system 表示系统级） | example_bot/、example_web/、aos_system/ |
 | 第3层 | 模块名（按功能划分） | engine/、platform/、renderer/、inspection/ |
 | 第4层 | 类型（按日志/文件类型细分，按需） | runtime/、error/、access/、review/ |
 | 文件名 | 日期+描述 | 20260625_inspection_project.md |

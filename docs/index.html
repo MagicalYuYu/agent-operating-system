@@ -545,6 +545,15 @@
     transform: translateY(30px);
     animation: fade-up 1s var(--ease-out) 0.4s forwards;
   }
+  /* 英文版 hero 字体缩小（英文词汇较长，避免占满屏幕） */
+  body.lang-en .hero-title {
+    font-size: clamp(1.9rem, 4.2vw, 3.8rem);
+    letter-spacing: -0.02em;
+  }
+  /* 中文版 subtitle 加宽，确保"让 AI 助手不再失忆..."一行完整显示 */
+  body.lang-zh .hero-subtitle {
+    max-width: 760px;
+  }
 
   .hero-title .gradient-text {
     background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 35%, var(--accent-purple) 70%, var(--accent-pink) 100%);
@@ -2360,7 +2369,7 @@
 <body>
 
 <!-- 可访问性：跳转到主内容 -->
-<a href="#main-content" class="skip-to-content" aria-label="跳转到主内容">跳转到主内容</a>
+<a href="#main-content" class="skip-to-content" aria-label="跳转到主内容" data-i18n="a11y.skip" data-i18n-attr="aria-label:a11y.skip">跳转到主内容</a>
 
 <!-- 鼠标光晕 -->
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
@@ -2439,17 +2448,17 @@
     <div class="hero-window-body">
       <div class="hero-window-row">
         <span class="dot purple"></span>
-        <span>astrbot</span>
+        <span>example_bot</span>
         <span class="hero-window-tag" data-i18n="hero.window.tag.active">活跃</span>
       </div>
       <div class="hero-window-row">
         <span class="dot green"></span>
-        <span>bishoujo-web</span>
+        <span>example_web</span>
         <span class="hero-window-tag" data-i18n="hero.window.tag.deployed">已部署</span>
       </div>
       <div class="hero-window-row">
         <span class="dot blue"></span>
-        <span>napcat</span>
+        <span>example_protocol</span>
         <span class="hero-window-tag" data-i18n="hero.window.tag.running">运行中</span>
       </div>
     </div>
@@ -2464,7 +2473,7 @@
       AI 助手的<br><span class="gradient-text">操作系统</span>
     </h1>
     <p class="hero-subtitle" data-i18n="hero.subtitle">
-      AOS 是一套<strong>操作系统形态的 Agent 运行框架</strong>——<span class="hero-kw">内核</span> · <span class="hero-kw">文件系统</span> · <span class="hero-kw">桌面</span> · <span class="hero-kw">记忆大脑</span><br>
+      AOS 是一套<strong>操作系统形态的 Agent 运行框架</strong><br>——<span class="hero-kw">内核</span> · <span class="hero-kw">文件系统</span> · <span class="hero-kw">桌面</span> · <span class="hero-kw">记忆大脑</span><br>
       让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>
     </p>
     <div class="hero-actions">
@@ -2652,7 +2661,7 @@
             <span class="lifecycle-file-chip">reference_links.md</span>
           </div>
           <div class="lifecycle-stage-problem">
-            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span class="lifecycle-stage-problem-tag" data-i18n="lifecycle.tag.no-aos">无 AOS</span>
             <span data-i18n="lifecycle.1.problem">手动建目录、写样板、遗漏配置，每个项目都从空白开始，重复造轮子</span>
           </div>
         </div>
@@ -2678,7 +2687,7 @@
             <span class="lifecycle-file-chip">06_LOGS/{name}/{date}.log</span>
           </div>
           <div class="lifecycle-stage-problem">
-            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span class="lifecycle-stage-problem-tag" data-i18n="lifecycle.tag.no-aos">无 AOS</span>
             <span data-i18n="lifecycle.2.problem">上下文仅存于对话窗口，关闭即失忆，新对话要重新介绍项目背景、技术栈、约束</span>
           </div>
         </div>
@@ -2698,12 +2707,12 @@
           <div class="lifecycle-stage-desc" data-i18n="lifecycle.3.desc">交付物按"项目名 + 交付类型"分层归档，状态同步更新到 STATUS.md 和 04_MEMORY/project/——下次接手时无需"考古"，所有进度一眼可见。</div>
           <div class="lifecycle-stage-files">
             <span class="lifecycle-file-chip">07_EXPORTS/{name}/{deliverable}/</span>
-            <span class="lifecycle-file-chip">STATUS.md → 同步更新</span>
-            <span class="lifecycle-file-chip">proj_{name}.md → 同步更新</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.3.file.1">STATUS.md → 同步更新</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.3.file.2">proj_{name}.md → 同步更新</span>
             <span class="lifecycle-file-chip">SKILL_REGISTRY.md → call_count+1</span>
           </div>
           <div class="lifecycle-stage-problem">
-            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span class="lifecycle-stage-problem-tag" data-i18n="lifecycle.tag.no-aos">无 AOS</span>
             <span data-i18n="lifecycle.3.problem">交付物散落各处，无分层归档，下次接手靠"考古"翻聊天记录，进度不可追溯</span>
           </div>
         </div>
@@ -2723,13 +2732,13 @@
           <div class="lifecycle-stage-desc" data-i18n="lifecycle.4.desc">运行自检脚本扫描版本号同步、交叉引用完整性、目录合规性——发现残留旧版本号或断链立即报警，杜绝"改了一处忘了十处"的隐患。</div>
           <div class="lifecycle-stage-files">
             <span class="lifecycle-file-chip">aos_check.py</span>
-            <span class="lifecycle-file-chip">版本号同步</span>
-            <span class="lifecycle-file-chip">交叉引用验证</span>
-            <span class="lifecycle-file-chip">目录合规扫描</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.4.file.1">版本号同步</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.4.file.2">交叉引用验证</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.4.file.3">目录合规扫描</span>
             <span class="lifecycle-file-chip">SYSTEM_STATE.md</span>
           </div>
           <div class="lifecycle-stage-problem">
-            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span class="lifecycle-stage-problem-tag" data-i18n="lifecycle.tag.no-aos">无 AOS</span>
             <span data-i18n="lifecycle.4.problem">改了一处忘了十处，版本号不一致、断链无人发现，bug 潜伏到用户报障才暴露</span>
           </div>
         </div>
@@ -2748,14 +2757,14 @@
           </div>
           <div class="lifecycle-stage-desc" data-i18n="lifecycle.5.desc">每个目录有且仅有一个职责，禁止业务污染——系统规则、项目数据、临时缓存、知识库、日志各有归处，AOS 高效规整混乱的文件结构，AI 不再"找不着文件"。</div>
           <div class="lifecycle-stage-files">
-            <span class="lifecycle-file-chip">00_BOOT 系统规则</span>
-            <span class="lifecycle-file-chip">01_PROJECTS 项目隔离</span>
-            <span class="lifecycle-file-chip">04_MEMORY 状态持久化</span>
-            <span class="lifecycle-file-chip">07_EXPORTS 成果输出</span>
-            <span class="lifecycle-file-chip">09_REFERENCE 唯一知识库</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.5.file.1">00_BOOT 系统规则</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.5.file.2">01_PROJECTS 项目隔离</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.5.file.3">04_MEMORY 状态持久化</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.5.file.4">07_EXPORTS 成果输出</span>
+            <span class="lifecycle-file-chip" data-i18n="lifecycle.5.file.5">09_REFERENCE 唯一知识库</span>
           </div>
           <div class="lifecycle-stage-problem">
-            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span class="lifecycle-stage-problem-tag" data-i18n="lifecycle.tag.no-aos">无 AOS</span>
             <span data-i18n="lifecycle.5.problem">文件散落无规整，靠 find 和记忆找文件，AI"找不着北"，越用越乱直至无法维护</span>
           </div>
         </div>
@@ -3134,7 +3143,7 @@
           <div class="desktop-timeline-item">
             <span class="desktop-timeline-time">14:32</span>
             <span class="desktop-timeline-dot"></span>
-            <span class="desktop-timeline-text" data-i18n="desktop.log.1">项目 astrbot 识别完成</span>
+            <span class="desktop-timeline-text" data-i18n="desktop.log.1">项目 example_bot 识别完成</span>
           </div>
           <div class="desktop-timeline-item">
             <span class="desktop-timeline-time">14:28</span>
@@ -3430,7 +3439,7 @@ const i18n = {
     // HERO
     'hero.badge': 'v1.1.0 已发布 · MIT 协议',
     'hero.title': 'AI 助手的<br><span class="gradient-text">操作系统</span>',
-    'hero.subtitle': 'AOS 是一套<strong>操作系统形态的 Agent 运行框架</strong>——<span class="hero-kw">内核</span> · <span class="hero-kw">文件系统</span> · <span class="hero-kw">桌面</span> · <span class="hero-kw">记忆大脑</span><br>让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>',
+    'hero.subtitle': 'AOS 是一套<strong>操作系统形态的 Agent 运行框架</strong><br>——<span class="hero-kw">内核</span> · <span class="hero-kw">文件系统</span> · <span class="hero-kw">桌面</span> · <span class="hero-kw">记忆大脑</span><br>让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>',
     'hero.action.start': '快速开始',
     'hero.action.source': '查看源码',
     // hero 多窗口悬浮卡
@@ -3576,7 +3585,7 @@ const i18n = {
     'desktop.rt.logs': '日志条目',
     // 事件日志时间线
     'desktop.timeline.title': '事件日志',
-    'desktop.log.1': '项目 astrbot 识别完成',
+    'desktop.log.1': '项目 example_bot 识别完成',
     'desktop.log.2': 'Skill SK_0001 调用记录',
     'desktop.log.3': '记忆 INDEX.md 更新',
     // Dock 栏
@@ -3758,7 +3767,23 @@ const i18n = {
     'footer.github': 'GitHub',
     'footer.guide': '配置指南',
     'footer.rules': '系统规则',
-    'footer.license': 'MIT 协议'
+    'footer.license': 'MIT 协议',
+
+    // A11Y
+    'a11y.skip': '跳转到主内容',
+
+    // LIFECYCLE FILE CHIPS（漏译补全）
+    'lifecycle.tag.no-aos': '无 AOS',
+    'lifecycle.3.file.1': 'STATUS.md → 同步更新',
+    'lifecycle.3.file.2': 'proj_{name}.md → 同步更新',
+    'lifecycle.4.file.1': '版本号同步',
+    'lifecycle.4.file.2': '交叉引用验证',
+    'lifecycle.4.file.3': '目录合规扫描',
+    'lifecycle.5.file.1': '00_BOOT 系统规则',
+    'lifecycle.5.file.2': '01_PROJECTS 项目隔离',
+    'lifecycle.5.file.3': '04_MEMORY 状态持久化',
+    'lifecycle.5.file.4': '07_EXPORTS 成果输出',
+    'lifecycle.5.file.5': '09_REFERENCE 唯一知识库'
   },
   en: {
     // NAV
@@ -3774,7 +3799,7 @@ const i18n = {
     // HERO
     'hero.badge': 'v1.1.0 Released · MIT License',
     'hero.title': 'The Operating System<br><span class="gradient-text">for Your AI Assistant</span>',
-    'hero.subtitle': 'AOS is an <strong>operating-system-shaped agent runtime framework</strong> — <span class="hero-kw">Kernel</span> · <span class="hero-kw">File System</span> · <span class="hero-kw">Desktop</span> · <span class="hero-kw">Memory Brain</span><br>that ends AI <strong>amnesia</strong>, keeps projects <strong>perfectly isolated</strong>, and lets hard-won experience <strong>compound over time</strong>.',
+    'hero.subtitle': 'AOS is an <strong>OS-shaped agent framework</strong><br>— <span class="hero-kw">Kernel</span> · <span class="hero-kw">File System</span> · <span class="hero-kw">Desktop</span> · <span class="hero-kw">Memory Brain</span><br>Ends AI <strong>amnesia</strong>, isolates <strong>projects</strong>, compounds <strong>experience</strong>.',
     'hero.action.start': 'Get Started',
     'hero.action.source': 'View Source',
     // hero floating multi-window cards
@@ -3794,30 +3819,30 @@ const i18n = {
     // PAIN POINTS
     'pain.label': '❌ Pain Points',
     'pain.title': 'AI Assistants Are Smart — But They Have No Memory',
-    'pain.desc': 'If you work with AI assistants regularly, these scenarios will feel all too familiar——',
+    'pain.desc': 'If you work with AI assistants regularly, these scenarios will feel all too familiar:',
     'pain.1.title': 'Repeating Yourself, Wasting 30%+ of Your Time',
     'pain.1.desc': 'Every new conversation means re-explaining the project background, tech stack, and constraints. The AI\'s "memory" is limited to the current chat window.',
-    'pain.1.tooltip': 'Measured Data|On average, 3–5 minutes per new conversation are wasted re-introducing project context. AOS auto-loads project context via 04_MEMORY/, enabling zero-second startup.',
+    'pain.1.tooltip': 'Measured Data | On average, 3–5 minutes per new conversation are wasted re-introducing project context. AOS auto-loads project context via 04_MEMORY/, enabling zero-second startup.',
     'pain.2.title': 'Multi-Project Context Confusion',
     'pain.2.desc': 'When juggling multiple projects, the AI often writes Project A\'s config into Project B — a costly case of mistaken identity that only creates more mess.',
-    'pain.2.tooltip': 'Typical Scenario|The AI writes Project A\'s .env into Project B. AOS prevents this via 01_PROJECTS/ directory isolation + per-project AGENTS.md.',
+    'pain.2.tooltip': 'Typical Scenario | The AI writes Project A\'s .env into Project B. AOS prevents this via 01_PROJECTS/ directory isolation + per-project AGENTS.md.',
     'pain.3.title': 'Falling Into the Same Trap Twice',
     'pain.3.desc': 'Mistakes from the last conversation resurface in the next one. The AI has no mechanism to remember "the pit we hit last time" or "why that approach didn\'t work".',
-    'pain.3.tooltip': 'AOS Solution|Feedback memory uses an append-only strategy. Each entry contains three elements: Rule + Why + How to apply. New conversations auto-load them.',
+    'pain.3.tooltip': 'AOS Solution | Feedback memory uses an append-only strategy. Each entry contains three elements: Rule + Why + How to apply. New conversations auto-load them.',
     'pain.4.title': 'Experience Never Accumulates or Reuses',
     'pain.4.desc': 'Hard-won best practices and lessons learned vanish the moment the chat closes. Next time, you start from scratch all over again.',
-    'pain.4.tooltip': 'AOS Solution|Experience is written to 04_MEMORY/feedback/, distinguishing record-type (append-only) from state-type (overwrite + change notes).',
+    'pain.4.tooltip': 'AOS Solution | Experience is written to 04_MEMORY/feedback/, distinguishing record-type (append-only) from state-type (overwrite + change notes).',
     'pain.5.title': 'Close the Chat, Lose Everything',
     'pain.5.desc': 'Everything the AI did and every decision it made disappears when the conversation ends. Nothing carries over to the next session.',
-    'pain.5.tooltip': 'AOS Solution|All state is written to disk: project state in STATUS.md, system state in SYSTEM_STATE.md. Auto-flushed on session end.',
+    'pain.5.tooltip': 'AOS Solution | All state is written to disk: project state in STATUS.md, system state in SYSTEM_STATE.md. Auto-flushed on session end.',
     'pain.6.title': 'Workflows Can\'t Be Standardized',
     'pain.6.desc': 'Every time you ask the AI to do something, you have to describe the workflow from scratch. There\'s no reusable operations manual.',
-    'pain.6.tooltip': 'AOS Solution|The Skill module encapsulates workflows into step sequences. Each Skill has SKILL.md + gotchas.md — define once, invoke repeatedly.',
+    'pain.6.tooltip': 'AOS Solution | The Skill module encapsulates workflows into step sequences. Each Skill has SKILL.md + gotchas.md — define once, invoke repeatedly.',
 
     // COMPARISON
     'compare.label': '✨ Comparison',
     'compare.title': 'With AOS vs Without AOS',
-    'compare.desc': 'Same task, completely different experience——',
+    'compare.desc': 'Same task, completely different experience:',
     'compare.before.header': '😫 Without AOS',
     'compare.after.header': '😎 With AOS',
     'compare.label.you': 'You',
@@ -3839,59 +3864,59 @@ const i18n = {
     'how.1.title': '🔍 Identify the Project',
     'how.1.desc': 'Auto-detects which project the current operation involves, then loads that project\'s dedicated config and state.',
     'how.1.tag': 'Auto-triggered',
-    'how.1.tooltip': 'Detection Priority|1. File path match 2. Context keyword match 3. Project directory scan. On match, reads 01_PROJECTS/{name}/AGENTS.md.',
+    'how.1.tooltip': 'Detection Priority | 1. File path match 2. Context keyword match 3. Project directory scan. On match, reads 01_PROJECTS/{name}/AGENTS.md.',
     'how.2.title': '🧠 Load Memory',
     'how.2.desc': 'Loads historical experience, known pitfalls, user preferences, and project facts — the AI instantly "remembers" everything.',
     'how.2.tag': '04_MEMORY/',
-    'how.2.tooltip': 'Loaded Content|User profile, project facts, feedback experience, knowledge index. INDEX.md is an index, not content — hard cap 200 lines/25KB.',
+    'how.2.tooltip': 'Loaded Content | User profile, project facts, feedback experience, knowledge index. INDEX.md is an index, not content — hard cap 200 lines/25KB.',
     'how.3.title': '🔧 Execute the Task',
     'how.3.desc': 'Invokes Skill modules and runs them as standardized step sequences, with visual output at every step.',
     'how.3.tag': '03_TOOLS/skills/',
-    'how.3.tooltip': 'Skill Structure|SKILL.md (required) + gotchas.md (required) + optional scripts/templates. The last step of any sequence must be a state update.',
+    'how.3.tooltip': 'Skill Structure | SKILL.md (required) + gotchas.md (required) + optional scripts/templates. The last step of any sequence must be a state update.',
     'how.4.title': '💾 Write to Memory',
     'how.4.desc': 'New experience is appended to feedback records; project state is flushed to disk — no reliance on the AI\'s "memory".',
     'how.4.tag': 'Mandatory step',
-    'how.4.tooltip': 'Iron Rule 2|Record-type is append-only; state-type overwrites the old value but keeps a change note (e.g., "React (updated 2026-06-15, was Vue)").',
+    'how.4.tooltip': 'Iron Rule 2 | Record-type is append-only; state-type overwrites the old value but keeps a change note (e.g., "React (updated 2026-06-15, was Vue)").',
     'how.5.title': '✅ Self-Verification',
     'how.5.desc': 'Checks version consistency, cross-reference integrity, and directory compliance — nothing slips through.',
     'how.5.tag': 'Auto-checked',
-    'how.5.tooltip': 'Checklist|Version sync, cross-reference sync, state sync. Uses Grep to scan for residual old version references and outputs a consistency report.',
+    'how.5.tooltip': 'Checklist | Version sync, cross-reference sync, state sync. Uses Grep to scan for residual old version references and outputs a consistency report.',
     'how.6.title': '📤 Deliver Output',
     'how.6.desc': 'Final deliverables land in 07_EXPORTS/, organized by project name and delivery type.',
     'how.6.tag': '07_EXPORTS/',
-    'how.6.tooltip': 'Layering Rule|07_EXPORTS/{project_name}/{deliverable}/. Direct exports are forbidden — everything must go through the Project→Export flow.',
+    'how.6.tooltip': 'Layering Rule | 07_EXPORTS/{project_name}/{deliverable}/. Direct exports are forbidden — everything must go through the Project→Export flow.',
 
     // DIRECTORY STRUCTURE
     'dir.label': '📂 Structure',
     'dir.title': 'A Standardized Workspace: One Responsibility per Directory',
     'dir.desc': 'AOS sets up the AI\'s "desk" with 10 directories — each drawer holds exactly one category, never mixed.',
     'dir.00.desc': 'System Rules Layer<br>The AI\'s "Code of Conduct"',
-    'dir.00.tooltip': 'Core Files|AGENTS.md (system rules), SKILL_REGISTRY.md (skill registry), SYSTEM_STATE.md (system state). Cannot be polluted by business logic.',
+    'dir.00.tooltip': 'Core Files | AGENTS.md (system rules), SKILL_REGISTRY.md (skill registry), SYSTEM_STATE.md (system state). Cannot be polluted by business logic.',
     'dir.01.desc': 'Project Workspace<br>Each project gets its own room',
-    'dir.01.tooltip': 'Standard Structure|Each project contains AGENTS.md + README.md + STATUS.md + docs/ + src/ + config/. Missing AGENTS.md means initialization is incomplete.',
+    'dir.01.tooltip': 'Standard Structure | Each project contains AGENTS.md + README.md + STATUS.md + docs/ + src/ + config/. Missing AGENTS.md means initialization is incomplete.',
     'dir.02.desc': 'Sandbox<br>Try uncertain operations first',
-    'dir.02.tooltip': 'Typical Use|Testing new Skills, validating migration scripts, experimental code. All uncertain operations must go here first.',
+    'dir.02.tooltip': 'Typical Use | Testing new Skills, validating migration scripts, experimental code. All uncertain operations must go here first.',
     'dir.03.desc': 'Skill Library<br>Reusable AI workflows',
-    'dir.03.tooltip': 'Directory Structure|Contains skills/ (Skill modules), scripts/ (scripts), adapters/ (platform adapters). Mixing skill/loop/project storage is forbidden.',
+    'dir.03.tooltip': 'Directory Structure | Contains skills/ (Skill modules), scripts/ (scripts), adapters/ (platform adapters). Mixing skill/loop/project storage is forbidden.',
     'dir.04.desc': 'Memory Center<br>Experience, feedback, knowledge index',
-    'dir.04.tooltip': 'Subdirectories|user/ (user profile), project/ (project facts), feedback/ (feedback experience), INDEX.md (index). All state must be written here.',
+    'dir.04.tooltip': 'Subdirectories | user/ (user profile), project/ (project facts), feedback/ (feedback experience), INDEX.md (index). All state must be written here.',
     'dir.05.desc': 'Cache<br>Safe to clear anytime',
-    'dir.05.tooltip': 'Typical Use|Cloned repos, temporary downloads, intermediate artifacts. Can be deleted at any time; never store important data here.',
+    'dir.05.tooltip': 'Typical Use | Cloned repos, temporary downloads, intermediate artifacts. Can be deleted at any time; never store important data here.',
     'dir.06.desc': 'Runtime Logs<br>Append-only, never modified',
-    'dir.06.tooltip': 'Layering Rule|06_LOGS/{project_name}/{YYYYMMDD}.log. Append-only, never modified — used for audit and troubleshooting.',
+    'dir.06.tooltip': 'Layering Rule | 06_LOGS/{project_name}/{YYYYMMDD}.log. Append-only, never modified — used for audit and troubleshooting.',
     'dir.07.desc': 'Exports<br>Final deliverables',
-    'dir.07.tooltip': 'Layering Rule|07_EXPORTS/{project_name}/{deliverable}/. All output must be exported from here; direct exports are forbidden.',
+    'dir.07.tooltip': 'Layering Rule | 07_EXPORTS/{project_name}/{deliverable}/. All output must be exported from here; direct exports are forbidden.',
     'dir.08.desc': 'Inbox<br>Web scraping, migration data',
-    'dir.08.tooltip': 'Subdirectories|raw/ (layered by date raw/{YYYYMMDD}/), migration/ (migration data). All external input must enter here first.',
+    'dir.08.tooltip': 'Subdirectories | raw/ (layered by date raw/{YYYYMMDD}/), migration/ (migration data). All external input must enter here first.',
     'dir.09.desc': 'Reference Library<br>Single source of truth, no duplicates',
-    'dir.09.tooltip': 'Iron Rule 6|All knowledge exists in exactly one copy; other locations may only reference the path. Contains system/, web/, _index.md.',
+    'dir.09.tooltip': 'Iron Rule 6 | All knowledge exists in exactly one copy; other locations may only reference the path. Contains system/, web/, _index.md.',
 
     // DESKTOP (AOS Viewer Desktop Environment)
     'desktop.label': '🖥️ Desktop',
     'desktop.title': 'AOS Viewer: Your AI System Desktop',
     'desktop.desc': 'The v1.1.0 breakthrough — evolving AOS from "a set of files" into "a visible, controllable, operable OS-shaped runtime framework".',
     'desktop.mockup.badge': 'Liquid Glass',
-    'desktop.mockup.tooltip': 'Web Recreation|Below is a web recreation of the AOS Viewer desktop interface (macOS three-segment: menu bar + content + Dock). The actual desktop app supports full Liquid Glass, menu bar, Spotlight search, and more.',
+    'desktop.mockup.tooltip': 'Web Recreation | Below is a web recreation of the AOS Viewer desktop interface (macOS three-segment: menu bar + content + Dock). The actual desktop app supports full Liquid Glass, menu bar, Spotlight search, and more.',
     'desktop.titlebar.title': 'AOS Viewer — Desktop',
     // Menu bar
     'desktop.menu.file': 'File',
@@ -3920,7 +3945,7 @@ const i18n = {
     'desktop.rt.logs': 'Log Entries',
     // Event timeline
     'desktop.timeline.title': 'Event Log',
-    'desktop.log.1': 'Project astrbot identified',
+    'desktop.log.1': 'Project example_bot identified',
     'desktop.log.2': 'Skill SK_0001 invoked',
     'desktop.log.3': 'Memory INDEX.md updated',
     // Dock
@@ -3935,13 +3960,13 @@ const i18n = {
     'desktop.dock.console': 'Console',
     'desktop.value.1.title': 'Visibility',
     'desktop.value.1.desc': 'System overview / Skills / Projects / Memory / Knowledge / Logs — all at a glance, no more find or memorization',
-    'desktop.value.1.tooltip': 'vs Traditional|Files scattered everywhere, relying on find and memory. AOS Viewer shows everything at a glance.',
+    'desktop.value.1.tooltip': 'vs Traditional | Files scattered everywhere, relying on find and memory. AOS Viewer shows everything at a glance.',
     'desktop.value.2.title': 'Controllability',
     'desktop.value.2.desc': 'One-click self-check / sync / migration from the console — real-time progress, no commands to memorize',
-    'desktop.value.2.tooltip': 'Console Power|Trigger self-check/sync/migration with one click. Real-time progress visible. No commands needed.',
+    'desktop.value.2.tooltip': 'Console Power | Trigger self-check/sync/migration with one click. Real-time progress visible. No commands needed.',
     'desktop.value.3.title': 'System Feel',
     'desktop.value.3.desc': 'Liquid Glass desktop + menu bar + Spotlight search + notification center — like operating a real OS',
-    'desktop.value.3.tooltip': 'Visual Design|Liquid Glass + menu bar + Spotlight search + notification center, an OS-like working experience.',
+    'desktop.value.3.tooltip': 'Visual Design | Liquid Glass + menu bar + Spotlight search + notification center, an OS-like working experience.',
     'desktop.feature.1': 'Boot animation + dynamic ambient glow',
     'desktop.feature.2': 'Menu bar (File/View/Tools/Help)',
     'desktop.feature.3': 'Spotlight global search',
@@ -3954,7 +3979,7 @@ const i18n = {
     // LIFECYCLE (AOS end-to-end closed-loop workflow)
     'lifecycle.label': '🔄 Closed Loop',
     'lifecycle.title': 'AOS Standard Workflow: From Startup to Archive, Fully Traceable',
-    'lifecycle.desc': 'Not just "it runs" — AOS turns the AI assistant\'s work process into a traceable, auditable, reusable closed loop——',
+    'lifecycle.desc': 'Not just "it runs" — AOS turns the AI assistant\'s work process into a traceable, auditable, reusable closed loop:',
     'lifecycle.step.1': 'Step 1',
     'lifecycle.step.2': 'Step 2',
     'lifecycle.step.3': 'Step 3',
@@ -3963,65 +3988,65 @@ const i18n = {
     'lifecycle.1.title': 'Pre-Project: Auto-Generated Standard File Structure',
     'lifecycle.1.tag': 'Auto-Init',
     'lifecycle.1.desc': 'The moment you create a new project, AOS auto-generates its dedicated directory and companion files from standard templates — project config, status tracking, knowledge references all in place. No manual folder creation, no boilerplate writing.',
-    'lifecycle.1.tooltip': 'Auto-Init|On new project creation, AOS auto-generates AGENTS.md + README.md + STATUS.md + reference_links.md — no manual file scaffolding',
-    'lifecycle.1.problem': 'Manual folder creation, boilerplate writing, missing configs — every project starts from a blank slate, reinventing the wheel',
+    'lifecycle.1.tooltip': 'Auto-Init | On new project creation, AOS auto-generates AGENTS.md + README.md + STATUS.md + reference_links.md — no manual file scaffolding.',
+    'lifecycle.1.problem': 'Manual folder creation, boilerplate writing, missing configs — every project starts from a blank slate, reinventing the wheel.',
     'lifecycle.2.title': 'During Work: Real-Time State Persistence & Context',
     'lifecycle.2.tag': 'Real-Time Flush',
     'lifecycle.2.desc': 'Every session auto-loads historical memory on start and writes new experience, feedback, and project state back to disk on exit — no reliance on AI runtime memory. New conversations restore full context from files.',
-    'lifecycle.2.tooltip': 'Real-Time Flush|First message of every session reads INDEX.md + user profile; session-end state auto-flushed to 04_MEMORY/. Zero reliance on runtime memory.',
-    'lifecycle.2.problem': 'Context lives only in the chat window — close it, lose everything. New conversations must re-explain project background, tech stack, and constraints',
+    'lifecycle.2.tooltip': 'Real-Time Flush | First message of every session reads INDEX.md + user profile; session-end state auto-flushed to 04_MEMORY/. Zero reliance on runtime memory.',
+    'lifecycle.2.problem': 'Context lives only in the chat window — close it, lose everything. New conversations must re-explain project background, tech stack, and constraints.',
     'lifecycle.3.title': 'Post-Work: Standardized Archival of Deliverables',
     'lifecycle.3.tag': 'Archive Standard',
     'lifecycle.3.desc': 'Deliverables are layered and archived by "project name + delivery type", with state synced to STATUS.md and 04_MEMORY/project/. No "archaeology" needed when picking up where you left off — all progress visible at a glance.',
-    'lifecycle.3.tooltip': 'Archive Standard|All outputs must go through the Project→Export flow, stored under 07_EXPORTS/{project}/{deliverable}/. Direct export is forbidden.',
-    'lifecycle.3.problem': 'Deliverables scattered everywhere, no layered archiving. Picking up where you left off means "archaeology" through chat logs — progress is untraceable',
+    'lifecycle.3.tooltip': 'Archive Standard | All outputs must go through the Project→Export flow, stored under 07_EXPORTS/{project}/{deliverable}/. Direct export is forbidden.',
+    'lifecycle.3.problem': 'Deliverables scattered everywhere, no layered archiving. Picking up where you left off means "archaeology" through chat logs — progress is untraceable.',
     'lifecycle.4.title': 'Daily Self-Inspection: Version & Structure Health Check',
     'lifecycle.4.tag': 'Self-Check Script',
     'lifecycle.4.desc': 'Run the self-check script to scan version-number sync, cross-reference integrity, and directory compliance — any residual old version numbers or broken links trigger an immediate alert. No more "fixed one, forgot ten" hidden risks.',
-    'lifecycle.4.tooltip': 'Self-Check Script|python aos_check.py scans version consistency / cross-references / directory compliance. Outputs PASS/FAIL report — all 4 items must pass for healthy status.',
-    'lifecycle.4.problem': 'Fix one thing, forget ten others — version numbers drift out of sync, broken links go unnoticed, bugs lurk until users report them',
+    'lifecycle.4.tooltip': 'Self-Check Script | python aos_check.py scans version consistency / cross-references / directory compliance. Outputs PASS/FAIL report — all 4 items must pass for healthy status.',
+    'lifecycle.4.problem': 'Fix one thing, forget ten others — version numbers drift out of sync, broken links go unnoticed, bugs lurk until users report them.',
     'lifecycle.5.title': 'File Structure Discipline: 10 Directories, One Job Each',
     'lifecycle.5.tag': 'Strict Directories',
     'lifecycle.5.desc': 'Every directory has exactly one responsibility — no business pollution. System rules, project data, temp cache, knowledge base, and logs each have their own home. AOS efficiently organizes chaotic file structures — the AI never "can\'t find the file" again.',
-    'lifecycle.5.tooltip': 'Strict Directories|10 directories with single responsibilities: 00_BOOT system rules / 01_PROJECTS project isolation / 04_MEMORY state persistence / 09_REFERENCE single source of truth, etc.',
-    'lifecycle.5.problem': 'Files scattered with no organization — rely on find and memory to locate them. The AI "can\'t find its way around," chaos grows until unmaintainable',
-    'lifecycle.contrast.title': '⚖️ Full Comparison: Plain Official Agent vs AOS',
-    'lifecycle.contrast.bad.header': '😫 Plain Official Agent',
+    'lifecycle.5.tooltip': 'Strict Directories | 10 directories with single responsibilities: 00_BOOT system rules / 01_PROJECTS project isolation / 04_MEMORY state persistence / 09_REFERENCE single source of truth, etc.',
+    'lifecycle.5.problem': 'Files scattered with no organization — rely on find and memory to locate them. The AI "can\'t find its way around," chaos grows until unmaintainable.',
+    'lifecycle.contrast.title': '⚖️ Full Comparison: Plain Agent CLI vs AOS',
+    'lifecycle.contrast.bad.header': '😫 Plain Agent CLI',
     'lifecycle.contrast.good.header': '😎 AOS System',
-    'lifecycle.contrast.1': 'Chaotic project startup: no standard directory, no config template — every project starts from a blank slate',
-    'lifecycle.contrast.2': 'Forgetting prior work mid-session: context lives only in the current chat window — close it, lose it all',
-    'lifecycle.contrast.3': 'No real-time logging during work: no logs, no feedback accumulation — the same pit gets stepped in twice',
-    'lifecycle.contrast.4': 'Context confusion: when juggling multiple projects, configs cross-pollinate and identity mix-ups abound',
-    'lifecycle.contrast.5': 'Whole workflow breaks down: no self-check mechanism — fix A, forget B, bugs multiply',
-    'lifecycle.contrast.6': 'Files scattered everywhere: no strict directories — rely on find and memory to locate files, growing chaos over time',
-    'lifecycle.contrast.good.1': 'New projects auto-generate standard directory + AGENTS.md + STATUS.md — zero-config instant startup',
-    'lifecycle.contrast.good.2': 'First message of every session auto-loads INDEX.md + user profile — cross-session memory never lost',
-    'lifecycle.contrast.good.3': 'Real-time writes to 04_MEMORY/feedback/ during work — pitfalls are hit only once, experience compounds',
-    'lifecycle.contrast.good.4': '01_PROJECTS/ directory isolation + per-project AGENTS.md — multiple projects never cross-contaminate',
-    'lifecycle.contrast.good.5': 'aos_check.py self-check script scans version consistency / cross-references / directory compliance — all 4 must pass',
-    'lifecycle.contrast.good.6': '10 strict directories with single responsibilities — system rules / projects / memory / knowledge / logs each have a home',
+    'lifecycle.contrast.1': 'Chaotic project startup: no standard directory, no config template — every project starts from a blank slate.',
+    'lifecycle.contrast.2': 'Forgetting prior work mid-session: context lives only in the current chat window — close it, lose it all.',
+    'lifecycle.contrast.3': 'No real-time logging during work: no logs, no feedback accumulation — the same pit gets stepped in twice.',
+    'lifecycle.contrast.4': 'Context confusion: when juggling multiple projects, configs cross-pollinate and identity mix-ups abound.',
+    'lifecycle.contrast.5': 'Whole workflow breaks down: no self-check mechanism — fix A, forget B, bugs multiply.',
+    'lifecycle.contrast.6': 'Files scattered everywhere: no strict directories — rely on find and memory to locate files, growing chaos over time.',
+    'lifecycle.contrast.good.1': 'New projects auto-generate standard directory + AGENTS.md + STATUS.md — zero-config instant startup.',
+    'lifecycle.contrast.good.2': 'First message of every session auto-loads INDEX.md + user profile — cross-session memory never lost.',
+    'lifecycle.contrast.good.3': 'Real-time writes to 04_MEMORY/feedback/ during work — pitfalls are hit only once, experience compounds.',
+    'lifecycle.contrast.good.4': '01_PROJECTS/ directory isolation + per-project AGENTS.md — multiple projects never cross-contaminate.',
+    'lifecycle.contrast.good.5': 'aos_check.py self-check script scans version consistency / cross-references / directory compliance — all 4 must pass.',
+    'lifecycle.contrast.good.6': '10 strict directories with single responsibilities — system rules / projects / memory / knowledge / logs each have a home.',
 
     // ABILITIES
     'ability.label': '🛡️ Abilities',
     'ability.title': 'Three Core Abilities',
-    'ability.desc': 'Solving the three most fundamental problems of AI assistants——',
+    'ability.desc': 'Solving the three most fundamental problems of AI assistants:',
     'ability.1.title': 'Cross-Session Memory',
     'ability.1.analogy': '→ The assistant\'s notebook',
     'ability.1.desc': 'The AI auto-reads and writes memory files every conversation. New sessions restore full context from disk — no more amnesia, experience compounds.',
-    'ability.1.tooltip': 'Implementation|The AI reads 04_MEMORY/INDEX.md on the first message of every conversation and flushes state on session end. No reliance on runtime memory.',
+    'ability.1.tooltip': 'Implementation | The AI reads 04_MEMORY/INDEX.md on the first message of every conversation and flushes state on session end. No reliance on runtime memory.',
     'ability.2.title': 'Project Isolation',
     'ability.2.analogy': '→ A dedicated desk',
     'ability.2.desc': 'Each project has its own config, state, and docs. Switching projects auto-loads the right context — no more "mistaken identity".',
-    'ability.2.tooltip': 'Isolation Mechanism|Each project has its own AGENTS.md (project-level rules override system defaults) + STATUS.md + reference_links.md (pointers only).',
+    'ability.2.tooltip': 'Isolation Mechanism | Each project has its own AGENTS.md (project-level rules override system defaults) + STATUS.md + reference_links.md (pointers only).',
     'ability.3.title': 'Skill Reuse',
     'ability.3.analogy': '→ Standard operating manual',
     'ability.3.desc': 'Encapsulate common workflows into Skills — define once, invoke anywhere. Teams share best practices and stop reinventing the wheel.',
-    'ability.3.tooltip': 'Skill Lifecycle|Create → register in SKILL_REGISTRY.md → update call_count on invocation → continuously append to gotchas.md pitfall list.',
+    'ability.3.tooltip': 'Skill Lifecycle | Create → register in SKILL_REGISTRY.md → update call_count on invocation → continuously append to gotchas.md pitfall list.',
 
     // VALUE
     'value.label': '💎 Value',
     'value.title': 'Value & Differentiation',
-    'value.desc': 'AOS upgrades your AI assistant from a "disposable tool" into a "sustainable collaboration partner"——',
+    'value.desc': 'AOS upgrades your AI assistant from a "disposable tool" into a "sustainable collaboration partner":',
     'value.1.title': 'Productivity Gains',
     'value.1.1': 'Cuts 60%+ of repetitive communication overhead',
     'value.1.2': 'Project isolation eliminates context confusion',
@@ -4065,44 +4090,60 @@ const i18n = {
     // QUICK START
     'start.label': '🚀 Quick Start',
     'start.title': 'Get Started with AOS in Four Steps',
-    'start.desc': 'Pure file system — no dependencies to install——',
+    'start.desc': 'Pure file system — no dependencies to install:',
     'start.1.title': 'Get AOS',
     'start.1.desc': 'Clone the repository or download the archive. AOS is a pure file structure with no dependencies to install.',
-    'start.1.tooltip': 'Alternative|Just download the ZIP and extract. No git, no Node.js, no runtime environment required.',
+    'start.1.tooltip': 'Alternative | Just download the ZIP and extract. No git, no Node.js, no runtime environment required.',
     'start.2b.title': 'Launch AOS Viewer Desktop (Recommended)',
     'start.2b.desc': 'Download AOS Viewer.exe from GitHub Release, double-click to launch — no Python needed, ships with Liquid Glass desktop UI, auto-scans the file system to show the full picture.',
-    'start.2b.tooltip': 'Recommended|Download AOS Viewer.exe from GitHub Release, double-click to launch. No Python environment needed, ships with Liquid Glass desktop UI.',
+    'start.2b.tooltip': 'Recommended | Download AOS Viewer.exe from GitHub Release, double-click to launch. No Python environment needed, ships with Liquid Glass desktop UI.',
     'start.2.title': 'Open It in Your AI Tool',
     'start.2.desc': 'Open the AOS directory in TRAE Work (recommended), Claude Code, or Codex — the AI will auto-read the root AGENTS.md.',
-    'start.2.tooltip': 'Auto Behavior|The AI auto-reads AGENTS.md + identifies the current project + loads the project-level AGENTS.md. TRAE Work\'s Code mode works best.',
+    'start.2.tooltip': 'Auto Behavior | The AI auto-reads AGENTS.md + identifies the current project + loads the project-level AGENTS.md. TRAE Work\'s Code mode works best.',
     'start.3.title': 'Configure Rules & Verify',
     'start.3.desc': 'Add 3 Rules (see the setup guide for details), then run the self-check script to verify the installation.',
-    'start.3.tooltip': '3 Rules|aos-consistency-guard (version consistency), aos-memory-rules (memory rules), aos-skill-rules (Skill rules). The self-check script scans directory compliance.',
+    'start.3.tooltip': '3 Rules | aos-consistency-guard (version consistency), aos-memory-rules (memory rules), aos-skill-rules (Skill rules). The self-check script scans directory compliance.',
     'start.guide': '📖 Full Setup Guide',
 
     // PLATFORMS
     'platform.label': '🖥️ Platforms',
     'platform.title': 'Supported Platforms',
-    'platform.desc': 'AOS is built on the file system — cross-platform by nature——',
+    'platform.desc': 'AOS is built on the file system — cross-platform by nature:',
     'platform.1.name': 'TRAE Work',
     'platform.1.status': 'Best fit, native rule-system support',
     'platform.1.badge': 'Recommended',
-    'platform.1.tooltip': 'Why Best|Native support for the Rules system (3 core Rules) + Skill invocation + Schedule cron tasks. Code mode is recommended.',
+    'platform.1.tooltip': 'Why Best | Native support for the Rules system (3 core Rules) + Skill invocation + Schedule cron tasks. Code mode is recommended.',
     'platform.2.name': 'Claude Code',
     'platform.2.status': 'Adapted via CLAUDE.md template',
     'platform.2.badge': 'Supported',
-    'platform.2.tooltip': 'Adaptation|Maps AOS rules via a CLAUDE.md template. Manual sync from Rules to CLAUDE.md is required.',
+    'platform.2.tooltip': 'Adaptation | Maps AOS rules via a CLAUDE.md template. Manual sync from Rules to CLAUDE.md is required.',
     'platform.3.name': 'Codex',
     'platform.3.status': 'Adapted via config mapping',
     'platform.3.badge': 'Supported',
-    'platform.3.tooltip': 'Adaptation|Adapted via config mapping. 03_TOOLS/adapters/ provides a Codex-specific adapter template.',
+    'platform.3.tooltip': 'Adaptation | Adapted via config mapping. 03_TOOLS/adapters/ provides a Codex-specific adapter template.',
 
     // FOOTER
     'footer.desc': 'Agent Operating System — The OS for Your AI Assistant: Kernel · File System · Desktop · Memory Brain',
     'footer.github': 'GitHub',
     'footer.guide': 'Setup Guide',
     'footer.rules': 'System Rules',
-    'footer.license': 'MIT License'
+    'footer.license': 'MIT License',
+
+    // A11Y
+    'a11y.skip': 'Skip to main content',
+
+    // LIFECYCLE FILE CHIPS (previously missing translations)
+    'lifecycle.tag.no-aos': 'Without AOS',
+    'lifecycle.3.file.1': 'STATUS.md → auto-synced',
+    'lifecycle.3.file.2': 'proj_{name}.md → auto-synced',
+    'lifecycle.4.file.1': 'Version sync',
+    'lifecycle.4.file.2': 'Cross-reference check',
+    'lifecycle.4.file.3': 'Directory compliance scan',
+    'lifecycle.5.file.1': '00_BOOT System Rules',
+    'lifecycle.5.file.2': '01_PROJECTS Project Isolation',
+    'lifecycle.5.file.3': '04_MEMORY State Persistence',
+    'lifecycle.5.file.4': '07_EXPORTS Deliverables',
+    'lifecycle.5.file.5': '09_REFERENCE Single Source of Truth'
   }
 };
 
@@ -4116,6 +4157,9 @@ function detectLanguage() {
 function applyLanguage(lang) {
   localStorage.setItem('aos-lang', lang);
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  // 切换 body 语言类（用于 CSS 语言差异化样式，如英文版 hero 字体缩小）
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.body.classList.toggle('lang-zh', lang === 'zh');
   // 翻译元素内容
   document.querySelectorAll('[data-i18n]').forEach(function (el) {
     const key = el.getAttribute('data-i18n');

@@ -16,7 +16,6 @@
 - 新增 AOS Viewer 可视化界面（Liquid Glass 风格 + i18n 国际化 + PyWebView 桌面模式 + HTTP API + Spotlight 全局搜索）
 - 新增 `aos_generate_data.py` 数据生成脚本（扫描 AOS 文件系统生成 `data.js`）
 - AGENTS.md 新增"项目内标准结构"（类型一单一项目 / 类型二项目集）+ 双机环境章节
-- 同步脚本 `aos_sync_github.py` 增强脱敏逻辑（四层过滤 + 6 种脱敏类型）
 - 巡检规范拆分：`DAILY_INSPECTION.md` → `SYSTEM_INSPECTION.md` + `PROJECT_INSPECTION.md`
 - 版本号统一从 1.0.0 → 1.1.0（14 处文件位置）
 
@@ -90,7 +89,6 @@ $filesToBackup = @(
     "README.md",
     "04_MEMORY\INDEX.md",
     "04_MEMORY\project\proj_aos_v1_status.md",
-    "03_TOOLS\scripts\aos_sync_github.py",
     "09_REFERENCE\_index.md",
     "docs\index.html",
     "docs\AOS_creative_proposal.html",
@@ -348,32 +346,26 @@ Write-Host "已复制 $copiedCount / 24 个新增文件"
 - 更新版本徽章 `1.0.0` → `1.1.0`
 - 保留用户自定义内容（如有）
 
-#### 4.3.7 03_TOOLS/scripts/aos_sync_github.py
-
-- **采用 1.1.0 版**（含四层过滤 + 6 种脱敏类型增强）
-- 保留用户自定义的排除规则（如有，需用户确认是否与 1.1.0 规则冲突）
-- 1.1.0 新增脱敏类型：`agents_dual_machine` / `system_state` / `proj_aos_status` / `reference_index`
-
-#### 4.3.8 09_REFERENCE/_index.md
+#### 4.3.7 09_REFERENCE/_index.md
 
 - 保留用户的所有索引条目
-- 1.1.0 追加 15 条 `xiaolin-*` 索引（若用户已有则跳过；若无则追加）
-- 同步脚本脱敏时剥离 `xiaolin` 行（私有收藏不上传 GitHub）
+- 1.1.0 追加 15 条 `private-collection-*` 索引（若用户已有则跳过；若无则追加）
+- 同步脚本脱敏时剥离 `private_collection` 行（私有收藏不上传 GitHub）
 
-#### 4.3.9 03_TOOLS/scripts/aos_generate_data.py
+#### 4.3.8 03_TOOLS/scripts/aos_generate_data.py
 
 - 此文件在 4.2 已作为新增文件复制，此处仅确认 `fallback version` 为 `1.1.0`
 - 若已是 `1.1.0` 则跳过
 
-#### 4.3.10 docs/index.html
+#### 4.3.9 docs/index.html
 
 - 更新 `hero.badge` 版本号 `v1.0.0` → `v1.1.0`（共 3 处：zh-CN HTML + zh-CN i18n + en-US i18n）
 
-#### 4.3.11 docs/AOS_creative_proposal.html
+#### 4.3.10 docs/AOS_creative_proposal.html
 
 - 更新 `hero.badge` 版本号 `v1.0.0` → `v1.1.0`（共 3 处：zh-CN HTML + zh-CN i18n + en-US i18n）
 
-#### 4.3.12 09_REFERENCE/web/web-template-specification.md
+#### 4.3.11 09_REFERENCE/web/web-template-specification.md
 
 - 更新示例版本号 `v1.0.0` → `v1.1.0`
 
@@ -651,7 +643,7 @@ python "03_TOOLS\aos_viewer\aos_viewer_server.py" --mode desktop
 5. **备份空间**：备份目录占用磁盘空间，建议用户验证更新成功后定期清理 `99_ARCHIVE/` 下的旧备份
 6. **AOS Viewer 依赖**：桌面模式需 `pip install pywebview`
 7. **data.js 脱敏**：1.1.0 临时目录中的 `data.js` 可能是脱敏版，必须运行步骤 6 重新生成真实数据
-8. **双机环境章节**：AGENTS.md 的"双机环境"章节仅工作目录版保留，GitHub 上传版由 `aos_sync_github.py` 自动剥离，更新时需保留此章节
+8. **双机环境章节**：AGENTS.md 的"双机环境"章节仅工作目录版保留，更新时需保留此章节
 
 ---
 
@@ -662,9 +654,8 @@ python "03_TOOLS\aos_viewer\aos_viewer_server.py" --mode desktop
 1. **步骤 3**：选择文件获取方式（A：GitHub Release / B：git clone / C：本地 GitHub 目录）
 2. **步骤 4.3.1**：AGENTS.md 合并差异报告 → 用户确认是否接受合并结果
 3. **步骤 4.3.5**：`proj_aos_v1_status.md` 是否保留用户的"1.1.0 发布策略"行（含内部报告引用，建议删除）
-4. **步骤 4.3.7**：`aos_sync_github.py` 用户自定义排除规则是否与 1.1.0 冲突
-5. **步骤 5**：版本号同步后，人工复核历史事件中的版本引用是否被误改
-6. **步骤 7**：自检失败时 → 用户确认是否手动修复或回滚
+4. **步骤 5**：版本号同步后，人工复核历史事件中的版本引用是否被误改
+5. **步骤 7**：自检失败时 → 用户确认是否手动修复或回滚
 
 ---
 
@@ -687,7 +678,6 @@ $filesToRestore = @(
     "README.md",
     "04_MEMORY\INDEX.md",
     "04_MEMORY\project\proj_aos_v1_status.md",
-    "03_TOOLS\scripts\aos_sync_github.py",
     "09_REFERENCE\_index.md",
     "docs\index.html",
     "docs\AOS_creative_proposal.html",

@@ -72,16 +72,6 @@ AOS 1.1.0 引入了全新的可视化前端 **AOS Viewer**，提供 Liquid Glass
 - **新增**：禁止 `src/` 下嵌套同名目录的约束
 - **新增**：双机环境章节（仅工作目录版本，GitHub 上传版自动剥离）
 
-### 同步脚本 aos_sync_github.py
-
-- **增强**：四层过滤机制（EXCLUDE_DIRS + EXTRA_EXCLUDE_FILES + DESENSITIZE_FILES + SENSITIVE_PATTERNS）
-- **新增**：`agents_dual_machine` 脱敏类型（剥离双机环境章节）
-- **新增**：`system_state` 脱敏类型（统计归零 + 事件过滤 + 自检记录清理）
-- **新增**：`index` 脱敏类型增强（保留 proj-aos-v1-status 模板描述）
-- **新增**：`proj_aos_status` 脱敏类型（版本更新 + 移除开发过程描述）
-- **新增**：data.js 替换步骤（example_data.js → GitHub 目录 data.js）
-- **新增**：AOS_Viewer/ 和 release/ 目录排除
-
 ### 巡检规范
 
 - **新增**：`00_BOOT/SYSTEM_INSPECTION.md`（系统级巡检规范）

@@ -188,33 +188,12 @@
       ]
     },
     {
-      "path": "03_TOOLS/scripts/aos_sync_github.py",
-      "desensitize": false,
-      "changes": [
-        "新增：AOS_Viewer/ 和 release/ 目录排除",
-        "新增：7个私有项目文件排除",
-        "新增：agents_dual_machine 脱敏类型",
-        "新增：system_state 脱敏类型（统计归零+事件过滤）",
-        "新增：proj_aos_status 脱敏类型",
-        "增强：index 脱敏逻辑（保留 proj-aos-v1-status 模板描述）",
-        "新增：data.js 替换步骤（example_data.js → GitHub 目录 data.js）",
-        "新增：EXCLUDE_DIRS 添加 logs（运行时日志目录）",
-        "新增：MEMORY_EXCLUDE 添加 agent_pool（Agent 任务池运行时数据）",
-        "新增：99_ARCHIVE/migration/ 排除规则（含迁移扫描数据）",
-        "新增：xiaolin-* 文件排除规则（私有收藏不上传 GitHub）",
-        "新增：reference_index 脱敏类型（剥离 _index.md 中 xiaolin 行）",
-        "新增：SENSITIVE_PATTERNS 添加 xiaolin-（安全验证兜底）",
-        "新增：.log 文件排除规则（排除搜狗输入法 debug.log 等运行时日志）",
-        "新增：SENSITIVE_PATTERNS 添加 debug.log（安全验证兜底）"
-      ]
-    },
-    {
       "path": "09_REFERENCE/_index.md",
       "desensitize": true,
       "desensitize_method": "reference_index",
       "changes": [
-        "追加15条 xiaolin-* 索引（修复一致性自检失败）",
-        "同步脚本脱敏时剥离 xiaolin 行（私有收藏不上传 GitHub）"
+        "追加15条 private-collection-* 索引（修复一致性自检失败）",
+        "同步脚本脱敏时剥离 private_collection 行（私有收藏不上传 GitHub）"
       ]
     },
     {
@@ -270,39 +249,39 @@
       "reason": "个人经验记录"
     },
     {
-      "path": "04_MEMORY/project/proj_astrbot.md",
+      "path": "04_MEMORY/project/proj_example_bot.md",
       "reason": "个人项目状态"
     },
     {
-      "path": "04_MEMORY/project/proj_clash_omega.md",
+      "path": "04_MEMORY/project/proj_example_proxy.md",
       "reason": "个人项目状态"
     },
     {
-      "path": "04_MEMORY/project/proj_oncepad.md",
+      "path": "04_MEMORY/project/proj_example_notes.md",
       "reason": "个人项目状态"
     },
     {
-      "path": "04_MEMORY/project/proj_bishoujo_web.md",
+      "path": "04_MEMORY/project/proj_example_web.md",
       "reason": "个人项目状态"
     },
     {
-      "path": "01_PROJECTS/astrbot/",
+      "path": "01_PROJECTS/example_bot/",
       "reason": "个人项目"
     },
     {
-      "path": "01_PROJECTS/clash_omega/",
+      "path": "01_PROJECTS/example_proxy/",
       "reason": "个人项目"
     },
     {
-      "path": "01_PROJECTS/oncepad/",
+      "path": "01_PROJECTS/example_notes/",
       "reason": "个人项目"
     },
     {
-      "path": "01_PROJECTS/bishoujo-web/",
+      "path": "01_PROJECTS/example_web/",
       "reason": "个人项目"
     },
     {
-      "path": "01_PROJECTS/napcat/",
+      "path": "01_PROJECTS/example_protocol/",
       "reason": "个人项目"
     },
     {
@@ -326,11 +305,11 @@
       "reason": "发布包（含 exe/DLL/用户数据）"
     },
     {
-      "path": "09_REFERENCE/system/xiaolin-*.md",
+      "path": "09_REFERENCE/system/private-collection-*.md",
       "reason": "小林coding 私有收藏文章（15篇，禁止上传）"
     },
     {
-      "path": "09_REFERENCE/system/xiaolin-*.metadata.json",
+      "path": "09_REFERENCE/system/private-collection-*.metadata.json",
       "reason": "小林coding 私有收藏元数据（15个，禁止上传）"
     },
     {
@@ -352,7 +331,7 @@
   ],
   "statistics": {
     "new_files_count": 24,
-    "modified_files_count": 12,
+    "modified_files_count": 11,
     "deleted_files_count": 1,
     "excluded_count": 23
   }

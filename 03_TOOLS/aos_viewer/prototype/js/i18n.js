@@ -34,7 +34,6 @@ const I18N = {
     // ─── 工具菜单 ───
     'menu.tools.spotlight': 'Spotlight 搜索',
     'menu.tools.check': '一致性自检',
-    'menu.tools.sync': 'GitHub 同步',
     'menu.tools.migrate': '迁移采集',
     'menu.tools.settings': '偏好设置',
 

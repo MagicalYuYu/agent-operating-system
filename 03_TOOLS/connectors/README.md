@@ -1,4 +1,4 @@
-# AOS v1.0 - Connectors 目录
+# AOS v1.1.0 — 03_TOOLS/connectors
 
 > 外部系统连接器的存储根目录
 

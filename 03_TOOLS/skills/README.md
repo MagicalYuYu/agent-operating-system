@@ -1,4 +1,4 @@
-# AOS v1.0 - Skills 目录
+# AOS v1.1.0 — 03_TOOLS/skills
 
 Skill 定义目录，每个 Skill 一个独立文件夹。
 

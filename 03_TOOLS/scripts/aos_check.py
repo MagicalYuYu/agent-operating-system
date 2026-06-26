@@ -25,7 +25,7 @@ EXCLUDE_DIRS = {".git", ".trae", "99_ARCHIVE", "__pycache__", "node_modules"}
 VERSION_EXCLUDE_DIRS = {"01_PROJECTS", "05_CACHE", "02_SANDBOX"}
 
 # 当前版本号
-CURRENT_VERSION = "1.0.0"
+CURRENT_VERSION = "1.1.0"
 VERSION_PATTERNS = [
     r"v\d+\.\d+\.\d*",      # v1.x.x
     r"AOS v\d+\.\d+",       # AOS v1.x

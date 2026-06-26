@@ -1,4 +1,4 @@
-# AOS v1.0 — 00_BOOT
+# AOS v1.1.0 — 00_BOOT
 
 系统规则层，存放 AOS 的核心定义和运行时配置。
 
@@ -8,6 +8,8 @@
 - LOOP_ENGINE.md — Loop Engine 定义与执行规范
 - SKILL_REGISTRY.md — Skill 注册中心
 - SYSTEM_STATE.md — 系统运行时状态快照
+- SYSTEM_INSPECTION.md — 系统级巡检规范（Layer 3 手动触发，独立专用会话执行）
+- PROJECT_INSPECTION.md — 项目级巡检规范（Layer 3 手动触发，项目工作会话前置）
 
 ## 禁止放什么
 - 项目相关内容

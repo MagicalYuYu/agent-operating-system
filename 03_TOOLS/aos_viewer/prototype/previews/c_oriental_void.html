@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOS 美学方向 C — 东方留白</title>
+<style>
+/* ═══════════════════════════════════════════════════════
+   方向 C：东方留白（Oriental Void）
+   核心隐喻：AOS = 现代水墨，规范是笔墨，留白是力量
+   配色：宣纸白 + 墨黑 + 朱砂红（三点色）
+   字体：宋体/楷体为主（文人气）
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;900&family=Ma+Shan+Zheng&display=swap');
+
+:root {
+  /* 主色系 — 宣纸白（留白基底） */
+  --paper: #F5F0E8;
+  --paper-warm: #EDE6D6;
+  --paper-deep: #E0D8C5;
+
+  /* 辅色系 — 墨黑（笔墨力量） */
+  --ink: #1A1A1A;
+  --ink-light: #3D3D3D;
+  --ink-fade: rgba(26, 26, 26, 0.5);
+  --ink-wash: rgba(26, 26, 26, 0.08);
+
+  /* 点睛色 — 朱砂红（印章） */
+  --cinnabar: #C0392B;
+  --cinnabar-deep: #9B2D20;
+  --cinnabar-glow: rgba(192, 57, 43, 0.15);
+
+  /* 文字层次 */
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-light);
+  --text-tertiary: rgba(26, 26, 26, 0.4);
+  --text-seal: var(--cinnabar);
+
+  --font-serif: 'Noto Serif SC', 'SimSun', serif;
+  --font-brush: 'Ma Shan Zheng', 'Noto Serif SC', cursive;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-serif);
+  background: var(--paper);
+  background-image:
+    /* 宣纸纹理 */
+    radial-gradient(circle at 20% 30%, rgba(192, 57, 43, 0.02) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(26, 26, 26, 0.03) 0%, transparent 40%),
+    /* 微妙的纸张颗粒 */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(139, 111, 71, 0.015) 2px,
+      rgba(139, 111, 71, 0.015) 4px
+    );
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 80px 100px;
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════════════
+   顶部标题区 — 卷轴展开感
+   ═══════════════════════════════════════════════════════ */
+.header {
+  text-align: center;
+  margin-bottom: 100px;
+  position: relative;
+}
+
+/* 水墨晕染装饰 */
+.ink-wash {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+.ink-wash-1 {
+  top: -100px; left: 10%;
+  background: var(--ink);
+}
+.ink-wash-2 {
+  bottom: -50px; right: 10%;
+  background: var(--cinnabar);
+  opacity: 0.08;
+}
+
+.direction-label {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  letter-spacing: 8px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.direction-title {
+  font-family: var(--font-brush);
+  font-size: 72px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 16px;
+  letter-spacing: 12px;
+}
+
+/* 朱砂印章 */
+.seal {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background: var(--cinnabar);
+  color: var(--paper);
+  font-family: var(--font-brush);
+  font-size: 20px;
+  line-height: 48px;
+  text-align: center;
+  margin: 0 4px;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 8px var(--cinnabar-glow);
+}
+
+.direction-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing: 4px;
+  margin-bottom: 32px;
+  font-style: italic;
+}
+
+.direction-concept {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--ink-light);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 2;
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════════════
+   配色方案 — 极简三点色
+   ═══════════════════════════════════════════════════════ */
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  letter-spacing: 6px;
+  color: var(--ink);
+  margin-bottom: 32px;
+  text-align: center;
+  font-weight: 400;
+  position: relative;
+}
+.section-title::before,
+.section-title::after {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--ink-fade);
+  vertical-align: middle;
+  margin: 0 16px;
+}
+
+.palette {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+.palette-item {
+  text-align: center;
+}
+.palette-swatch {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  border: 1px solid var(--ink-wash);
+  position: relative;
+}
+.palette-swatch::after {
+  content: attr(data-hex);
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-family: var(--font-serif);
+  letter-spacing: 1px;
+}
+.palette-name {
+  font-size: 13px;
+  color: var(--ink-light);
+  margin-top: 16px;
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   留白卡片（核心组件）— 大量留白，信息密度极低
+   ═══════════════════════════════════════════════════════ */
+.void-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 80px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.void-card {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--ink-wash);
+  padding: 48px 40px;
+  position: relative;
+  transition: all 0.4s ease;
+}
+.void-card:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: var(--ink-fade);
+}
+
+/* 卡片标题 — 竖排感 */
+.void-card-title {
+  font-family: var(--font-brush);
+  font-size: 32px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  letter-spacing: 4px;
+  font-weight: 400;
+}
+.void-card-subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+/* 分隔线 — 细如发丝 */
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--ink-fade);
+  margin: 24px 0;
+}
+
+/* 系统总览 — 极简列表 */
+.void-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--ink-wash);
+}
+.void-row:last-child { border-bottom: none; }
+.void-component {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+.void-component-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+.void-status {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+}
+.void-status.active {
+  color: var(--cinnabar);
+}
+.void-status.active::before {
+  content: '●';
+  margin-right: 4px;
+}
+.void-status.ready::before {
+  content: '○';
+  margin-right: 4px;
+}
+
+/* Skill 管理 — 印章式呈现 */
+.skill-seal {
+  margin-bottom: 32px;
+  padding-left: 20px;
+  border-left: 2px solid var(--ink-wash);
+}
+.skill-seal:last-child { margin-bottom: 0; }
+.skill-seal-id {
+  font-size: 11px;
+  color: var(--cinnabar);
+  letter-spacing: 2px;
+  font-family: var(--font-serif);
+}
+.skill-seal-name {
+  font-family: var(--font-brush);
+  font-size: 24px;
+  color: var(--ink);
+  margin: 4px 0;
+  letter-spacing: 2px;
+}
+.skill-seal-trigger {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════
+   独特元素：留白诗笺
+   ═══════════════════════════════════════════════════════ */
+.poem-section {
+  text-align: center;
+  margin-bottom: 80px;
+  padding: 60px 40px;
+  position: relative;
+}
+.poem {
+  font-family: var(--font-brush);
+  font-size: 28px;
+  color: var(--ink);
+  line-height: 2.4;
+  letter-spacing: 8px;
+  margin-bottom: 32px;
+}
+.poem-author {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  letter-spacing: 4px;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════
+   底部签名
+   ═══════════════════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--ink-wash);
+  margin-top: 40px;
+}
+.footer-text {
+  font-family: var(--font-brush);
+  font-size: 20px;
+  color: var(--ink-light);
+  letter-spacing: 6px;
+}
+.footer-code {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 12px;
+  letter-spacing: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   返回链接
+   ═══════════════════════════════════════════════════════ */
+.back-link {
+  position: fixed;
+  top: 30px; left: 30px;
+  background: var(--paper);
+  border: 1px solid var(--ink-fade);
+  color: var(--ink);
+  padding: 10px 20px;
+  font-size: 13px;
+  text-decoration: none;
+  font-family: var(--font-serif);
+  letter-spacing: 3px;
+  z-index: 100;
+  transition: all 0.3s;
+}
+.back-link:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">← 返回</a>
+
+<!-- 水墨晕染装饰 -->
+<div class="ink-wash ink-wash-1"></div>
+<div class="ink-wash ink-wash-2"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     顶部标题
+     ═══════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="direction-label">DIRECTION C · ORIENTAL VOID</div>
+  <h1 class="direction-title">东方留白</h1>
+  <div class="direction-subtitle">— 现代水墨，规范是笔墨，留白是力量 —</div>
+  <div class="direction-concept">
+    AOS 如现代水墨，<br>
+    规范是笔墨，留白是力量。<br>
+    <span style="color:var(--cinnabar)">少即是多，无即是有。</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     配色方案 — 三点色
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">三点色</div>
+<div class="palette">
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#F5F0E8" style="background:#F5F0E8"></div>
+    <div class="palette-name">宣纸白</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#1A1A1A" style="background:#1A1A1A"></div>
+    <div class="palette-name">墨黑</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#C0392B" style="background:#C0392B"></div>
+    <div class="palette-name">朱砂红</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     留白卡片
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">留白卡片</div>
+<div class="void-grid">
+
+  <!-- 系统总览 -->
+  <div class="void-card">
+    <div class="void-card-title">系统总览</div>
+    <div class="void-card-subtitle">System Overview · 1.1.0</div>
+
+    <div class="void-row">
+      <div>
+        <div class="void-component">Skill System</div>
+        <div class="void-component-desc">2 Skill 已注册</div>
+      </div>
+      <span class="void-status active">ACTIVE</span>
+    </div>
+    <div class="void-row">
+      <div>
+        <div class="void-component">Memory System</div>
+        <div class="void-component-desc">9 条索引</div>
+      </div>
+      <span class="void-status active">ACTIVE</span>
+    </div>
+    <div class="void-row">
+      <div>
+        <div class="void-component">Loop Engine</div>
+        <div class="void-component-desc">0 个活跃</div>
+      </div>
+      <span class="void-status ready">READY</span>
+    </div>
+    <div class="void-row">
+      <div>
+        <div class="void-component">Inbox Pipeline</div>
+        <div class="void-component-desc">空队列</div>
+      </div>
+      <span class="void-status ready">READY</span>
+    </div>
+  </div>
+
+  <!-- Skill 管理 -->
+  <div class="void-card">
+    <div class="void-card-title">Skill 印鉴</div>
+    <div class="void-card-subtitle">Skill Registry · 2 entries</div>
+
+    <div class="skill-seal">
+      <div class="skill-seal-id">SK_0001 · v2.0.0</div>
+      <div class="skill-seal-name">知识入库</div>
+      <div class="skill-seal-trigger">用户提供URL要求抓取时触发</div>
+    </div>
+    <div class="divider"></div>
+    <div class="skill-seal">
+      <div class="skill-seal-id">SK_0002 · v1.0.0</div>
+      <div class="skill-seal-name">存量迁移</div>
+      <div class="skill-seal-trigger">用户要求迁移历史项目时触发</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     独特元素：留白诗笺
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">留白诗笺</div>
+<div class="poem-section">
+  <div class="poem">
+    大音希声<br>
+    大象无形<br>
+    <span style="color:var(--cinnabar)">道法自然</span>
+  </div>
+  <div class="poem-author">— 老子《道德经》</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     底部签名
+     ═══════════════════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-text">少即是多 · 无即是有</div>
+  <div class="footer-code">AOS VIEWER · DIRECTION C · ORIENTAL VOID</div>
+</div>
+
+</body>
+</html>

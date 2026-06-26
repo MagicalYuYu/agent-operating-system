@@ -1,4 +1,4 @@
-# AOS v1.0 Loop Engine 详细设计
+# AOS v1.1.0 Loop Engine 详细设计
 
 > 来源：AOS内部设计
 > 入库时间：2026-06-21T16:00:00+08:00

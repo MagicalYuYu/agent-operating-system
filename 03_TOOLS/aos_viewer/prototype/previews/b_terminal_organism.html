@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOS 美学方向 B — 终端有机体</title>
+<style>
+/* ═══════════════════════════════════════════════════════
+   方向 B：终端有机体（Terminal Organism）
+   核心隐喻：AOS = 有生命的终端，规范是基因，演化是本能
+   配色：磷光绿 + 琥珀橙 + 深空黑
+   字体：等宽（终端基因）+ 有机曲线（生命脉动）
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=VT323&display=swap');
+
+:root {
+  /* 主色系 — 磷光绿（终端生命色） */
+  --phosphor: #00FF41;
+  --phosphor-bright: #5FFF7A;
+  --phosphor-dim: #00B82E;
+  --phosphor-glow: rgba(0, 255, 65, 0.4);
+  --phosphor-fade: rgba(0, 255, 65, 0.08);
+
+  /* 辅色系 — 琥珀橙（警告/能量色） */
+  --amber: #FF8C00;
+  --amber-bright: #FFB347;
+  --amber-glow: rgba(255, 140, 0, 0.3);
+
+  /* 背景系 — 深空黑（终端深夜） */
+  --void: #0A0E0A;
+  --void-deep: #050705;
+  --void-elevated: #111511;
+
+  /* 文字层次 */
+  --text-primary: rgba(0, 255, 65, 0.92);
+  --text-secondary: rgba(0, 255, 65, 0.56);
+  --text-tertiary: rgba(0, 255, 65, 0.34);
+  --text-amber: var(--amber-bright);
+
+  /* 有机面板材质 */
+  --organism-bg: rgba(0, 255, 65, 0.03);
+  --organism-border: rgba(0, 255, 65, 0.2);
+  --organism-glow: rgba(0, 255, 65, 0.15);
+
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-pixel: 'VT323', 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-mono);
+  background: var(--void-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 40px 60px;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════
+   全局扫描线效果（CRT 显示器质感）
+   ═══════════════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 255, 65, 0.03) 2px,
+    rgba(0, 255, 65, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* CRT 弯曲渐晕效果 */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ═══════════════════════════════════════════════════════
+   顶部标题区
+   ═══════════════════════════════════════════════════════ */
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+.direction-label {
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px var(--amber-glow);
+}
+.direction-title {
+  font-family: var(--font-pixel);
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--phosphor);
+  margin-bottom: 4px;
+  letter-spacing: 4px;
+  text-shadow:
+    0 0 10px var(--phosphor-glow),
+    0 0 20px var(--phosphor-glow),
+    0 0 40px var(--phosphor-fade);
+  animation: flicker 4s infinite;
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  98% { opacity: 1; }
+  99% { opacity: 0.85; }
+}
+.direction-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+}
+.direction-concept {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--amber-bright);
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px dashed var(--amber);
+  padding: 12px 20px;
+  background: rgba(255, 140, 0, 0.05);
+}
+
+/* ═══════════════════════════════════════════════════════
+   配色方案展示
+   ═══════════════════════════════════════════════════════ */
+.section-title {
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--phosphor);
+  margin-bottom: 20px;
+  padding-left: 16px;
+  border-left: 3px solid var(--phosphor);
+  text-shadow: 0 0 6px var(--phosphor-glow);
+}
+
+.palette {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+.palette-item {
+  flex: 1;
+  min-width: 140px;
+}
+.palette-swatch {
+  height: 80px;
+  border: 1px solid var(--organism-border);
+  margin-bottom: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.palette-swatch::after {
+  content: attr(data-hex);
+  position: absolute;
+  bottom: 6px; left: 8px;
+  font-size: 11px;
+  font-family: var(--font-pixel);
+  letter-spacing: 1px;
+}
+.palette-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+/* ═══════════════════════════════════════════════════════
+   有机面板卡片（核心组件）
+   ═══════════════════════════════════════════════════════ */
+.organism-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.organism-card {
+  background: var(--organism-bg);
+  border: 1px solid var(--organism-border);
+  padding: 24px;
+  position: relative;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  /* 有机生长纹 — 不规则边缘 */
+  clip-path: polygon(
+    0 4px, 4px 0, calc(100% - 4px) 0, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 0 calc(100% - 4px)
+  );
+}
+.organism-card:hover {
+  border-color: var(--phosphor);
+  box-shadow:
+    0 0 20px var(--organism-glow),
+    inset 0 0 20px var(--phosphor-fade);
+}
+
+/* 终端提示符 */
+.terminal-prompt {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--amber);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.terminal-prompt::before {
+  content: '> ';
+  color: var(--phosphor);
+}
+
+.organism-card-title {
+  font-family: var(--font-pixel);
+  font-size: 28px;
+  color: var(--phosphor);
+  margin-bottom: 4px;
+  text-shadow: 0 0 8px var(--phosphor-glow);
+}
+.organism-card-id {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+}
+
+/* 系统总览 — 组件状态 */
+.component-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dotted rgba(0, 255, 65, 0.15);
+}
+.component-row:last-child { border-bottom: none; }
+.component-name {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+.component-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.status-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  font-family: var(--font-pixel);
+  letter-spacing: 1px;
+  border: 1px solid;
+}
+.status-tag.active {
+  color: var(--phosphor);
+  border-color: var(--phosphor);
+  background: var(--phosphor-fade);
+  text-shadow: 0 0 4px var(--phosphor-glow);
+}
+.status-tag.ready {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: rgba(255, 140, 0, 0.08);
+}
+
+/* Skill 管理 — 细胞分裂样式 */
+.skill-cell {
+  padding: 14px;
+  background: rgba(0, 255, 65, 0.04);
+  border-left: 3px solid var(--phosphor);
+  margin-bottom: 10px;
+  position: relative;
+  transition: all 0.3s;
+}
+.skill-cell:last-child { margin-bottom: 0; }
+.skill-cell:hover {
+  background: rgba(0, 255, 65, 0.08);
+  border-left-width: 5px;
+}
+.skill-cell::before {
+  content: '◆';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--phosphor);
+  font-size: 10px;
+  background: var(--void-deep);
+  padding: 2px;
+}
+.skill-id {
+  font-size: 11px;
+  color: var(--amber);
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+}
+.skill-name {
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  color: var(--phosphor);
+  margin: 2px 0;
+  text-shadow: 0 0 4px var(--phosphor-glow);
+}
+.skill-trigger {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════
+   独特元素：演化时间线（有机生长）
+   ═══════════════════════════════════════════════════════ */
+.evolution-timeline {
+  background: rgba(0, 255, 65, 0.02);
+  border: 1px solid var(--organism-border);
+  padding: 24px;
+  margin-bottom: 60px;
+  position: relative;
+}
+.timeline-entry {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 0;
+  position: relative;
+}
+.timeline-entry::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 24px;
+  bottom: -10px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--phosphor), transparent);
+}
+.timeline-entry:last-child::before { display: none; }
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--phosphor);
+  border-radius: 50%;
+  margin-right: 16px;
+  flex-shrink: 0;
+  background: var(--void-deep);
+  box-shadow: 0 0 8px var(--phosphor-glow);
+  margin-top: 2px;
+}
+.timeline-content {
+  flex: 1;
+}
+.timeline-time {
+  font-size: 11px;
+  color: var(--amber);
+  font-family: var(--font-mono);
+}
+.timeline-event {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   底部签名
+   ═══════════════════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  border-top: 1px solid var(--organism-border);
+  margin-top: 40px;
+}
+.footer-text {
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  color: var(--phosphor-dim);
+  text-shadow: 0 0 4px var(--phosphor-glow);
+}
+.footer-code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   返回链接
+   ═══════════════════════════════════════════════════════ */
+.back-link {
+  position: fixed;
+  top: 20px; left: 20px;
+  background: var(--void);
+  border: 1px solid var(--phosphor);
+  color: var(--phosphor);
+  padding: 8px 16px;
+  font-size: 14px;
+  text-decoration: none;
+  font-family: var(--font-pixel);
+  letter-spacing: 1px;
+  z-index: 10000;
+  transition: all 0.3s;
+  text-shadow: 0 0 4px var(--phosphor-glow);
+}
+.back-link:hover {
+  background: var(--phosphor-fade);
+  box-shadow: 0 0 12px var(--phosphor-glow);
+}
+
+/* 光标闪烁动画 */
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--phosphor);
+  animation: blink 1s infinite;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">← BACK</a>
+
+<!-- ═══════════════════════════════════════════════════════
+     顶部标题
+     ═══════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="direction-label">DIRECTION B · TERMINAL ORGANISM</div>
+  <h1 class="direction-title">终端有机体</h1>
+  <div class="direction-subtitle">// where rules are genes, evolution is instinct</div>
+  <div class="direction-concept">
+    [SYSTEM] AOS 是有生命的终端。<br>
+    规范是基因，演化是本能，磷光是脉搏。<span class="cursor"></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     配色方案
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">// PALETTE</div>
+<div class="palette">
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#00FF41" style="background:#00FF41"></div>
+    <div class="palette-name">磷光绿 · Phosphor</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#5FFF7A" style="background:#5FFF7A"></div>
+    <div class="palette-name">亮磷光 · Bright</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#FF8C00" style="background:#FF8C00"></div>
+    <div class="palette-name">琥珀橙 · Amber</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#0A0E0A" style="background:#0A0E0A"></div>
+    <div class="palette-name">深空黑 · Void</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#050705" style="background:#050705"></div>
+    <div class="palette-name">深渊黑 · Deep</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     有机面板卡片
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">// ORGANISM PANELS</div>
+<div class="organism-grid">
+
+  <!-- 系统总览 -->
+  <div class="organism-card">
+    <div class="terminal-prompt">cat 00_BOOT/SYSTEM_STATE.md</div>
+    <div class="organism-card-title">SYSTEM OVERVIEW</div>
+    <div class="organism-card-id">// kernel: ACTIVE | version: 1.1.0 | init: 2026-06-21</div>
+
+    <div class="component-row">
+      <div>
+        <div class="component-name">Skill System</div>
+        <div class="component-desc">// 2 skills registered</div>
+      </div>
+      <span class="status-tag active">● ACTIVE</span>
+    </div>
+    <div class="component-row">
+      <div>
+        <div class="component-name">Memory System</div>
+        <div class="component-desc">// 9 index entries</div>
+      </div>
+      <span class="status-tag active">● ACTIVE</span>
+    </div>
+    <div class="component-row">
+      <div>
+        <div class="component-name">Loop Engine</div>
+        <div class="component-desc">// 0 active loops</div>
+      </div>
+      <span class="status-tag ready">○ READY</span>
+    </div>
+    <div class="component-row">
+      <div>
+        <div class="component-name">Inbox Pipeline</div>
+        <div class="component-desc">// empty queue</div>
+      </div>
+      <span class="status-tag ready">○ READY</span>
+    </div>
+  </div>
+
+  <!-- Skill 管理 -->
+  <div class="organism-card">
+    <div class="terminal-prompt">cat 00_BOOT/SKILL_REGISTRY.md</div>
+    <div class="organism-card-title">SKILL CELLS</div>
+    <div class="organism-card-id">// entries: 2 | evolution: active</div>
+
+    <div class="skill-cell">
+      <div class="skill-id">SK_0001 · v2.0.0</div>
+      <div class="skill-name">Web Knowledge Ingestion</div>
+      <div class="skill-trigger">// trigger: URL → 抓取/入库</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-id">SK_0002 · v1.0.0</div>
+      <div class="skill-name">Legacy Migration</div>
+      <div class="skill-trigger">// trigger: 迁移历史项目/对话</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     独特元素：演化时间线
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">// EVOLUTION TIMELINE</div>
+<div class="evolution-timeline">
+  <div class="timeline-entry">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="timeline-time">[2026-06-21] SYSTEM_INIT</div>
+      <div class="timeline-event">// AOS v2.0 系统初始化完成 — 基因序列写入</div>
+    </div>
+  </div>
+  <div class="timeline-entry">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="timeline-time">[2026-06-21] SKILL_REGISTER</div>
+      <div class="timeline-event">// SK_0001 WKIS 注册 — 第一个技能细胞诞生</div>
+    </div>
+  </div>
+  <div class="timeline-entry">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="timeline-time">[2026-06-21] SYSTEM_REFACTOR</div>
+      <div class="timeline-event">// v2.2 全面重构 — 基因序列优化，六层架构成型</div>
+    </div>
+  </div>
+  <div class="timeline-entry">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="timeline-time">[2026-06-21] SYSTEM_RELEASE</div>
+      <div class="timeline-event">// v1.0.0 GitHub 首发版 — 开源释放</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     底部签名
+     ═══════════════════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-text">「冷峻规则 × 生命脉动 — 终端不冰冷，它在呼吸」</div>
+  <div class="footer-code">AOS VIEWER · DIRECTION B · TERMINAL ORGANISM<span class="cursor"></span></div>
+</div>
+
+</body>
+</html>

@@ -1,150 +1,27 @@
-# ============================================================
-# AOS GitHub 发布白名单
-# 原则：默认不上传任何内容，只上传明确列出的文件
-# 新增文件时必须在此文件中显式允许，否则不会上传
-# ============================================================
+# AOS GitHub Upload .gitignore
+# This .gitignore is for the upload directory only.
 
-# 第一步：忽略根目录下所有内容
-/*
-
-# 第二步：逐一允许需要上传的内容
-
-# === 根目录文件 ===
-!/AGENTS.md
-!/.gitignore
-!/README.md
-!/LICENSE
-
-# === GitHub Actions ===
-!/.github/
-!/.github/**
-
-# === docs 项目文档 ===
-!/docs/
-!/docs/**
-
-# === 00_BOOT 框架核心（全部上传）===
-!/00_BOOT/
-!/00_BOOT/**
-
-# === 01_PROJECTS 仅目录说明和示例项目 ===
-!/01_PROJECTS/
-/01_PROJECTS/*
-!/01_PROJECTS/README.md
-!/01_PROJECTS/_example_project/
-!/01_PROJECTS/_example_project/**
-
-# === 02_SANDBOX 仅目录说明 ===
-!/02_SANDBOX/
-/02_SANDBOX/*
-!/02_SANDBOX/README.md
-
-# === 03_TOOLS 工具系统（全部上传，含Skill模板和结构）===
-!/03_TOOLS/
-!/03_TOOLS/**
-
-# === 04_MEMORY 仅模板和索引 ===
-!/04_MEMORY/
-/04_MEMORY/*
-!/04_MEMORY/README.md
-!/04_MEMORY/INDEX.md
-# 以下子目录仅上传目录说明，不上传实际数据
-!/04_MEMORY/user/
-/04_MEMORY/user/*
-!/04_MEMORY/feedback/
-/04_MEMORY/feedback/*
-!/04_MEMORY/reference/
-/04_MEMORY/reference/*
-!/04_MEMORY/project/
-/04_MEMORY/project/*
-!/04_MEMORY/agent_pool/
-/04_MEMORY/agent_pool/*
-!/04_MEMORY/loop_memory/
-/04_MEMORY/loop_memory/*
-!/04_MEMORY/loop_memory/README.md
-!/04_MEMORY/skill_memory/
-/04_MEMORY/skill_memory/*
-!/04_MEMORY/skill_memory/README.md
-
-# === 05_CACHE 仅目录说明 ===
-!/05_CACHE/
-/05_CACHE/*
-!/05_CACHE/README.md
-
-# === 06_LOGS 仅目录说明 ===
-!/06_LOGS/
-/06_LOGS/*
-!/06_LOGS/README.md
-
-# === 07_EXPORTS 仅目录说明 ===
-!/07_EXPORTS/
-/07_EXPORTS/*
-!/07_EXPORTS/README.md
-
-# === 08_INBOX 仅目录说明 ===
-!/08_INBOX/
-/08_INBOX/*
-!/08_INBOX/README.md
-
-# === 09_REFERENCE 仅公开资料 ===
-!/09_REFERENCE/
-/09_REFERENCE/*
-!/09_REFERENCE/README.md
-!/09_REFERENCE/_index.md
-!/09_REFERENCE/system/
-/09_REFERENCE/system/*
-# 允许：Trae 官方指南（公开资料）
-!/09_REFERENCE/system/trae-work-*.md
-# 允许：AOS 设计文档
-!/09_REFERENCE/system/aos-*.md
-# 允许：对应的 metadata.json
-!/09_REFERENCE/system/*.metadata.json
-# 允许：网页模板规范文档
-!/09_REFERENCE/web/
-!/09_REFERENCE/web/**
-
-# === 99_ARCHIVE 仅目录说明 ===
-!/99_ARCHIVE/
-/99_ARCHIVE/*
-!/99_ARCHIVE/README.md
-
-# ============================================================
-# 明确排除（即使上面的规则意外匹配也不上传）
-# ============================================================
-
-# 私人收集文章（严禁上传）
-xiaolin-*
-
-# 用户记忆和运行时状态（含隐私）
-04_MEMORY/user/user_profile.md
-04_MEMORY/feedback/*.md
-04_MEMORY/reference/*.md
-04_MEMORY/project/proj_*.md
-04_MEMORY/agent_pool/*.json
-04_MEMORY/skill_memory/SK_*_memory.md
-04_MEMORY/loop_memory/LP_*_memory.md
-04_MEMORY/global_memory.md
-04_MEMORY/credentials.json
-
-# 实际项目数据（含隐私，示例项目除外）
-01_PROJECTS/*/
-!01_PROJECTS/_example_project/
-
-# 日志和输出（运行时数据）
-06_LOGS/*/
-06_LOGS/*.log
-07_EXPORTS/*/
-
-# 归档内容（含历史隐私）
-99_ARCHIVE/*.md
-
-# 迁移中转数据（含用户隐私）
-08_INBOX/migration/
-08_INBOX/raw/
-
-# Trae Skill 运行时目录（.trae/ 是本地配置）
+# IDE configs
 .trae/
+.vscode/
+.idea/
 
-# Python 缓存
+# Python
 __pycache__/
 *.pyc
+*.pyo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# AOS runtime data (should not exist in upload dir, but exclude as safety net)
+04_MEMORY/credentials.json
+04_MEMORY/user/
+04_MEMORY/feedback/
+05_CACHE/
+06_LOGS/*/
+!06_LOGS/README.md
+08_INBOX/migration/
+02_SANDBOX/*/
+!02_SANDBOX/README.md

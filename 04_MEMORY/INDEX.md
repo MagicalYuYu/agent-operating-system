@@ -6,19 +6,13 @@
 ---
 
 ## user
-- [user-profile](user/user_profile.md) — 游戏本地化专家，中文沟通，技术洁癖，要求脱敏处理，CODE模式为主
+<!-- 上传版：用户画像不包含在 GitHub 仓库中 -->
 
 ## feedback
-- [fb-harness-fixes](feedback/fb_harness_fixes.md) — Agent犯错时必须工程化修复沉淀到环境，不能只靠提示词纠正；修复方式：规则类→AGENTS.md，坑点类→gotchas.md，流程类→SKILL.md
-- [fb-context-strategy](feedback/fb_context_strategy.md) — 上下文到60-70%时主动压缩；纠正两次失败后建议新会话；压缩时保留任务目标+修改文件+错误消息+架构决策+用户约束
-- [fb-skill-trigger](feedback/fb_skill_trigger.md) — Skill的description必须写触发条件而非摘要；单个description不超过250字符；验证类Skill回报最大
-- [fb-runtime-iron-rules](feedback/fb_runtime_iron_rules.md) — 用户是唯一调度器；状态更新是Skill步骤的一部分而非事后动作；事前声明优于事后记录；禁止假设Agent会自觉更新文件
-- [fb-v11-roadmap](feedback/fb_v11_roadmap.md) — v1.0部署实践反馈：INDEX空洞引用已修复、自检脚本Bug已修复、迁移Skill已补充Windows/Docker坑点；待实现：Loop引擎、凭据加密、CI/CD
+<!-- 上传版：个人经验记录不包含在 GitHub 仓库中 -->
 
 ## reference
 - [ref-trae-settings](reference/ref_trae_settings.md) — Trae CODE模式设置：AGENTS.md开启、MCP自动运行、命令自动运行（沙箱外）、内置浏览器、记忆已开启
 
 ## project
-- [proj-aos-v1-status](project/proj_aos_v1_status.md) — AOS v1.0.0 GitHub首发版，截至2026-06-21有2个Skill(WKIS+Migration)已注册，0个活跃Loop，0个活跃Agent
-- [proj-example-project](project/proj__example_project.md) — 示例项目（游戏本地化），展示AOS项目目录标准结构，6个阶段均pending
-- [proj-astrbot](project/proj_astrbot.md) — AstrBot群聊交互插件集合，6个插件(5活跃+1归档)：bishoujo/dnd_zero/soupai/smart_wakeup/mudae_qq(归档)/sowing_discord
+- [proj-aos-v1-status](project/proj_aos_v1_status.md) — AOS v1.1.0 发布版，含可视化界面（AOS Viewer），2个Skill(WKIS+Migration)已注册

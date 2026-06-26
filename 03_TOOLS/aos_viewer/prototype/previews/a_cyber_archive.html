@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOS 美学方向 A — 赛博档案室</title>
+<style>
+/* ═══════════════════════════════════════════════════════
+   方向 A：赛博档案室（Cyber Archive）
+   核心隐喻：AOS = 数字档案室，文件即档案，目录即抽屉
+   配色：琥珀棕 + 磷光绿 + 深墨蓝
+   字体：等宽（规范感）+ 衬线（档案感）
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap');
+
+:root {
+  /* 主色系 — 琥珀棕（木质暖色） */
+  --amber-deep: #5C3A1E;
+  --amber: #8B5E3C;
+  --amber-light: #C4915C;
+  --amber-glow: rgba(196, 145, 92, 0.4);
+
+  /* 辅色系 — 磷光绿（科技冷色） */
+  --phosphor: #00FF9C;
+  --phosphor-dim: #00B870;
+  --phosphor-glow: rgba(0, 255, 156, 0.3);
+
+  /* 背景系 — 深墨蓝（档案室深夜） */
+  --ink: #1A1F2E;
+  --ink-deep: #0F131C;
+  --ink-elevated: #252B3D;
+
+  /* 文字层次 */
+  --text-primary: rgba(255, 245, 230, 0.92);
+  --text-secondary: rgba(255, 245, 230, 0.56);
+  --text-tertiary: rgba(255, 245, 230, 0.34);
+  --text-phosphor: var(--phosphor);
+
+  /* 档案柜材质 */
+  --drawer-bg: rgba(139, 94, 60, 0.08);
+  --drawer-border: rgba(196, 145, 92, 0.25);
+  --drawer-handle: var(--amber-light);
+  --drawer-label: rgba(0, 255, 156, 0.8);
+
+  /* 木质纹理（CSS 生成） */
+  --wood-texture: repeating-linear-gradient(
+    90deg,
+    rgba(139, 94, 60, 0.03) 0px,
+    rgba(139, 94, 60, 0.03) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-serif: 'Noto Serif SC', 'SimSun', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-mono);
+  background: var(--ink-deep);
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(139, 94, 60, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(0, 255, 156, 0.08) 0%, transparent 50%),
+    var(--wood-texture);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 40px 60px;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════════════
+   顶部标题区
+   ═══════════════════════════════════════════════════════ */
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -20px; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber-light), transparent);
+}
+.direction-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--phosphor);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.direction-title {
+  font-family: var(--font-serif);
+  font-size: 42px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.direction-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.direction-concept {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--amber-light);
+  margin-top: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ═══════════════════════════════════════════════════════
+   配色方案展示
+   ═══════════════════════════════════════════════════════ */
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--phosphor-dim);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--phosphor);
+}
+
+.palette {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+.palette-item {
+  flex: 1;
+  min-width: 140px;
+}
+.palette-swatch {
+  height: 80px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  border: 1px solid var(--drawer-border);
+  position: relative;
+  overflow: hidden;
+}
+.palette-swatch::after {
+  content: attr(data-hex);
+  position: absolute;
+  bottom: 6px; left: 8px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-mono);
+}
+.palette-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════════════════
+   档案柜卡片（核心组件）
+   ═══════════════════════════════════════════════════════ */
+.archive-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.archive-card {
+  background: var(--drawer-bg);
+  background-image: var(--wood-texture);
+  border: 1px solid var(--drawer-border);
+  border-radius: 6px;
+  padding: 24px;
+  position: relative;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+.archive-card:hover {
+  border-color: var(--amber-light);
+  box-shadow: 0 0 24px rgba(196, 145, 92, 0.15);
+}
+
+/* 档案编号标签（左上角） */
+.archive-label {
+  position: absolute;
+  top: -1px; left: 16px;
+  background: var(--ink);
+  border: 1px solid var(--drawer-border);
+  border-top: none;
+  padding: 2px 10px;
+  font-size: 10px;
+  color: var(--drawer-label);
+  letter-spacing: 2px;
+  font-family: var(--font-mono);
+}
+
+/* 抽屉拉手（顶部装饰线） */
+.archive-handle {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--amber-light), transparent);
+  margin: 0 auto 20px;
+  border-radius: 2px;
+}
+
+.archive-card-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.archive-card-id {
+  font-size: 10px;
+  color: var(--phosphor-dim);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+/* 系统总览 — 组件状态列表 */
+.component-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(196, 145, 92, 0.15);
+}
+.component-row:last-child { border-bottom: none; }
+.component-name {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.component-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.status-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+}
+.status-tag.active {
+  background: rgba(0, 255, 156, 0.1);
+  color: var(--phosphor);
+  border: 1px solid rgba(0, 255, 156, 0.3);
+}
+.status-tag.ready {
+  background: rgba(196, 145, 92, 0.1);
+  color: var(--amber-light);
+  border: 1px solid rgba(196, 145, 92, 0.3);
+}
+
+/* Skill 管理 — 档案条目 */
+.skill-entry {
+  padding: 12px;
+  background: rgba(15, 19, 28, 0.5);
+  border-left: 3px solid var(--amber);
+  margin-bottom: 8px;
+  border-radius: 0 4px 4px 0;
+}
+.skill-entry:last-child { margin-bottom: 0; }
+.skill-id {
+  font-size: 10px;
+  color: var(--phosphor-dim);
+  letter-spacing: 1px;
+}
+.skill-name {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--text-primary);
+  margin: 2px 0;
+}
+.skill-trigger {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════
+   独特元素：档案编号系统
+   ═══════════════════════════════════════════════════════ */
+.numbering-system {
+  background: rgba(15, 19, 28, 0.6);
+  border: 1px solid var(--drawer-border);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 60px;
+}
+.numbering-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(196, 145, 92, 0.1);
+}
+.numbering-row:last-child { border-bottom: none; }
+.numbering-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--phosphor);
+  width: 140px;
+  letter-spacing: 1px;
+}
+.numbering-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════════════════
+   底部签名
+   ═══════════════════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  border-top: 1px solid var(--drawer-border);
+  margin-top: 40px;
+}
+.footer-text {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+.footer-code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--phosphor-dim);
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   返回索引页链接
+   ═══════════════════════════════════════════════════════ */
+.back-link {
+  position: fixed;
+  top: 20px; left: 20px;
+  background: var(--ink);
+  border: 1px solid var(--drawer-border);
+  color: var(--amber-light);
+  padding: 8px 16px;
+  font-size: 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  z-index: 100;
+  transition: all 0.3s;
+}
+.back-link:hover {
+  border-color: var(--phosphor);
+  color: var(--phosphor);
+}
+
+/* 扫描线效果（微妙的科技感叠加） */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 255, 156, 0.015) 3px,
+    rgba(0, 255, 156, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">← 返回对比</a>
+
+<!-- ═══════════════════════════════════════════════════════
+     顶部标题
+     ═══════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="direction-label">DIRECTION A · CYBER ARCHIVE</div>
+  <h1 class="direction-title">赛博档案室</h1>
+  <div class="direction-subtitle">Cyber Archive — Where files are artifacts</div>
+  <div class="direction-concept">
+    AOS 是数字档案室，文件即档案，目录即抽屉。<br>
+    暖色木质纹理承载古典秩序，冷色科技线条注入未来感。
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     配色方案
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">PALETTE · 配色方案</div>
+<div class="palette">
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#8B5E3C" style="background:#8B5E3C"></div>
+    <div class="palette-name">琥珀棕 · Amber</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#C4915C" style="background:#C4915C"></div>
+    <div class="palette-name">浅琥珀 · Light</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#00FF9C" style="background:#00FF9C"></div>
+    <div class="palette-name">磷光绿 · Phosphor</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#1A1F2E" style="background:#1A1F2E"></div>
+    <div class="palette-name">深墨蓝 · Ink</div>
+  </div>
+  <div class="palette-item">
+    <div class="palette-swatch" data-hex="#0F131C" style="background:#0F131C"></div>
+    <div class="palette-name">深夜蓝 · Deep</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     档案柜卡片 — 系统总览 + Skill 管理
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">ARCHIVE CARDS · 档案柜卡片</div>
+<div class="archive-grid">
+
+  <!-- 系统总览 -->
+  <div class="archive-card">
+    <div class="archive-label">00-BOOT-001</div>
+    <div class="archive-handle"></div>
+    <div class="archive-card-title">系统总览</div>
+    <div class="archive-card-id">FILE: SYSTEM_STATE.md | VERSION: 1.1.0</div>
+
+    <div class="component-row">
+      <div>
+        <div class="component-name">Skill System</div>
+        <div class="component-desc">2 Skill 已注册</div>
+      </div>
+      <span class="status-tag active">ACTIVE</span>
+    </div>
+    <div class="component-row">
+      <div>
+        <div class="component-name">Memory System</div>
+        <div class="component-desc">9 条索引</div>
+      </div>
+      <span class="status-tag active">ACTIVE</span>
+    </div>
+    <div class="component-row">
+      <div>
+        <div class="component-name">Loop Engine</div>
+        <div class="component-desc">0 个活跃 Loop</div>
+      </div>
+      <span class="status-tag ready">READY</span>
+    </div>
+    <div class="component-row">
+      <div>
+        <div class="component-name">Inbox Pipeline</div>
+        <div class="component-desc">空队列</div>
+      </div>
+      <span class="status-tag ready">READY</span>
+    </div>
+  </div>
+
+  <!-- Skill 管理 -->
+  <div class="archive-card">
+    <div class="archive-label">03-TOOL-001</div>
+    <div class="archive-handle"></div>
+    <div class="archive-card-title">Skill 档案</div>
+    <div class="archive-card-id">FILE: SKILL_REGISTRY.md | ENTRIES: 2</div>
+
+    <div class="skill-entry">
+      <div class="skill-id">SK_0001 · v2.0.0</div>
+      <div class="skill-name">Web Knowledge Ingestion</div>
+      <div class="skill-trigger">用户提供URL要求抓取/入库时触发</div>
+    </div>
+    <div class="skill-entry">
+      <div class="skill-id">SK_0002 · v1.0.0</div>
+      <div class="skill-name">Legacy Migration</div>
+      <div class="skill-trigger">用户要求迁移历史项目/对话时触发</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     独特元素：档案编号系统
+     ═══════════════════════════════════════════════════════ -->
+<div class="section-title">NUMBERING SYSTEM · 档案编号系统</div>
+<div class="numbering-system">
+  <div class="numbering-row">
+    <div class="numbering-code">00-BOOT-XXX</div>
+    <div class="numbering-desc">系统规则层档案（SYSTEM_STATE / SKILL_REGISTRY / AGENT_POLICY）</div>
+  </div>
+  <div class="numbering-row">
+    <div class="numbering-code">01-PROJ-XXX</div>
+    <div class="numbering-desc">项目隔离档案（每个项目独立抽屉）</div>
+  </div>
+  <div class="numbering-row">
+    <div class="numbering-code">03-TOOL-XXX</div>
+    <div class="numbering-desc">工具模块档案（Skill / Loop / Agent / Script）</div>
+  </div>
+  <div class="numbering-row">
+    <div class="numbering-code">04-MEM-XXX</div>
+    <div class="numbering-desc">记忆持久化档案（user / feedback / reference / project）</div>
+  </div>
+  <div class="numbering-row">
+    <div class="numbering-code">09-REF-XXX</div>
+    <div class="numbering-desc">参考知识库档案（system / web 两类）</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     底部签名
+     ═══════════════════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-text">「古典秩序 × 未来科技 — 每个文件都有它的编号」</div>
+  <div class="footer-code">AOS VIEWER · DIRECTION A · CYBER ARCHIVE</div>
+</div>
+
+</body>
+</html>

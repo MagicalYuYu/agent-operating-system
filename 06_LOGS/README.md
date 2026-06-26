@@ -1,39 +1,43 @@
-# AOS v1.0 — 06_LOGS
+# AOS v1.1.0 — 06_LOGS
 
-运行日志区，支持 Agent 写入和外部组件日志存放。
+运行日志存放区，只追加不修改。
 
 ## 应放什么
-- Agent 执行日志（通过 Skill 流程中的强制步骤写入）
-- Python 脚本运行日志
-- Docker 容器日志
-- 服务器运行日志
-- 其他外部组件生成的日志
+
+- Agent 操作日志
+- 巡检日志（系统级 / 项目级）
+- 外部组件运行日志（如 Docker 容器日志、NSSM 服务日志）
 
 ## 禁止放什么
-- 非日志内容
-- 修改已有日志（只追加）
+
+- 项目源代码
+- 运行时状态（应放 04_MEMORY/）
+- 临时数据（应放 05_CACHE/）
+- 最终交付文件（应放 07_EXPORTS/）
 
 ## 分层规则
-按项目名+日期分层存放：
+
+按"项目名 → 模块名 → 类型 → 日期"分层存放：
+
 ```
 06_LOGS/
-├── napcat/
-│   ├── 20260621.log        ← NapCat 项目当日日志
-│   └── 20260622.log
-├── astrbot/
-│   ├── 20260621.log        ← AstrBot 项目当日日志
-│   └── 20260622.log
-├── agent/                  ← Agent 执行日志
-│   └── 20260621.log
-└── _system/                ← AOS 系统自身日志
-    └── 20260621.log
+├── aos_system/                    ← 系统级日志
+│   └── inspection/
+│       └── {YYYYMMDD}_system.md   ← 系统级巡检日志
+├── {project_name}/                ← 项目级日志（按项目名分层）
+│   └── inspection/
+│       └── {YYYYMMDD}_project.md  ← 项目级巡检日志
+└── README.md
 ```
 
-## 日志写入方式
-1. **Agent 写入**：Skill 流程中的强制步骤，将操作记录写入 `06_LOGS/agent/{YYYYMMDD}.log`
-2. **脚本写入**：Python/Shell 脚本运行时输出到 `06_LOGS/_system/{YYYYMMDD}.log`
-3. **外部组件写入**：Docker、数据库、Web服务器等组件的日志存放在 `06_LOGS/{project_name}/`
-4. **手动写入**：用户可手动将日志文件放入对应项目目录
+## 文件命名规范
 
-## 实际使用频率
-⚠ Agent 不会主动生成日志，日志写入依赖 Skill 流程中的强制步骤或外部组件主动输出。此目录主要服务于脚本和外部组件的日志管理。
+- 日期格式：`YYYYMMDD`（如 `20260626`）
+- 巡检日志：`{YYYYMMDD}_system.md` / `{YYYYMMDD}_project.md`
+- 其他日志：`{YYYYMMDD}_{描述}.md`
+
+## 注意
+
+- 日志文件**只追加不修改**
+- 文件名中的日期统一使用 `YYYYMMDD` 格式
+- 系统级日志使用 `aos_system/` 作为第 2 层目录

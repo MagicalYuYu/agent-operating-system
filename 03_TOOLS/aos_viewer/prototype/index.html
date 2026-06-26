@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOS Dashboard v1.1.0</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css?v=20260626p4b">
+</head>
+<body>
+
+<!-- ═══════════════ 启动动画 ═══════════════ -->
+<div id="boot-screen">
+  <div class="boot-logo">
+    <span class="boot-logo-text">AOS</span>
+    <span class="boot-logo-sub">Agent Operating System</span>
+  </div>
+  <div class="boot-bar"><div class="boot-bar-fill"></div></div>
+  <div class="boot-status" data-i18n="boot.loading">正在加载系统组件...</div>
+</div>
+
+<!-- ═══════════════ 桌面主界面 ═══════════════ -->
+<div id="desktop" class="hidden">
+
+  <!-- 动态背景光晕 -->
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+
+  <!-- 顶部菜单栏 -->
+  <div id="menu-bar">
+    <div class="menu-left">
+      <span class="menu-logo">AOS</span>
+
+      <!-- 文件菜单 -->
+      <div class="menu-item has-dropdown" data-menu="file">
+        <span class="menu-label" data-i18n="menu.file">文件</span>
+        <div class="menu-dropdown">
+          <div class="dropdown-item" data-action="refresh"><span class="dd-icon">🔄</span><span class="dd-text" data-i18n="menu.file.refresh">刷新数据</span><span class="dd-shortcut">F5</span></div>
+          <div class="dropdown-item" data-action="export-json"><span class="dd-icon">💾</span><span class="dd-text" data-i18n="menu.file.export">导出 JSON</span><span class="dd-shortcut">Ctrl+E</span></div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" data-action="close-panel"><span class="dd-icon">✕</span><span class="dd-text" data-i18n="menu.file.close">关闭面板</span><span class="dd-shortcut">Esc</span></div>
+        </div>
+      </div>
+
+      <!-- 视图菜单 -->
+      <div class="menu-item has-dropdown" data-menu="view">
+        <span class="menu-label" data-i18n="menu.view">视图</span>
+        <div class="menu-dropdown">
+          <div class="dropdown-section-label" data-i18n="menu.view.switchModule">切换模块</div>
+          <div class="dropdown-item" data-action="switch" data-module="dashboard"><span class="dd-icon">📊</span><span class="dd-text" data-i18n="module.dashboard">系统总览</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="skills"><span class="dd-icon">⚙</span><span class="dd-text" data-i18n="module.skills">Skill 管理</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="projects"><span class="dd-icon">📁</span><span class="dd-text" data-i18n="module.projects">项目工作区</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="memory"><span class="dd-icon">🧠</span><span class="dd-text" data-i18n="module.memory">记忆中心</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="reference"><span class="dd-icon">📚</span><span class="dd-text" data-i18n="module.reference">知识库</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="loop"><span class="dd-icon">🔄</span><span class="dd-text" data-i18n="module.loop">Loop 监控</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="agent"><span class="dd-icon">👥</span><span class="dd-text" data-i18n="module.agent">Agent 任务池</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="logs"><span class="dd-icon">📋</span><span class="dd-text" data-i18n="module.logs">日志查看器</span></div>
+          <div class="dropdown-item" data-action="switch" data-module="console"><span class="dd-icon">🖥</span><span class="dd-text" data-i18n="module.console">控制台</span></div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-section-label" data-i18n="menu.view.theme">主题</div>
+          <div class="dropdown-item" data-action="theme" data-theme="dark"><span class="dd-icon">🌙</span><span class="dd-text" data-i18n="theme.dark">深色</span></div>
+          <div class="dropdown-item" data-action="theme" data-theme="light"><span class="dd-icon">☀</span><span class="dd-text" data-i18n="theme.light">浅色</span></div>
+          <div class="dropdown-item" data-action="theme" data-theme="minimal"><span class="dd-icon">◐</span><span class="dd-text" data-i18n="theme.minimal">极简</span></div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" data-action="zoom-in"><span class="dd-icon">➕</span><span class="dd-text" data-i18n="menu.view.zoomIn">放大</span><span class="dd-shortcut">Ctrl++</span></div>
+          <div class="dropdown-item" data-action="zoom-out"><span class="dd-icon">➖</span><span class="dd-text" data-i18n="menu.view.zoomOut">缩小</span><span class="dd-shortcut">Ctrl+-</span></div>
+          <div class="dropdown-item" data-action="zoom-reset"><span class="dd-icon">⊙</span><span class="dd-text" data-i18n="menu.view.zoomReset">重置缩放</span><span class="dd-shortcut">Ctrl+0</span></div>
+        </div>
+      </div>
+
+      <!-- 工具菜单 -->
+      <div class="menu-item has-dropdown" data-menu="tools">
+        <span class="menu-label" data-i18n="menu.tools">工具</span>
+        <div class="menu-dropdown">
+          <div class="dropdown-item" data-action="spotlight"><span class="dd-icon">🔍</span><span class="dd-text" data-i18n="menu.tools.spotlight">Spotlight 搜索</span><span class="dd-shortcut">Ctrl+Space</span></div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" data-action="run-check"><span class="dd-icon">🔧</span><span class="dd-text" data-i18n="menu.tools.check">一致性自检</span></div>
+          <div class="dropdown-item" data-action="run-sync"><span class="dd-icon">📤</span><span class="dd-text" data-i18n="menu.tools.sync">GitHub 同步</span></div>
+          <div class="dropdown-item" data-action="run-migrate"><span class="dd-icon">📥</span><span class="dd-text" data-i18n="menu.tools.migrate">迁移采集</span></div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" data-action="settings"><span class="dd-icon">⚙</span><span class="dd-text" data-i18n="menu.tools.settings">偏好设置</span><span class="dd-shortcut">Ctrl+,</span></div>
+        </div>
+      </div>
+
+      <!-- 帮助菜单 -->
+      <div class="menu-item has-dropdown" data-menu="help">
+        <span class="menu-label" data-i18n="menu.help">帮助</span>
+        <div class="menu-dropdown">
+          <div class="dropdown-item" data-action="about"><span class="dd-icon">ℹ</span><span class="dd-text" data-i18n="menu.help.about">关于 AOS</span></div>
+          <div class="dropdown-item" data-action="shortcuts"><span class="dd-icon">⌨</span><span class="dd-text" data-i18n="menu.help.shortcuts">快捷键说明</span></div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" data-action="settings"><span class="dd-icon">⚙</span><span class="dd-text" data-i18n="menu.help.settings">偏好设置</span><span class="dd-shortcut">Ctrl+,</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-right">
+      <span class="menu-status"><span class="status-dot active"></span><span data-i18n="common.active">ACTIVE</span></span>
+      <span class="menu-datasource" id="datasource-indicator" data-i18n-title="datasource.local.title" title="当前数据来源：本地 data.js（静态）。启动后端服务后可切换为 API 实时数据">
+        <span class="ds-icon">📁</span><span class="ds-text" data-i18n="datasource.local">本地</span>
+      </span>
+      <span class="menu-clock" id="clock">--:--:--</span>
+      <span class="menu-settings" id="settings-btn" data-i18n-title="settings.title" title="偏好设置">⚙</span>
+      <!-- 桌面模式窗口控制按钮（仅 frameless 模式显示） -->
+      <div class="window-controls" id="window-controls">
+        <button class="win-btn win-minimize" id="win-minimize" data-i18n-title="window.minimize" title="最小化">─</button>
+        <button class="win-btn win-maximize" id="win-maximize" data-i18n-title="window.maximize" title="最大化">❐</button>
+        <button class="win-btn win-close" id="win-close" data-i18n-title="window.close" title="关闭">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主内容区 -->
+  <main id="content">
+
+    <!-- ─── 模块1：系统总览 ─── -->
+    <section id="m-dashboard" class="module active">
+      <header class="module-header">
+        <h1 data-i18n="module.dashboard">系统总览</h1>
+        <span class="module-sub">Dashboard</span>
+      </header>
+
+      <!-- 顶部信息卡片 -->
+      <div class="card-row">
+        <div class="glass-card info-card">
+          <div class="info-label" data-i18n="dashboard.version">版本</div>
+          <div class="info-value">1.1.0</div>
+        </div>
+        <div class="glass-card info-card">
+          <div class="info-label" data-i18n="dashboard.kernelStatus">内核状态</div>
+          <div class="info-value"><span class="status-dot active"></span><span data-i18n="common.active">ACTIVE</span></div>
+        </div>
+        <div class="glass-card info-card">
+          <div class="info-label" data-i18n="dashboard.initTime">初始化时间</div>
+          <div class="info-value">2026-06-21</div>
+        </div>
+        <div class="glass-card info-card">
+          <div class="info-label" data-i18n="dashboard.lastUpdate">最后更新</div>
+          <div class="info-value">2026-06-21</div>
+        </div>
+      </div>
+
+      <!-- 组件状态 + 运行时统计 -->
+      <div class="dual-column">
+        <!-- 组件状态 -->
+        <div class="glass-card panel">
+          <h2 class="panel-title" data-i18n="dashboard.components">组件状态</h2>
+          <div class="component-list" id="component-list"></div>
+        </div>
+
+        <!-- 运行时统计 -->
+        <div class="glass-card panel">
+          <h2 class="panel-title" data-i18n="dashboard.runtimeStats">运行时统计</h2>
+          <div class="stat-grid" id="stat-grid"></div>
+        </div>
+      </div>
+
+      <!-- 事件日志时间线 -->
+      <div class="glass-card panel wide">
+        <h2 class="panel-title"><span data-i18n="dashboard.eventLog">事件日志</span> <span class="panel-badge" id="event-count">0</span></h2>
+        <div class="event-timeline" id="event-timeline"></div>
+      </div>
+    </section>
+
+    <!-- ─── 模块2：Skill 管理 ─── -->
+    <section id="m-skills" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.skills">Skill 管理</h1>
+        <span class="module-sub">Skill Registry</span>
+      </header>
+      <div class="glass-card panel wide">
+        <h2 class="panel-title"><span data-i18n="skills.registered">已注册 Skill</span> <span class="panel-badge" id="skill-count">0</span></h2>
+        <div class="skill-list" id="skill-list"></div>
+      </div>
+    </section>
+
+    <!-- ─── 模块3：项目工作区 ─── -->
+    <section id="m-projects" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.projects">项目工作区</h1>
+        <span class="module-sub">Projects</span>
+      </header>
+      <div class="glass-card panel wide">
+        <h2 class="panel-title"><span data-i18n="projects.list">项目列表</span> <span class="panel-badge" id="project-count">0</span></h2>
+        <div class="project-grid" id="project-grid"></div>
+      </div>
+    </section>
+
+    <!-- ─── 模块4：记忆中心 ─── -->
+    <section id="m-memory" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.memory">记忆中心</h1>
+        <span class="module-sub">Memory</span>
+      </header>
+      <div class="memory-tabs" id="memory-tabs">
+        <div class="memory-tab active" data-cat="user"><span data-i18n="memory.user">用户画像</span> <span class="tab-count" id="mem-user-count">0</span></div>
+        <div class="memory-tab" data-cat="feedback"><span data-i18n="memory.feedback">反馈记录</span> <span class="tab-count" id="mem-feedback-count">0</span></div>
+        <div class="memory-tab" data-cat="reference"><span data-i18n="memory.reference">参考</span> <span class="tab-count" id="mem-reference-count">0</span></div>
+        <div class="memory-tab" data-cat="project"><span data-i18n="memory.project">项目</span> <span class="tab-count" id="mem-project-count">0</span></div>
+      </div>
+      <div class="glass-card panel wide">
+        <div class="memory-list" id="memory-list"></div>
+      </div>
+    </section>
+
+    <!-- ─── 模块5：知识库 ─── -->
+    <section id="m-reference" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.reference">知识库</h1>
+        <span class="module-sub">Reference</span>
+      </header>
+      <div class="ref-filter" id="ref-filter">
+        <div class="ref-filter-tab active" data-cat="all"><span data-i18n="ref.all">全部</span> <span class="tab-count" id="ref-all-count">0</span></div>
+        <div class="ref-filter-tab" data-cat="system"><span data-i18n="ref.system">系统</span> <span class="tab-count" id="ref-system-count">0</span></div>
+        <div class="ref-filter-tab" data-cat="web"><span data-i18n="ref.web">网页</span> <span class="tab-count" id="ref-web-count">0</span></div>
+      </div>
+      <div class="glass-card panel wide">
+        <div class="ref-grid" id="ref-grid"></div>
+      </div>
+    </section>
+
+    <!-- ─── 模块6：Loop 监控 ─── -->
+    <section id="m-loop" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.loop">Loop 监控</h1>
+        <span class="module-sub">Loop Engine</span>
+      </header>
+      <div class="glass-card panel">
+        <h2 class="panel-title" data-i18n="loop.types">Loop 类型定义</h2>
+        <div class="loop-types" id="loop-types"></div>
+      </div>
+      <div class="glass-card panel">
+        <h2 class="panel-title" data-i18n="loop.active">活跃 Loop</h2>
+        <div class="empty-state" id="loop-empty">
+          <div class="empty-icon">🔄</div>
+          <div class="empty-title" data-i18n="loop.empty.title">暂无活跃 Loop</div>
+          <div class="empty-desc" data-i18n="loop.empty.desc">Loop 引擎已就绪，等待用户触发</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 模块7：Agent 任务池 ─── -->
+    <section id="m-agent" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.agent">Agent 任务池</h1>
+        <span class="module-sub">Agent Pool</span>
+      </header>
+      <div class="glass-card panel">
+        <h2 class="panel-title" data-i18n="agent.modes">执行模式</h2>
+        <div class="agent-modes" id="agent-modes"></div>
+      </div>
+      <div class="glass-card panel">
+        <h2 class="panel-title" data-i18n="agent.protocols">协同协议</h2>
+        <div class="agent-protocols" id="agent-protocols"></div>
+      </div>
+      <div class="glass-card panel">
+        <h2 class="panel-title" data-i18n="agent.active">活跃 Agent</h2>
+        <div class="empty-state" id="agent-empty">
+          <div class="empty-icon">👥</div>
+          <div class="empty-title" data-i18n="agent.empty.title">暂无活跃 Agent</div>
+          <div class="empty-desc" data-i18n="agent.empty.desc">多会话协同协议已就绪</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 模块8：日志查看器 ─── -->
+    <section id="m-logs" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.logs">日志查看器</h1>
+        <span class="module-sub">Logs</span>
+      </header>
+      <div class="glass-card panel wide">
+        <h2 class="panel-title"><span data-i18n="logs.systemEvents">系统事件日志</span> <span class="panel-badge" id="log-count">0</span></h2>
+        <div class="log-toolbar">
+          <div class="log-filter-tabs" id="log-filter-tabs">
+            <div class="log-filter-tab active" data-level="all" data-i18n="logs.level.all">全部</div>
+            <div class="log-filter-tab" data-level="INFO">INFO</div>
+            <div class="log-filter-tab" data-level="SUCCESS">SUCCESS</div>
+            <div class="log-filter-tab" data-level="WARN">WARN</div>
+          </div>
+          <input type="text" class="log-search" id="log-search" data-i18n-placeholder="logs.search.placeholder" placeholder="搜索日志..." />
+        </div>
+        <div class="log-list" id="log-list">
+          <div class="log-header">
+            <span data-i18n="logs.col.time">时间</span>
+            <span data-i18n="logs.col.level">级别</span>
+            <span data-i18n="logs.col.source">来源</span>
+            <span data-i18n="logs.col.message">消息</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 模块9：控制台 ─── -->
+    <section id="m-console" class="module">
+      <header class="module-header">
+        <h1 data-i18n="module.console">控制台</h1>
+        <span class="module-sub">Console</span>
+      </header>
+
+      <!-- 脚本快捷按钮 -->
+      <div class="script-bar">
+        <button class="glass-btn" data-script="check" data-i18n="console.check">一致性自检</button>
+        <button class="glass-btn" data-script="sync" data-i18n="console.sync">GitHub 同步</button>
+        <button class="glass-btn" data-script="migrate" data-i18n="console.migrate">迁移采集</button>
+        <button class="glass-btn" data-script="classify" data-i18n="console.classify">迁移分类</button>
+        <button class="glass-btn" data-script="ingest" data-i18n="console.ingest">迁移入库</button>
+      </div>
+
+      <!-- 终端输出区 -->
+      <div class="glass-card terminal">
+        <div class="terminal-header">
+          <span class="term-dot red"></span>
+          <span class="term-dot yellow"></span>
+          <span class="term-dot green"></span>
+          <span class="term-title" data-i18n="console.terminalTitle">AOS Console — python</span>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="term-line" data-i18n="console.welcome">AOS Console v1.1.0 — 输入命令或点击上方按钮执行脚本</div>
+          <div class="term-line term-prompt">AOS:~$ <span class="cursor"></span></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 项目详情侧滑面板（向左扩展式交互） -->
+  <div id="project-detail-panel">
+    <!-- 左侧扩展把手（窄竖条，向左扩展/收起） -->
+    <div class="detail-expand-handle" id="detail-expand-handle" data-i18n-title="project.expand" title="向左扩展">
+      <span class="handle-arrow">‹</span>
+    </div>
+    <div class="detail-inner">
+      <div class="detail-header">
+        <div class="detail-title-row">
+          <span class="detail-title" id="detail-project-name" data-i18n="project.detail.title">项目详情</span>
+          <span class="status-tag" id="detail-project-status">ACTIVE</span>
+        </div>
+        <div class="detail-actions">
+          <button class="detail-btn" id="detail-close" data-i18n-title="common.close" title="关闭">✕</button>
+        </div>
+      </div>
+      <!-- 双视图容器：侧滑视图 + 全屏视图，用 opacity 交叉淡入淡出 -->
+      <div class="detail-body-wrapper">
+        <div class="detail-body detail-body-sidebar-view" id="detail-body-sidebar"></div>
+        <div class="detail-body detail-body-fullscreen-view" id="detail-body-fullscreen"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dock 栏 -->
+  <div id="dock">
+    <div class="dock-item active" data-module="dashboard" data-i18n-title="module.dashboard" title="系统总览">
+      <span class="dock-icon">📊</span><span class="dock-label" data-i18n="dock.dashboard">总览</span>
+    </div>
+    <div class="dock-item" data-module="skills" data-i18n-title="module.skills" title="Skill 管理">
+      <span class="dock-icon">⚙</span><span class="dock-label">Skill</span>
+    </div>
+    <div class="dock-item" data-module="projects" data-i18n-title="module.projects" title="项目工作区">
+      <span class="dock-icon">📁</span><span class="dock-label" data-i18n="dock.projects">项目</span>
+    </div>
+    <div class="dock-item" data-module="memory" data-i18n-title="module.memory" title="记忆中心">
+      <span class="dock-icon">🧠</span><span class="dock-label" data-i18n="dock.memory">记忆</span>
+    </div>
+    <div class="dock-item" data-module="reference" data-i18n-title="module.reference" title="知识库">
+      <span class="dock-icon">📚</span><span class="dock-label" data-i18n="dock.reference">知识</span>
+    </div>
+    <div class="dock-item" data-module="loop" data-i18n-title="module.loop" title="Loop 监控">
+      <span class="dock-icon">🔄</span><span class="dock-label">Loop</span>
+    </div>
+    <div class="dock-item" data-module="agent" data-i18n-title="module.agent" title="Agent 任务池">
+      <span class="dock-icon">👥</span><span class="dock-label">Agent</span>
+    </div>
+    <div class="dock-item" data-module="logs" data-i18n-title="module.logs" title="日志查看器">
+      <span class="dock-icon">📋</span><span class="dock-label" data-i18n="dock.logs">日志</span>
+    </div>
+    <div class="dock-divider"></div>
+    <div class="dock-item" data-module="console" data-i18n-title="module.console" title="控制台">
+      <span class="dock-icon">🖥</span><span class="dock-label" data-i18n="dock.console">控制台</span>
+    </div>
+  </div>
+
+  <!-- Spotlight 搜索 -->
+  <div id="spotlight">
+    <div class="spotlight-input-wrap">
+      <span class="spotlight-icon">🔍</span>
+      <input type="text" class="spotlight-input" id="spotlight-input" data-i18n-placeholder="spotlight.placeholder" placeholder="搜索模块、Skill、项目、知识..." autocomplete="off">
+      <span class="spotlight-close" id="spotlight-close" data-i18n-title="common.close" title="关闭">✕</span>
+      <span class="spotlight-shortcut">ESC</span>
+    </div>
+    <div class="spotlight-results" id="spotlight-results"></div>
+    <div class="spotlight-hint" id="spotlight-hint">仅搜索标题和标签 · 开启 MD 正文搜索请在偏好设置</div>
+  </div>
+
+  <!-- 右键菜单 -->
+  <div id="context-menu"></div>
+
+  <!-- 通知气泡 -->
+  <div id="notification">
+    <div class="notif-title" id="notif-title"></div>
+    <div class="notif-desc" id="notif-desc"></div>
+  </div>
+
+  <!-- 遮罩层 -->
+  <div id="overlay"></div>
+
+  <!-- 偏好设置面板 -->
+  <div id="settings-panel">
+    <div class="settings-header">
+      <span class="settings-title" data-i18n="settings.title">偏好设置</span>
+      <span class="settings-close" id="settings-close">✕</span>
+    </div>
+    <div class="settings-body">
+
+      <!-- 语言 -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings.language">语言</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="settings.language">语言</div>
+            <div class="settings-desc" data-i18n="settings.languageDesc">切换界面语言</div>
+          </div>
+          <div class="lang-options">
+            <div class="lang-option selected" data-lang="zh-CN">中文</div>
+            <div class="lang-option" data-lang="en-US">English</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主题 -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings.theme">外观主题</div>
+        <div class="theme-options">
+          <div class="theme-option selected" data-theme="dark">
+            <div class="theme-option-preview dark"></div>
+            <div class="theme-option-name" data-i18n="theme.dark">深色</div>
+          </div>
+          <div class="theme-option" data-theme="light">
+            <div class="theme-option-preview light"></div>
+            <div class="theme-option-name" data-i18n="theme.light">浅色</div>
+          </div>
+          <div class="theme-option" data-theme="minimal">
+            <div class="theme-option-preview minimal"></div>
+            <div class="theme-option-name" data-i18n="theme.minimal">极简</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 无障碍 -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings.accessibility">无障碍</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="settings.animations">启用动效</div>
+            <div class="settings-desc" data-i18n="settings.animationsDesc">开启所有动画和过渡效果（关闭后界面完全静态）</div>
+          </div>
+          <div class="toggle" id="toggle-animations"></div>
+        </div>
+      </div>
+
+      <!-- 缩放 -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings.scale">界面缩放</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="settings.fontSize">字体大小</div>
+            <div class="settings-desc" data-i18n="settings.fontSizeDesc">调整全局字体大小（80% - 140%）</div>
+          </div>
+          <div class="slider-wrap">
+            <input type="range" class="slider" id="slider-scale" min="0.8" max="1.4" step="0.05" value="1">
+            <span class="slider-value" id="scale-value">100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 玻璃强度 -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings.glass">玻璃效果</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="settings.blur">模糊强度</div>
+            <div class="settings-desc" data-i18n="settings.blurDesc">调整玻璃拟态的模糊程度</div>
+          </div>
+          <div class="glass-options">
+            <div class="glass-option" data-glass="weak" data-i18n="glass.weak">弱</div>
+            <div class="glass-option selected" data-glass="normal" data-i18n="glass.normal">标准</div>
+            <div class="glass-option" data-glass="strong" data-i18n="glass.strong">强</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 调试 -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings.developer">开发者</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="settings.debug">调试面板</div>
+            <div class="settings-desc" data-i18n="settings.debugDesc">开启后底部显示调试面板，实时监控 DOM 状态与函数调用日志（类似 F12 Console）</div>
+          </div>
+          <div class="toggle" id="toggle-debug"></div>
+        </div>
+      </div>
+
+      <!-- 搜索 -->
+      <div class="settings-section">
+        <div class="settings-section-title" data-i18n="settings.search">搜索</div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label" data-i18n="settings.mdSearch">MD 正文搜索</div>
+            <div class="settings-desc" data-i18n="settings.mdSearchDesc">开启后 Spotlight 将搜索记忆和知识库的完整 Markdown 正文（默认关闭，MD 过多时增加性能消耗）</div>
+          </div>
+          <div class="toggle" id="toggle-md-search"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 右侧侧边栏 Markdown 阅读器（可拖拽调整宽度，用于记忆/知识库全文预览） -->
+  <div id="md-reader-overlay" class="md-reader-hidden">
+    <div class="md-reader-resize-handle" id="md-reader-resize-handle" data-i18n-title="mdReader.resize" title="拖拽调整宽度"></div>
+    <div class="md-reader-container">
+      <div class="md-reader-header">
+        <div class="md-reader-title" id="md-reader-title" data-i18n="mdReader.title">文档预览</div>
+        <button class="md-reader-close" onclick="closeMdReader()" data-i18n-title="common.close" title="关闭">✕</button>
+      </div>
+      <div class="md-reader-body" id="md-reader-body"></div>
+    </div>
+  </div>
+
+  <!-- 调试面板（左侧侧边栏，类似 F12 Console） -->
+  <div id="debug-panel">
+    <div class="debug-header">
+      <span class="debug-title" data-i18n="debug.title">调试面板 · Debug Console</span>
+      <div class="debug-actions">
+        <button class="debug-btn" id="debug-refresh" data-i18n="debug.refresh" title="刷新 DOM 状态">刷新状态</button>
+        <button class="debug-btn" id="debug-export" data-i18n="debug.export" title="导出日志到本地文件">导出日志</button>
+        <button class="debug-btn" id="debug-clear" data-i18n="debug.clear" title="清空日志">清空</button>
+        <button class="debug-btn" id="debug-close" data-i18n-title="debug.close" title="关闭面板">✕</button>
+      </div>
+    </div>
+    <div class="debug-body">
+      <div class="debug-section">
+        <div class="debug-section-title" data-i18n="debug.domSnapshot">DOM 状态快照</div>
+        <pre class="debug-state" id="debug-state" data-i18n="debug.domEmpty">点击"刷新状态"查看 DOM 状态</pre>
+      </div>
+      <div class="debug-section">
+        <div class="debug-section-title" data-i18n="debug.callLog">调用日志</div>
+        <div class="debug-log" id="debug-log"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 调试面板展开/收起把手（独立元素，不随面板滑走） -->
+  <div id="debug-toggle-handle" data-i18n-title="debug.collapse" title="收起调试面板">
+    <span class="debug-handle-arrow">‹</span>
+  </div>
+
+</div>
+
+<script src="js/data.js?v=20260625p2d"></script>
+<script src="js/data_content.js?v=20260625p2d"></script>
+<script src="js/i18n.js?v=20260626p4a"></script>
+<script src="js/app.js?v=20260626p4a"></script>
+</body>
+</html>

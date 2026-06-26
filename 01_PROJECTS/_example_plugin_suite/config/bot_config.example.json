@@ -1,0 +1,31 @@
+{
+  "bot_name": "ChatBot",
+  "platform": "terminal",
+  "version": "1.0.0",
+  "plugins": [
+    "weather_bot",
+    "translator_bot",
+    "accounting_bot"
+  ],
+  "event_bus": {
+    "enabled": true,
+    "log_events": false
+  },
+  "plugin_configs": {
+    "weather_bot": {
+      "default_city": "北京",
+      "data_source": "mock",
+      "units": "metric"
+    },
+    "translator_bot": {
+      "default_source_lang": "auto",
+      "default_target_lang": "zh",
+      "cache_enabled": true
+    },
+    "accounting_bot": {
+      "data_file": "accounting_data.json",
+      "currency": "CNY",
+      "max_records": 10000
+    }
+  }
+}

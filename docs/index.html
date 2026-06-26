@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AOS — Agent Operating System</title>
-<meta name="description" content="AOS 是一套纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力。零代码依赖，适用于 TRAE、Claude Code、Codex 等任何 AI 编程助手。">
-<meta name="keywords" content="AOS, Agent Operating System, AI 助手, 跨会话记忆, 项目隔离, 技能复用, TRAE, Claude Code, Codex, 纯文件系统">
+<meta name="description" content="AOS 是一套操作系统形态的 Agent 运行框架：内核规则 + 文件系统 + 桌面环境 + 应用 + 持久记忆。让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力，v1.1.0 新增 AOS Viewer 可视化桌面。零代码依赖，适用于 TRAE、Claude Code、Codex 等任何 AI 编程助手。">
+<meta name="keywords" content="AOS, Agent Operating System, AI 操作系统, AI 助手, 跨会话记忆, 项目隔离, 技能复用, AOS Viewer, 可视化桌面, TRAE, Claude Code, Codex">
 <meta name="author" content="MagicalYuYu">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://aos.magicalyu.online/">
+<link rel="canonical" href="https://magicalyuyu.github.io/agent-operating-system/">
 <!-- Open Graph -->
 <meta property="og:title" content="AOS — Agent Operating System">
-<meta property="og:description" content="给 AI 助手装上记忆大脑和工作台 — 纯文件系统的 Agent 运行时框架">
+<meta property="og:description" content="AI 助手的操作系统：内核 · 文件系统 · 桌面 · 记忆大脑 — v1.1.0 新增 AOS Viewer 可视化桌面">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://aos.magicalyu.online/">
-<meta property="og:image" content="https://aos.magicalyu.online/og-image.png">
+<meta property="og:url" content="https://magicalyuyu.github.io/agent-operating-system/">
+<meta property="og:image" content="https://magicalyuyu.github.io/agent-operating-system/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AOS — Agent Operating System">
@@ -23,8 +23,8 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AOS — Agent Operating System">
-<meta name="twitter:description" content="给 AI 助手装上记忆大脑和工作台 — 纯文件系统的 Agent 运行时框架">
-<meta name="twitter:image" content="https://aos.magicalyu.online/og-image.png">
+<meta name="twitter:description" content="AI 助手的操作系统：内核 · 文件系统 · 桌面 · 记忆大脑 — v1.1.0 新增 AOS Viewer 可视化桌面">
+<meta name="twitter:image" content="https://magicalyuyu.github.io/agent-operating-system/og-image.png">
 <meta name="twitter:creator" content="@MagicalYuYu">
 <!-- 结构化数据 JSON-LD -->
 <script type="application/ld+json">
@@ -32,8 +32,8 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "AOS — Agent Operating System",
-  "description": "纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力",
-  "url": "https://aos.magicalyu.online/",
+  "description": "操作系统形态的 Agent 运行框架：内核规则 + 文件系统 + 桌面环境 + 应用 + 持久记忆。让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力，v1.1.0 新增 AOS Viewer 可视化桌面",
+  "url": "https://magicalyuyu.github.io/agent-operating-system/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Cross-platform",
   "offers": {
@@ -376,6 +376,122 @@
     50% { transform: translateY(-20px) rotate(8deg); }
   }
 
+  /* ===== HERO 多窗口悬浮卡（呼应桌面 mockup 风格） ===== */
+  .hero-window {
+    position: absolute;
+    width: 200px;
+    background: rgba(13, 15, 23, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(79, 143, 255, 0.08);
+    overflow: hidden;
+    z-index: 4;
+    opacity: 0;
+    transform: translateY(20px) scale(0.96) rotate(var(--tilt, 0deg));
+    animation: hero-window-in 1.2s var(--ease-out) 1s forwards, hero-window-float 8s ease-in-out 2.2s infinite;
+  }
+
+  @keyframes hero-window-in {
+    to { opacity: 1; transform: translateY(0) scale(1) rotate(var(--tilt, 0deg)); }
+  }
+
+  @keyframes hero-window-float {
+    0%, 100% { transform: translateY(0) scale(1) rotate(var(--tilt, 0deg)); }
+    50% { transform: translateY(-12px) scale(1.01) rotate(calc(var(--tilt, 0deg) + 1deg)); }
+  }
+
+  .hero-window-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(8, 9, 15, 0.6);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero-window-traffic {
+    display: flex;
+    gap: 4px;
+  }
+
+  .hero-window-traffic span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .hero-window-traffic .r { background: #ff5f57; }
+  .hero-window-traffic .y { background: #febc2e; }
+  .hero-window-traffic .g { background: #28c840; }
+
+  .hero-window-title {
+    margin-left: auto;
+    font-weight: 600;
+  }
+
+  .hero-window-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .hero-window-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero-window-row .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .hero-window-row .dot.green { background: var(--accent-green); box-shadow: 0 0 5px rgba(52, 211, 153, 0.6); }
+  .hero-window-row .dot.blue { background: var(--accent-blue); box-shadow: 0 0 5px rgba(79, 143, 255, 0.6); }
+  .hero-window-row .dot.cyan { background: var(--accent-cyan); box-shadow: 0 0 5px rgba(0, 212, 255, 0.6); }
+  .hero-window-row .dot.purple { background: var(--accent-purple); box-shadow: 0 0 5px rgba(168, 85, 247, 0.6); }
+
+  .hero-window-row span:nth-child(2) { flex: 1; }
+
+  .hero-window-tag {
+    font-size: 0.62rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--accent-green);
+    font-weight: 600;
+  }
+
+  /* 左侧窗口：系统状态（左倾 -4deg） */
+  .hero-window.w-left {
+    --tilt: -4deg;
+    top: 14%;
+    left: 2%;
+    animation-delay: 1s, 2.2s;
+  }
+
+  /* 右侧窗口：项目面板（右倾 +3deg） */
+  .hero-window.w-right {
+    --tilt: 3deg;
+    bottom: 12%;
+    right: 3%;
+    animation-delay: 1.3s, 2.8s;
+  }
+
+  @media (max-width: 1100px) {
+    .hero-window { display: none; }
+  }
+
   .hero-content {
     position: relative;
     z-index: 5;
@@ -452,6 +568,9 @@
   }
 
   .hero-subtitle strong { color: var(--text-primary); font-weight: 600; }
+
+  /* hero 关键词不拆行（内核/文件系统/桌面/记忆大脑等） */
+  .hero-kw { white-space: nowrap; color: var(--text-primary); font-weight: 500; }
 
   .hero-actions {
     display: flex;
@@ -991,6 +1110,281 @@
   .dir-card-name { font-weight: 700; font-size: 1rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; }
   .dir-card-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
 
+  /* ===== LIFECYCLE (AOS 生命周期闭环) ===== */
+  .lifecycle-wrap {
+    position: relative;
+    margin-top: 1rem;
+  }
+
+  /* 时间轴主轴 */
+  .lifecycle-axis {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent 0%, var(--accent-blue) 8%, var(--accent-cyan) 50%, var(--accent-purple) 92%, transparent 100%);
+    transform: translateX(-50%);
+    opacity: 0.4;
+  }
+
+  .lifecycle-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    position: relative;
+  }
+
+  .lifecycle-stage {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lifecycle-node {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    z-index: 2;
+    position: relative;
+  }
+
+  .lifecycle-node-dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-card-solid);
+    border: 2px solid var(--accent-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 0 6px rgba(8, 8, 13, 0.9), 0 0 24px rgba(79, 143, 255, 0.25);
+    transition: transform 0.3s var(--ease-spring);
+  }
+
+  .lifecycle-stage:hover .lifecycle-node-dot {
+    transform: scale(1.08);
+  }
+
+  .lifecycle-node-step {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  /* 卡片：奇数在左，偶数在右 */
+  .lifecycle-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.6rem;
+    transition: all 0.3s var(--ease-out);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lifecycle-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--stage-color, var(--accent-blue));
+    opacity: 0.6;
+  }
+
+  .lifecycle-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--stage-color, var(--accent-blue));
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 40px var(--stage-glow, rgba(79, 143, 255, 0.12));
+  }
+
+  .lifecycle-stage:nth-child(1) .lifecycle-card { grid-column: 1; }
+  .lifecycle-stage:nth-child(2) .lifecycle-card { grid-column: 3; }
+  .lifecycle-stage:nth-child(3) .lifecycle-card { grid-column: 1; }
+  .lifecycle-stage:nth-child(4) .lifecycle-card { grid-column: 3; }
+  .lifecycle-stage:nth-child(5) .lifecycle-card { grid-column: 1; }
+
+  .lifecycle-stage:nth-child(1) .lifecycle-node-dot { border-color: var(--accent-blue); }
+  .lifecycle-stage:nth-child(2) .lifecycle-node-dot { border-color: var(--accent-cyan); }
+  .lifecycle-stage:nth-child(3) .lifecycle-node-dot { border-color: var(--accent-purple); }
+  .lifecycle-stage:nth-child(4) .lifecycle-node-dot { border-color: var(--accent-green); }
+  .lifecycle-stage:nth-child(5) .lifecycle-node-dot { border-color: var(--accent-orange); }
+
+  .lifecycle-stage:nth-child(1) { --stage-color: var(--accent-blue); --stage-glow: rgba(79, 143, 255, 0.15); }
+  .lifecycle-stage:nth-child(2) { --stage-color: var(--accent-cyan); --stage-glow: rgba(0, 212, 255, 0.15); }
+  .lifecycle-stage:nth-child(3) { --stage-color: var(--accent-purple); --stage-glow: rgba(168, 85, 247, 0.15); }
+  .lifecycle-stage:nth-child(4) { --stage-color: var(--accent-green); --stage-glow: rgba(52, 211, 153, 0.15); }
+  .lifecycle-stage:nth-child(5) { --stage-color: var(--accent-orange); --stage-glow: rgba(251, 146, 60, 0.15); }
+
+  .lifecycle-stage-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .lifecycle-stage-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .lifecycle-stage-tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--stage-color, var(--accent-blue));
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+
+  .lifecycle-stage-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .lifecycle-stage-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .lifecycle-file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* 无 AOS 对比条 */
+  .lifecycle-stage-problem {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(248, 113, 113, 0.06);
+    border-left: 3px solid var(--accent-red);
+    font-size: 0.8rem;
+    color: rgba(248, 130, 130, 0.92);
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .lifecycle-stage-problem-tag {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--accent-red);
+    font-size: 0.72rem;
+    letter-spacing: 0.5px;
+    margin-top: 1px;
+  }
+
+  /* 对比卡：官方 Agent vs AOS 分栏对比 */
+  .lifecycle-contrast {
+    margin-top: 2.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.6rem 1.8rem;
+    position: relative;
+  }
+
+  .lifecycle-contrast-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .lifecycle-contrast-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .lifecycle-contrast-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .lifecycle-contrast-col {
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+
+  .lifecycle-contrast-col.bad {
+    background: rgba(248, 113, 113, 0.05);
+    border: 1px solid rgba(248, 113, 113, 0.18);
+  }
+
+  .lifecycle-contrast-col.good {
+    background: rgba(48, 209, 88, 0.04);
+    border: 1px solid rgba(48, 209, 88, 0.2);
+  }
+
+  .lifecycle-contrast-col-header {
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed currentColor;
+  }
+
+  .lifecycle-contrast-col.bad .lifecycle-contrast-col-header { color: var(--accent-red); }
+  .lifecycle-contrast-col.good .lifecycle-contrast-col-header { color: var(--accent-green); }
+
+  .lifecycle-contrast-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lifecycle-contrast-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .lifecycle-contrast-icon {
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .lifecycle-contrast-col.bad .lifecycle-contrast-icon { color: var(--accent-red); }
+  .lifecycle-contrast-col.good .lifecycle-contrast-icon { color: var(--accent-green); }
+
+  @media (max-width: 768px) {
+    .lifecycle-axis { left: 22px; }
+    .lifecycle-stage { grid-template-columns: 44px 1fr; }
+    .lifecycle-node { grid-column: 1 !important; }
+    .lifecycle-card { grid-column: 2 !important; }
+    .lifecycle-contrast-split { grid-template-columns: 1fr; }
+  }
+
   /* ===== ABILITIES ===== */
   .ability-grid {
     display: grid;
@@ -1143,11 +1537,17 @@
   .compare-table tbody td:nth-child(2) { color: var(--accent-cyan); font-weight: 600; }
   .compare-table tbody td:nth-child(3) { color: var(--text-muted); }
 
-  /* ===== QUICK START ===== */
+  /* ===== QUICK START（每行 2 个，居中对齐） ===== */
   .quick-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .quick-grid { grid-template-columns: 1fr; }
   }
 
   .quick-card {
@@ -1459,6 +1859,502 @@
     font-family: 'JetBrains Mono';
     font-display: swap;
   }
+
+  /* ===== DESKTOP SHOWCASE (AOS Viewer 桌面展示) ===== */
+  .desktop-showcase {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 0 60px rgba(79, 143, 255, 0.06);
+  }
+
+  /* 桌面窗口标题栏 */
+  .desktop-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(8, 8, 13, 0.6);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .desktop-traffic {
+    display: flex;
+    gap: 8px;
+  }
+
+  .desktop-traffic span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .desktop-traffic .tdot-r { background: #ff5f57; }
+  .desktop-traffic .tdot-y { background: #febc2e; }
+  .desktop-traffic .tdot-g { background: #28c840; }
+
+  .desktop-titlebar-title {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .desktop-titlebar-badge {
+    margin-left: auto;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(79, 143, 255, 0.12);
+    color: var(--accent-blue);
+    font-weight: 600;
+  }
+
+  /* 桌面主体：macOS 三段式（菜单栏 + 内容区 + Dock） */
+  .desktop-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 560px;
+    background: linear-gradient(180deg, #08090f 0%, #0d0f17 100%);
+    position: relative;
+  }
+
+  /* 菜单栏（顶部 32px） */
+  .desktop-menubar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 36px;
+    padding: 0 14px;
+    background: rgba(8, 9, 15, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.8rem;
+  }
+
+  .desktop-menu-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .desktop-menu-logo {
+    font-weight: 800;
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .desktop-menu-item {
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .desktop-menu-item:hover { color: var(--text-primary); }
+
+  .desktop-menu-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+  }
+
+  .desktop-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+  }
+
+  .desktop-status-text { color: var(--accent-green); font-weight: 600; }
+  .desktop-datasource {
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(79, 143, 255, 0.1);
+    color: var(--accent-blue);
+  }
+  .desktop-clock { color: var(--text-secondary); }
+  .desktop-settings { cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
+  .desktop-settings:hover { opacity: 1; }
+
+  /* 内容区（中间 flex:1） */
+  .desktop-content {
+    flex: 1;
+    padding: 24px 28px 32px;
+    overflow: hidden;
+  }
+
+  .desktop-content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .desktop-content-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .desktop-version-pill {
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--accent-green);
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* 4 信息卡片（系统总览顶部） */
+  .desktop-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .desktop-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .desktop-stat-card {
+    background: rgba(21, 21, 34, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    transition: all 0.3s var(--ease-out);
+  }
+
+  .desktop-stat-card:hover {
+    border-color: var(--border-hover);
+    background: rgba(28, 28, 48, 0.6);
+    transform: translateY(-2px);
+  }
+
+  .desktop-stat-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .desktop-stat-value {
+    font-size: 1.5rem;
+    font-weight: 200;
+    font-family: 'JetBrains Mono', monospace;
+    background: linear-gradient(135deg, #fff, var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .desktop-stat-value.blue { background: linear-gradient(135deg, #fff, var(--accent-blue)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .desktop-stat-value.green { background: linear-gradient(135deg, #fff, var(--accent-green)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .desktop-stat-value.cyan { background: linear-gradient(135deg, #fff, var(--accent-cyan)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .desktop-stat-value.purple { background: linear-gradient(135deg, #fff, var(--accent-purple)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* 双列：组件状态 + 运行时统计 */
+  .desktop-dual-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .desktop-dual-col { grid-template-columns: 1fr; }
+  }
+
+  .desktop-panel {
+    background: rgba(13, 15, 23, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+  }
+
+  .desktop-panel-title {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .desktop-status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .desktop-status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .desktop-status-row .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .desktop-status-row .dot.green { background: var(--accent-green); box-shadow: 0 0 6px rgba(52, 211, 153, 0.5); }
+  .desktop-status-row .dot.blue { background: var(--accent-blue); box-shadow: 0 0 6px rgba(79, 143, 255, 0.5); }
+
+  .desktop-status-row span:nth-child(2) { flex: 1; }
+
+  .desktop-status-tag {
+    font-size: 0.7rem;
+    padding: 1px 8px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+  .desktop-status-tag.ok { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); }
+  .desktop-status-tag.info { background: rgba(79, 143, 255, 0.12); color: var(--accent-blue); }
+
+  .desktop-runtime-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .desktop-runtime-item {
+    text-align: center;
+    padding: 6px 4px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 6px;
+  }
+
+  .desktop-runtime-num {
+    font-size: 1.3rem;
+    font-weight: 200;
+    font-family: 'JetBrains Mono', monospace;
+    background: linear-gradient(135deg, #fff, var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+
+  .desktop-runtime-label {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* 事件日志时间线 */
+  .desktop-timeline {
+    background: rgba(13, 15, 23, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+
+  .desktop-timeline-title {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .desktop-timeline-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 4px 0;
+    position: relative;
+  }
+
+  .desktop-timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 38px;
+    top: 18px;
+    bottom: -4px;
+    width: 1px;
+    background: var(--border-color);
+  }
+
+  .desktop-timeline-time {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    width: 38px;
+    flex-shrink: 0;
+  }
+
+  .desktop-timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .desktop-timeline-text { font-size: 0.8rem; }
+
+  /* Dock 栏（底部居中） */
+  .desktop-dock {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: rgba(13, 15, 23, 0.75);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .desktop-dock-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.25s var(--ease-spring), background 0.25s;
+  }
+
+  .desktop-dock-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-4px) scale(1.08);
+  }
+
+  .desktop-dock-item.active {
+    background: rgba(79, 143, 255, 0.12);
+  }
+
+  .desktop-dock-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .desktop-dock-label {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .desktop-dock-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border-color);
+    margin: 0 4px;
+    align-self: center;
+  }
+
+  @media (max-width: 768px) {
+    .desktop-dock { gap: 2px; padding: 8px 6px; overflow-x: auto; }
+    .desktop-dock-label { display: none; }
+    .desktop-dock-icon { font-size: 1.1rem; }
+  }
+
+  /* 三大核心价值 */
+  .desktop-values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 2.5rem;
+  }
+
+  @media (max-width: 768px) { .desktop-values { grid-template-columns: 1fr; } }
+
+  .desktop-value-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.8rem;
+    text-align: center;
+    transition: transform 0.4s var(--ease-spring), border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .desktop-value-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--glow-color, rgba(79, 143, 255, 0.08)), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+
+  .desktop-value-card:hover { transform: translateY(-6px); }
+  .desktop-value-card:hover::before { opacity: 1; }
+  .desktop-value-card:nth-child(1) { --glow-color: rgba(0, 212, 255, 0.12); }
+  .desktop-value-card:nth-child(1):hover { border-color: rgba(0, 212, 255, 0.3); box-shadow: var(--glow-cyan); }
+  .desktop-value-card:nth-child(2) { --glow-color: rgba(168, 85, 247, 0.12); }
+  .desktop-value-card:nth-child(2):hover { border-color: rgba(168, 85, 247, 0.3); box-shadow: var(--glow-purple); }
+  .desktop-value-card:nth-child(3) { --glow-color: rgba(251, 146, 60, 0.12); }
+  .desktop-value-card:nth-child(3):hover { border-color: rgba(251, 146, 60, 0.3); box-shadow: 0 0 60px rgba(251, 146, 60, 0.18); }
+
+  .desktop-value-icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: inline-block; }
+  .desktop-value-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .desktop-value-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
+
+  /* 桌面特性列表（居中对齐，避免末行左对齐） */
+  .desktop-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 2rem;
+  }
+
+  .desktop-feature-item {
+    flex: 1 1 220px;
+    max-width: 260px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: all 0.25s var(--ease-out);
+  }
+
+  .desktop-feature-item:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+    background: rgba(79, 143, 255, 0.04);
+  }
+
+  .desktop-feature-item .check { color: var(--accent-green); font-weight: 700; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -1475,9 +2371,11 @@
   <a href="#" class="nav-logo"><span class="logo-orb"></span><span class="g">AOS</span></a>
   <ul class="nav-links">
     <li><a href="#pain" data-i18n="nav.pain">痛点</a></li>
+    <li><a href="#lifecycle" data-i18n="nav.lifecycle">闭环</a></li>
+    <li><a href="#ability" data-i18n="nav.ability">能力</a></li>
     <li><a href="#how" data-i18n="nav.how">原理</a></li>
     <li><a href="#structure" data-i18n="nav.structure">结构</a></li>
-    <li><a href="#ability" data-i18n="nav.ability">能力</a></li>
+    <li><a href="#desktop" data-i18n="nav.desktop">桌面</a></li>
     <li><a href="#value" data-i18n="nav.value">价值</a></li>
     <li><a href="#start" data-i18n="nav.start">快速开始</a></li>
     <li><a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
@@ -1507,16 +2405,66 @@
   <span class="floating-emoji e4">🔧</span>
   <span class="floating-emoji e5">💡</span>
   <span class="floating-emoji e6">🚀</span>
+
+  <!-- 多窗口悬浮卡：呼应 AOS Viewer 桌面风格 -->
+  <div class="hero-window w-left">
+    <div class="hero-window-titlebar">
+      <div class="hero-window-traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <span class="hero-window-title" data-i18n="hero.window.left.title">系统状态</span>
+    </div>
+    <div class="hero-window-body">
+      <div class="hero-window-row">
+        <span class="dot green"></span>
+        <span>AGENTS.md</span>
+        <span class="hero-window-tag" data-i18n="hero.window.tag.loaded">已加载</span>
+      </div>
+      <div class="hero-window-row">
+        <span class="dot blue"></span>
+        <span>04_MEMORY/</span>
+        <span class="hero-window-tag" data-i18n="hero.window.tag.synced">已同步</span>
+      </div>
+      <div class="hero-window-row">
+        <span class="dot cyan"></span>
+        <span>SKILL × 5</span>
+        <span class="hero-window-tag" data-i18n="hero.window.tag.ready">就绪</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-window w-right">
+    <div class="hero-window-titlebar">
+      <div class="hero-window-traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <span class="hero-window-title" data-i18n="hero.window.right.title">项目工作区</span>
+    </div>
+    <div class="hero-window-body">
+      <div class="hero-window-row">
+        <span class="dot purple"></span>
+        <span>astrbot</span>
+        <span class="hero-window-tag" data-i18n="hero.window.tag.active">活跃</span>
+      </div>
+      <div class="hero-window-row">
+        <span class="dot green"></span>
+        <span>bishoujo-web</span>
+        <span class="hero-window-tag" data-i18n="hero.window.tag.deployed">已部署</span>
+      </div>
+      <div class="hero-window-row">
+        <span class="dot blue"></span>
+        <span>napcat</span>
+        <span class="hero-window-tag" data-i18n="hero.window.tag.running">运行中</span>
+      </div>
+    </div>
+  </div>
+
   <div class="hero-content">
     <div class="hero-badge">
       <span class="dot"></span>
-      <span data-i18n="hero.badge">v1.0.0 已发布 · MIT 协议</span>
+      <span data-i18n="hero.badge">v1.1.0 已发布 · MIT 协议</span>
     </div>
     <h1 class="hero-title" data-i18n="hero.title">
-      给 AI 助手装上<br><span class="gradient-text">记忆大脑和工作台</span>
+      AI 助手的<br><span class="gradient-text">操作系统</span>
     </h1>
     <p class="hero-subtitle" data-i18n="hero.subtitle">
-      AOS 是一套<strong>纯文件系统</strong>的 Agent 运行时框架——<br>
+      AOS 是一套<strong>操作系统形态的 Agent 运行框架</strong>——<span class="hero-kw">内核</span> · <span class="hero-kw">文件系统</span> · <span class="hero-kw">桌面</span> · <span class="hero-kw">记忆大脑</span><br>
       让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>
     </p>
     <div class="hero-actions">
@@ -1525,16 +2473,16 @@
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num" data-count="0" data-suffix="">0</div>
-        <div class="hero-stat-label" data-i18n="hero.stat.code">代码依赖</div>
+        <div class="hero-stat-num" data-count="5" data-suffix="">0</div>
+        <div class="hero-stat-label" data-i18n="hero.stat.layers">OS 架构层级</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num" data-count="10" data-suffix="">0</div>
         <div class="hero-stat-label" data-i18n="hero.stat.dir">标准化目录</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num" data-count="3" data-suffix="+">0</div>
-        <div class="hero-stat-label" data-i18n="hero.stat.platform">适配平台</div>
+        <div class="hero-stat-num" data-count="9" data-suffix="">0</div>
+        <div class="hero-stat-label" data-i18n="hero.stat.modules">桌面模块</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num" data-count="∞" data-suffix="" data-static="true">∞</div>
@@ -1668,6 +2616,250 @@
         <span class="chat-tag mem" data-i18n="compare.after.ai2.tag">[读取反馈记忆]</span><br>
         <span data-i18n="compare.after.ai2">注意到上次误把 refreshToken 写进响应体，这次会严格检查。</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- LIFECYCLE: AOS 工作全流程闭环 -->
+<section class="section" id="lifecycle">
+  <div class="section-label blue reveal" data-i18n="lifecycle.label">🔄 闭环</div>
+  <h2 class="section-title reveal" data-i18n="lifecycle.title">AOS 的标准工作流：从启动到归档，全程留痕</h2>
+  <p class="section-desc reveal" data-i18n="lifecycle.desc">不只是"能跑"，而是把 AI 助手的工作过程变成可追溯、可审计、可复用的闭环——</p>
+
+  <div class="lifecycle-wrap reveal-stagger">
+    <div class="lifecycle-axis"></div>
+    <div class="lifecycle-stages">
+
+      <!-- 阶段 1：项目启动前 -->
+      <div class="lifecycle-stage">
+        <div class="lifecycle-node">
+          <div class="lifecycle-node-dot">🚀</div>
+          <div class="lifecycle-node-step" data-i18n="lifecycle.step.1">Step 1</div>
+        </div>
+        <div class="lifecycle-card" data-i18n-attr="data-tooltip:lifecycle.1.tooltip" data-tooltip="自动初始化|新建项目时，AOS 自动创建 AGENTS.md + README.md + STATUS.md + reference_links.md，无需手动建文件">
+          <div class="lifecycle-stage-header">
+            <span class="lifecycle-stage-title" data-i18n="lifecycle.1.title">项目启动前：自动生成标准化文件结构</span>
+            <span class="lifecycle-stage-tag" data-i18n="lifecycle.1.tag">自动初始化</span>
+          </div>
+          <div class="lifecycle-stage-desc" data-i18n="lifecycle.1.desc">新建项目的瞬间，AOS 自动按标准模板创建专属目录与配套文件——项目配置、状态跟踪、知识引用一应俱全，无需手动建文件夹、写样板。</div>
+          <div class="lifecycle-stage-files">
+            <span class="lifecycle-file-chip">01_PROJECTS/{name}/</span>
+            <span class="lifecycle-file-chip">AGENTS.md</span>
+            <span class="lifecycle-file-chip">README.md</span>
+            <span class="lifecycle-file-chip">STATUS.md</span>
+            <span class="lifecycle-file-chip">reference_links.md</span>
+          </div>
+          <div class="lifecycle-stage-problem">
+            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span data-i18n="lifecycle.1.problem">手动建目录、写样板、遗漏配置，每个项目都从空白开始，重复造轮子</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段 2：工作过程中 -->
+      <div class="lifecycle-stage">
+        <div class="lifecycle-node">
+          <div class="lifecycle-node-dot">⚡</div>
+          <div class="lifecycle-node-step" data-i18n="lifecycle.step.2">Step 2</div>
+        </div>
+        <div class="lifecycle-card" data-i18n-attr="data-tooltip:lifecycle.2.tooltip" data-tooltip="实时落盘|每次会话首条消息读取 INDEX.md + 用户画像，会话结束状态自动落盘到 04_MEMORY/，全程不依赖运行时记忆">
+          <div class="lifecycle-stage-header">
+            <span class="lifecycle-stage-title" data-i18n="lifecycle.2.title">工作过程：实时留存记录与上下文</span>
+            <span class="lifecycle-stage-tag" data-i18n="lifecycle.2.tag">实时落盘</span>
+          </div>
+          <div class="lifecycle-stage-desc" data-i18n="lifecycle.2.desc">每次会话开始自动加载历史记忆，结束时把新增经验、反馈、项目状态写回磁盘——不依赖 AI 运行时记忆，新对话从文件恢复完整上下文。</div>
+          <div class="lifecycle-stage-files">
+            <span class="lifecycle-file-chip">04_MEMORY/INDEX.md</span>
+            <span class="lifecycle-file-chip">user/user_profile.md</span>
+            <span class="lifecycle-file-chip">project/proj_{name}.md</span>
+            <span class="lifecycle-file-chip">feedback/*.md</span>
+            <span class="lifecycle-file-chip">06_LOGS/{name}/{date}.log</span>
+          </div>
+          <div class="lifecycle-stage-problem">
+            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span data-i18n="lifecycle.2.problem">上下文仅存于对话窗口，关闭即失忆，新对话要重新介绍项目背景、技术栈、约束</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段 3：工作结束 -->
+      <div class="lifecycle-stage">
+        <div class="lifecycle-node">
+          <div class="lifecycle-node-dot">📦</div>
+          <div class="lifecycle-node-step" data-i18n="lifecycle.step.3">Step 3</div>
+        </div>
+        <div class="lifecycle-card" data-i18n-attr="data-tooltip:lifecycle.3.tooltip" data-tooltip="归档规范|所有输出必须经 Project→Export 流程，按 07_EXPORTS/{project}/{deliverable}/ 分层存放，禁止直接 export">
+          <div class="lifecycle-stage-header">
+            <span class="lifecycle-stage-title" data-i18n="lifecycle.3.title">工作结束：自动归档规范操作</span>
+            <span class="lifecycle-stage-tag" data-i18n="lifecycle.3.tag">归档规范</span>
+          </div>
+          <div class="lifecycle-stage-desc" data-i18n="lifecycle.3.desc">交付物按"项目名 + 交付类型"分层归档，状态同步更新到 STATUS.md 和 04_MEMORY/project/——下次接手时无需"考古"，所有进度一眼可见。</div>
+          <div class="lifecycle-stage-files">
+            <span class="lifecycle-file-chip">07_EXPORTS/{name}/{deliverable}/</span>
+            <span class="lifecycle-file-chip">STATUS.md → 同步更新</span>
+            <span class="lifecycle-file-chip">proj_{name}.md → 同步更新</span>
+            <span class="lifecycle-file-chip">SKILL_REGISTRY.md → call_count+1</span>
+          </div>
+          <div class="lifecycle-stage-problem">
+            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span data-i18n="lifecycle.3.problem">交付物散落各处，无分层归档，下次接手靠"考古"翻聊天记录，进度不可追溯</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段 4：每日自主巡检 -->
+      <div class="lifecycle-stage">
+        <div class="lifecycle-node">
+          <div class="lifecycle-node-dot">🔍</div>
+          <div class="lifecycle-node-step" data-i18n="lifecycle.step.4">Step 4</div>
+        </div>
+        <div class="lifecycle-card" data-i18n-attr="data-tooltip:lifecycle.4.tooltip" data-tooltip="自检脚本|python aos_check.py 扫描版本一致性/交叉引用/目录合规，输出 PASS/FAIL 报告，4 项全过才算健康">
+          <div class="lifecycle-stage-header">
+            <span class="lifecycle-stage-title" data-i18n="lifecycle.4.title">每日自主巡检：版本与结构健康验证</span>
+            <span class="lifecycle-stage-tag" data-i18n="lifecycle.4.tag">自检脚本</span>
+          </div>
+          <div class="lifecycle-stage-desc" data-i18n="lifecycle.4.desc">运行自检脚本扫描版本号同步、交叉引用完整性、目录合规性——发现残留旧版本号或断链立即报警，杜绝"改了一处忘了十处"的隐患。</div>
+          <div class="lifecycle-stage-files">
+            <span class="lifecycle-file-chip">aos_check.py</span>
+            <span class="lifecycle-file-chip">版本号同步</span>
+            <span class="lifecycle-file-chip">交叉引用验证</span>
+            <span class="lifecycle-file-chip">目录合规扫描</span>
+            <span class="lifecycle-file-chip">SYSTEM_STATE.md</span>
+          </div>
+          <div class="lifecycle-stage-problem">
+            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span data-i18n="lifecycle.4.problem">改了一处忘了十处，版本号不一致、断链无人发现，bug 潜伏到用户报障才暴露</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段 5：文件结构规整 -->
+      <div class="lifecycle-stage">
+        <div class="lifecycle-node">
+          <div class="lifecycle-node-dot">🗂️</div>
+          <div class="lifecycle-node-step" data-i18n="lifecycle.step.5">Step 5</div>
+        </div>
+        <div class="lifecycle-card" data-i18n-attr="data-tooltip:lifecycle.5.tooltip" data-tooltip="强约束目录|10 个目录各司其职：00_BOOT 系统规则 / 01_PROJECTS 项目隔离 / 04_MEMORY 状态持久化 / 09_REFERENCE 唯一知识库等">
+          <div class="lifecycle-stage-header">
+            <span class="lifecycle-stage-title" data-i18n="lifecycle.5.title">文件结构规整：10 目录各司其职</span>
+            <span class="lifecycle-stage-tag" data-i18n="lifecycle.5.tag">强约束目录</span>
+          </div>
+          <div class="lifecycle-stage-desc" data-i18n="lifecycle.5.desc">每个目录有且仅有一个职责，禁止业务污染——系统规则、项目数据、临时缓存、知识库、日志各有归处，AOS 高效规整混乱的文件结构，AI 不再"找不着文件"。</div>
+          <div class="lifecycle-stage-files">
+            <span class="lifecycle-file-chip">00_BOOT 系统规则</span>
+            <span class="lifecycle-file-chip">01_PROJECTS 项目隔离</span>
+            <span class="lifecycle-file-chip">04_MEMORY 状态持久化</span>
+            <span class="lifecycle-file-chip">07_EXPORTS 成果输出</span>
+            <span class="lifecycle-file-chip">09_REFERENCE 唯一知识库</span>
+          </div>
+          <div class="lifecycle-stage-problem">
+            <span class="lifecycle-stage-problem-tag">无 AOS</span>
+            <span data-i18n="lifecycle.5.problem">文件散落无规整，靠 find 和记忆找文件，AI"找不着北"，越用越乱直至无法维护</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 对比卡：官方 Agent vs AOS 分栏对比 -->
+    <div class="lifecycle-contrast reveal">
+      <div class="lifecycle-contrast-header">
+        <span class="lifecycle-contrast-title" data-i18n="lifecycle.contrast.title">⚖️ 完整对比：官方 Agent 软件 vs AOS 系统</span>
+      </div>
+      <div class="lifecycle-contrast-split">
+        <!-- 左栏：官方 Agent 软件的问题 -->
+        <div class="lifecycle-contrast-col bad">
+          <div class="lifecycle-contrast-col-header" data-i18n="lifecycle.contrast.bad.header">😫 官方 Agent 软件</div>
+          <div class="lifecycle-contrast-list">
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✗</span>
+              <span data-i18n="lifecycle.contrast.1">启动项目时流程杂乱：无标准目录、无配置模板，每次都从空白开始</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✗</span>
+              <span data-i18n="lifecycle.contrast.2">日常工作中遗忘此前完成的内容：上下文仅存于当前对话窗口，关闭即失忆</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✗</span>
+              <span data-i18n="lifecycle.contrast.3">工作过程未及时记录：没有日志、没有反馈经验沉淀，踩过的坑下次还会踩</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✗</span>
+              <span data-i18n="lifecycle.contrast.4">上下文信息混乱：多项目同时进行时，配置互窜、张冠李戴</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✗</span>
+              <span data-i18n="lifecycle.contrast.5">工作流程全盘出错：缺失自检机制，改了 A 忘了 B，bug 频发</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✗</span>
+              <span data-i18n="lifecycle.contrast.6">文件散落无规整：没有强约束目录，靠 find 和记忆找文件，越用越乱</span>
+            </div>
+          </div>
+        </div>
+        <!-- 右栏：AOS 系统的解决方案 -->
+        <div class="lifecycle-contrast-col good">
+          <div class="lifecycle-contrast-col-header" data-i18n="lifecycle.contrast.good.header">😎 AOS 系统</div>
+          <div class="lifecycle-contrast-list">
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✓</span>
+              <span data-i18n="lifecycle.contrast.good.1">新建项目即自动生成标准目录 + AGENTS.md + STATUS.md，0 配置秒启动</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✓</span>
+              <span data-i18n="lifecycle.contrast.good.2">每次会话首条消息自动加载 INDEX.md + 用户画像，跨会话记忆不丢失</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✓</span>
+              <span data-i18n="lifecycle.contrast.good.3">工作过程实时写回 04_MEMORY/feedback/，踩过的坑只踩一次，经验持续积累</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✓</span>
+              <span data-i18n="lifecycle.contrast.good.4">01_PROJECTS/ 目录隔离 + 项目级 AGENTS.md，多项目互不串台</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✓</span>
+              <span data-i18n="lifecycle.contrast.good.5">aos_check.py 自检脚本扫描版本一致性 / 交叉引用 / 目录合规，4 项全过才健康</span>
+            </div>
+            <div class="lifecycle-contrast-item">
+              <span class="lifecycle-contrast-icon">✓</span>
+              <span data-i18n="lifecycle.contrast.good.6">10 目录强约束各司其职，系统规则 / 项目 / 记忆 / 知识库 / 日志各有归处</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- CORE ABILITIES -->
+<section class="section" id="ability">
+  <div class="section-label orange reveal" data-i18n="ability.label">🛡️ 能力</div>
+  <h2 class="section-title reveal" data-i18n="ability.title">三大核心能力</h2>
+  <p class="section-desc reveal" data-i18n="ability.desc">解决 AI 助手最根本的三个问题——</p>
+
+  <div class="ability-grid reveal-stagger">
+    <div class="ability-card" data-i18n-attr="data-tooltip:ability.1.tooltip" data-tooltip="技术实现|AI 每次对话首条消息读取 04_MEMORY/INDEX.md，会话结束时状态落盘。不依赖 AI 运行时记忆">
+      <div class="ability-icon">🧠</div>
+      <div class="ability-title" data-i18n="ability.1.title">跨会话记忆</div>
+      <div class="ability-analogy" data-i18n="ability.1.analogy">→ 助手的笔记本</div>
+      <div class="ability-desc" data-i18n="ability.1.desc">AI 每次对话自动读写记忆文件，新对话从磁盘恢复全部上下文。不再"失忆"，经验持续积累。</div>
+    </div>
+    <div class="ability-card" data-i18n-attr="data-tooltip:ability.2.tooltip" data-tooltip="隔离机制|每个项目有独立 AGENTS.md（项目级约束优先于系统默认）+ STATUS.md + reference_links.md（只存指针）">
+      <div class="ability-icon">📁</div>
+      <div class="ability-title" data-i18n="ability.2.title">项目隔离</div>
+      <div class="ability-analogy" data-i18n="ability.2.analogy">→ 独立办公桌</div>
+      <div class="ability-desc" data-i18n="ability.2.desc">每个项目有独立的配置、状态、文档。切换项目时自动加载对应上下文，杜绝"张冠李戴"。</div>
+    </div>
+    <div class="ability-card" data-i18n-attr="data-tooltip:ability.3.tooltip" data-tooltip="Skill 生命周期|新建→注册到 SKILL_REGISTRY.md→调用时更新 call_count→持续追加 gotchas.md 坑点清单">
+      <div class="ability-icon">🔧</div>
+      <div class="ability-title" data-i18n="ability.3.title">技能复用</div>
+      <div class="ability-analogy" data-i18n="ability.3.analogy">→ 标准操作手册</div>
+      <div class="ability-desc" data-i18n="ability.3.desc">把常用工作流封装成 Skill，一次定义、反复调用。团队共享最佳实践，避免重复造轮子。</div>
     </div>
   </div>
 </section>
@@ -1815,30 +3007,243 @@
 
 <div class="divider"><div class="divider-line"></div></div>
 
-<!-- CORE ABILITIES -->
-<section class="section" id="ability">
-  <div class="section-label orange reveal" data-i18n="ability.label">🛡️ 能力</div>
-  <h2 class="section-title reveal" data-i18n="ability.title">三大核心能力</h2>
-  <p class="section-desc reveal" data-i18n="ability.desc">解决 AI 助手最根本的三个问题——</p>
+<!-- AOS VIEWER DESKTOP -->
+<section class="section" id="desktop">
+  <div class="section-label cyan reveal" data-i18n="desktop.label">🖥️ 桌面</div>
+  <h2 class="section-title reveal" data-i18n="desktop.title">AOS Viewer：你的 AI 系统桌面</h2>
+  <p class="section-desc reveal" data-i18n="desktop.desc">v1.1.0 的核心革新——让 AOS 从"一组文件"进化为"一套可见、可控、可操作的 OS 形态运行框架"。</p>
 
-  <div class="ability-grid reveal-stagger">
-    <div class="ability-card" data-i18n-attr="data-tooltip:ability.1.tooltip" data-tooltip="技术实现|AI 每次对话首条消息读取 04_MEMORY/INDEX.md，会话结束时状态落盘。不依赖 AI 运行时记忆">
-      <div class="ability-icon">🧠</div>
-      <div class="ability-title" data-i18n="ability.1.title">跨会话记忆</div>
-      <div class="ability-analogy" data-i18n="ability.1.analogy">→ 助手的笔记本</div>
-      <div class="ability-desc" data-i18n="ability.1.desc">AI 每次对话自动读写记忆文件，新对话从磁盘恢复全部上下文。不再"失忆"，经验持续积累。</div>
+  <!-- 桌面窗口 Mockup（还原 AOS Viewer 界面：macOS 三段式） -->
+  <div class="desktop-showcase reveal" data-i18n-attr="data-tooltip:desktop.mockup.tooltip" data-tooltip="还原展示|以下为 AOS Viewer 桌面界面的网页还原展示，实际桌面应用支持 Liquid Glass 玻璃拟态、菜单栏、Spotlight 搜索等完整交互">
+    <div class="desktop-titlebar">
+      <div class="desktop-traffic">
+        <span class="tdot-r"></span>
+        <span class="tdot-y"></span>
+        <span class="tdot-g"></span>
+      </div>
+      <span class="desktop-titlebar-title" data-i18n="desktop.titlebar.title">AOS Viewer — 系统桌面</span>
+      <span class="desktop-titlebar-badge" data-i18n="desktop.mockup.badge">Liquid Glass</span>
     </div>
-    <div class="ability-card" data-i18n-attr="data-tooltip:ability.2.tooltip" data-tooltip="隔离机制|每个项目有独立 AGENTS.md（项目级约束优先于系统默认）+ STATUS.md + reference_links.md（只存指针）">
-      <div class="ability-icon">📁</div>
-      <div class="ability-title" data-i18n="ability.2.title">项目隔离</div>
-      <div class="ability-analogy" data-i18n="ability.2.analogy">→ 独立办公桌</div>
-      <div class="ability-desc" data-i18n="ability.2.desc">每个项目有独立的配置、状态、文档。切换项目时自动加载对应上下文，杜绝"张冠李戴"。</div>
+    <div class="desktop-body">
+      <!-- ① 菜单栏（顶部 36px） -->
+      <div class="desktop-menubar">
+        <div class="desktop-menu-left">
+          <span class="desktop-menu-logo">🧠 AOS</span>
+          <span class="desktop-menu-item" data-i18n="desktop.menu.file">文件</span>
+          <span class="desktop-menu-item" data-i18n="desktop.menu.view">视图</span>
+          <span class="desktop-menu-item" data-i18n="desktop.menu.tools">工具</span>
+          <span class="desktop-menu-item" data-i18n="desktop.menu.help">帮助</span>
+        </div>
+        <div class="desktop-menu-right">
+          <span class="desktop-status-dot"></span>
+          <span class="desktop-status-text">ACTIVE</span>
+          <span class="desktop-datasource" data-i18n="desktop.menu.source">本地</span>
+          <span class="desktop-clock">14:32</span>
+          <span class="desktop-settings">⚙️</span>
+        </div>
+      </div>
+
+      <!-- ② 内容区（系统总览） -->
+      <div class="desktop-content">
+        <div class="desktop-content-header">
+          <div class="desktop-content-title" data-i18n="desktop.content.title">系统总览</div>
+          <span class="desktop-version-pill">v1.1.0</span>
+        </div>
+
+        <!-- 4 信息卡片 -->
+        <div class="desktop-stat-grid">
+          <div class="desktop-stat-card">
+            <div class="desktop-stat-label" data-i18n="desktop.stat.version">版本</div>
+            <div class="desktop-stat-value blue">1.1.0</div>
+          </div>
+          <div class="desktop-stat-card">
+            <div class="desktop-stat-label" data-i18n="desktop.stat.kernel">内核状态</div>
+            <div class="desktop-stat-value green" data-i18n="desktop.stat.kernel.value">正常</div>
+          </div>
+          <div class="desktop-stat-card">
+            <div class="desktop-stat-label" data-i18n="desktop.stat.init">初始化</div>
+            <div class="desktop-stat-value cyan">08:30</div>
+          </div>
+          <div class="desktop-stat-card">
+            <div class="desktop-stat-label" data-i18n="desktop.stat.updated">最后更新</div>
+            <div class="desktop-stat-value purple">2m</div>
+          </div>
+        </div>
+
+        <!-- 双列：组件状态 + 运行时统计 -->
+        <div class="desktop-dual-col">
+          <div class="desktop-panel">
+            <div class="desktop-panel-title" data-i18n="desktop.panel.components">组件状态</div>
+            <div class="desktop-status-list">
+              <div class="desktop-status-row">
+                <span class="dot green"></span>
+                <span>AGENTS.md</span>
+                <span class="desktop-status-tag ok" data-i18n="desktop.comp.1">已加载</span>
+              </div>
+              <div class="desktop-status-row">
+                <span class="dot green"></span>
+                <span>SKILL_REGISTRY</span>
+                <span class="desktop-status-tag ok">5 Skill</span>
+              </div>
+              <div class="desktop-status-row">
+                <span class="dot green"></span>
+                <span>04_MEMORY/INDEX</span>
+                <span class="desktop-status-tag ok" data-i18n="desktop.comp.3">已索引</span>
+              </div>
+              <div class="desktop-status-row">
+                <span class="dot blue"></span>
+                <span>agent_tasks.json</span>
+                <span class="desktop-status-tag info" data-i18n="desktop.comp.4">0 待办</span>
+              </div>
+            </div>
+          </div>
+          <div class="desktop-panel">
+            <div class="desktop-panel-title" data-i18n="desktop.panel.runtime">运行时统计</div>
+            <div class="desktop-runtime-grid">
+              <div class="desktop-runtime-item">
+                <div class="desktop-runtime-num">7</div>
+                <div class="desktop-runtime-label" data-i18n="desktop.rt.projects">活跃项目</div>
+              </div>
+              <div class="desktop-runtime-item">
+                <div class="desktop-runtime-num">∞</div>
+                <div class="desktop-runtime-label" data-i18n="desktop.rt.memory">记忆条目</div>
+              </div>
+              <div class="desktop-runtime-item">
+                <div class="desktop-runtime-num">5</div>
+                <div class="desktop-runtime-label" data-i18n="desktop.rt.skills">已注册 Skill</div>
+              </div>
+              <div class="desktop-runtime-item">
+                <div class="desktop-runtime-num">9</div>
+                <div class="desktop-runtime-label" data-i18n="desktop.rt.modules">桌面模块</div>
+              </div>
+              <div class="desktop-runtime-item">
+                <div class="desktop-runtime-num">3</div>
+                <div class="desktop-runtime-label" data-i18n="desktop.rt.loops">Loop 任务</div>
+              </div>
+              <div class="desktop-runtime-item">
+                <div class="desktop-runtime-num">128</div>
+                <div class="desktop-runtime-label" data-i18n="desktop.rt.logs">日志条目</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 事件日志时间线 -->
+        <div class="desktop-timeline">
+          <div class="desktop-timeline-title" data-i18n="desktop.timeline.title">事件日志</div>
+          <div class="desktop-timeline-item">
+            <span class="desktop-timeline-time">14:32</span>
+            <span class="desktop-timeline-dot"></span>
+            <span class="desktop-timeline-text" data-i18n="desktop.log.1">项目 astrbot 识别完成</span>
+          </div>
+          <div class="desktop-timeline-item">
+            <span class="desktop-timeline-time">14:28</span>
+            <span class="desktop-timeline-dot"></span>
+            <span class="desktop-timeline-text" data-i18n="desktop.log.2">Skill SK_0001 调用记录</span>
+          </div>
+          <div class="desktop-timeline-item">
+            <span class="desktop-timeline-time">14:15</span>
+            <span class="desktop-timeline-dot"></span>
+            <span class="desktop-timeline-text" data-i18n="desktop.log.3">记忆 INDEX.md 更新</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ Dock 栏（底部居中） -->
+      <div class="desktop-dock">
+        <div class="desktop-dock-item active">
+          <span class="desktop-dock-icon">🖥️</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.overview">总览</span>
+        </div>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">🔧</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.skills">Skill</span>
+        </div>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">📁</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.projects">项目</span>
+        </div>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">🧠</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.memory">记忆</span>
+        </div>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">📚</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.knowledge">知识</span>
+        </div>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">🔄</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.loop">Loop</span>
+        </div>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">👤</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.agent">Agent</span>
+        </div>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">📝</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.logs">日志</span>
+        </div>
+        <span class="desktop-dock-divider"></span>
+        <div class="desktop-dock-item">
+          <span class="desktop-dock-icon">🎛️</span>
+          <span class="desktop-dock-label" data-i18n="desktop.dock.console">控制台</span>
+        </div>
+      </div>
     </div>
-    <div class="ability-card" data-i18n-attr="data-tooltip:ability.3.tooltip" data-tooltip="Skill 生命周期|新建→注册到 SKILL_REGISTRY.md→调用时更新 call_count→持续追加 gotchas.md 坑点清单">
-      <div class="ability-icon">🔧</div>
-      <div class="ability-title" data-i18n="ability.3.title">技能复用</div>
-      <div class="ability-analogy" data-i18n="ability.3.analogy">→ 标准操作手册</div>
-      <div class="ability-desc" data-i18n="ability.3.desc">把常用工作流封装成 Skill，一次定义、反复调用。团队共享最佳实践，避免重复造轮子。</div>
+  </div>
+
+  <!-- 三大核心价值 -->
+  <div class="desktop-values reveal-stagger">
+    <div class="desktop-value-card" data-i18n-attr="data-tooltip:desktop.value.1.tooltip" data-tooltip="对比传统方式|文件散落各处，全靠 find 和记忆。AOS Viewer 让系统总览/Skill/项目/记忆/知识库/日志一眼全览">
+      <div class="desktop-value-icon">👁️</div>
+      <div class="desktop-value-title" data-i18n="desktop.value.1.title">可见性</div>
+      <div class="desktop-value-desc" data-i18n="desktop.value.1.desc">系统总览 / Skill / 项目 / 记忆 / 知识库 / 日志，一眼全览，不再靠 find 和记忆</div>
+    </div>
+    <div class="desktop-value-card" data-i18n-attr="data-tooltip:desktop.value.2.tooltip" data-tooltip="控制台能力|一键触发自检/同步/迁移，进度实时可见。不用记命令，不用敲终端">
+      <div class="desktop-value-icon">🎛️</div>
+      <div class="desktop-value-title" data-i18n="desktop.value.2.title">可控性</div>
+      <div class="desktop-value-desc" data-i18n="desktop.value.2.desc">控制台一键触发自检 / 同步 / 迁移，进度实时可见，不用记命令、敲终端</div>
+    </div>
+    <div class="desktop-value-card" data-i18n-attr="data-tooltip:desktop.value.3.tooltip" data-tooltip="视觉设计|Liquid Glass 玻璃拟态桌面 + 菜单栏 + Spotlight 搜索 + 通知中心，提供类操作系统的工作体验">
+      <div class="desktop-value-icon">🖥️</div>
+      <div class="desktop-value-title" data-i18n="desktop.value.3.title">系统感</div>
+      <div class="desktop-value-desc" data-i18n="desktop.value.3.desc">Liquid Glass 玻璃拟态桌面 + 菜单栏 + Spotlight 搜索 + 通知中心，像操作真实 OS</div>
+    </div>
+  </div>
+
+  <!-- 桌面特性 -->
+  <div class="desktop-features reveal-stagger">
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.1">启动动画 + 动态背景光晕</span>
+    </div>
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.2">菜单栏（文件/视图/工具/帮助）</span>
+    </div>
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.3">Spotlight 全局搜索</span>
+    </div>
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.4">通知中心实时反馈</span>
+    </div>
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.5">三种主题（深色/浅色/极简）</span>
+    </div>
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.6">i18n 中英双语切换</span>
+    </div>
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.7">数据源切换（本地/API）</span>
+    </div>
+    <div class="desktop-feature-item">
+      <span class="check">✓</span>
+      <span data-i18n="desktop.feature.8">设置持久化（重启不丢失）</span>
     </div>
   </div>
 </section>
@@ -1888,6 +3293,16 @@
     </thead>
     <tbody>
       <tr>
+        <td data-i18n="table.os.dim">系统形态</td>
+        <td data-i18n="table.os.aos">完整 OS：内核 + 文件系统 + 桌面 + 应用</td>
+        <td data-i18n="table.os.trad">单一框架或脚本</td>
+      </tr>
+      <tr>
+        <td data-i18n="table.vis.dim">可见性</td>
+        <td data-i18n="table.vis.aos">AOS Viewer 桌面一眼全览</td>
+        <td data-i18n="table.vis.trad">文件散落，全靠 find 和记忆</td>
+      </tr>
+      <tr>
         <td data-i18n="table.1.dim">技术依赖</td>
         <td data-i18n="table.1.aos">纯文件系统，零代码</td>
         <td data-i18n="table.1.trad">需要安装框架/运行时</td>
@@ -1926,7 +3341,7 @@
 <!-- QUICK START -->
 <section class="section" id="start">
   <div class="section-label pink reveal" data-i18n="start.label">🚀 快速开始</div>
-  <h2 class="section-title reveal" data-i18n="start.title">三步上手 AOS</h2>
+  <h2 class="section-title reveal" data-i18n="start.title">四步上手 AOS</h2>
   <p class="section-desc reveal" data-i18n="start.desc">纯文件系统，无需安装任何依赖——</p>
 
   <div class="quick-grid reveal-stagger">
@@ -1936,13 +3351,18 @@
       <div class="quick-desc" data-i18n="start.1.desc">克隆仓库或下载压缩包，AOS 是纯文件结构，无需安装任何依赖。</div>
       <code class="quick-code">git clone https://github.com/MagicalYuYu/agent-operating-system.git</code>
     </div>
-    <div class="quick-card" data-i18n-attr="data-tooltip:start.2.tooltip" data-tooltip="自动行为|AI 会自动读取 AGENTS.md + 识别当前项目 + 加载项目级 AGENTS.md。TRAE Work 的 Code 模式最优">
+    <div class="quick-card" data-i18n-attr="data-tooltip:start.2b.tooltip" data-tooltip="推荐方式|从 GitHub Release 下载 AOS Viewer.exe，双击即可启动。无需 Python 环境，自带 Liquid Glass 桌面界面">
       <div class="quick-step">Step 2</div>
+      <div class="quick-title" data-i18n="start.2b.title">启动 AOS Viewer 桌面（推荐）</div>
+      <div class="quick-desc" data-i18n="start.2b.desc">从 GitHub Release 下载 AOS Viewer.exe，双击即可启动——无需 Python 环境，自带 Liquid Glass 桌面界面，自动扫描文件系统展示全貌。</div>
+    </div>
+    <div class="quick-card" data-i18n-attr="data-tooltip:start.2.tooltip" data-tooltip="自动行为|AI 会自动读取 AGENTS.md + 识别当前项目 + 加载项目级 AGENTS.md。TRAE Work 的 Code 模式最优">
+      <div class="quick-step">Step 3</div>
       <div class="quick-title" data-i18n="start.2.title">在 AI 工具中打开</div>
       <div class="quick-desc" data-i18n="start.2.desc">用 TRAE Work（推荐）、Claude Code 或 Codex 打开 AOS 目录，AI 会自动读取根目录的 AGENTS.md。</div>
     </div>
     <div class="quick-card" data-i18n-attr="data-tooltip:start.3.tooltip" data-tooltip="3 条 Rules|aos-consistency-guard（版本一致性）、aos-memory-rules（记忆规则）、aos-skill-rules（Skill 规则）。自检脚本扫描目录合规性">
-      <div class="quick-step">Step 3</div>
+      <div class="quick-step">Step 4</div>
       <div class="quick-title" data-i18n="start.3.title">配置 Rules 并验证</div>
       <div class="quick-desc" data-i18n="start.3.desc">添加 3 条 Rules（详见配置指南），然后运行自检脚本验证安装。</div>
       <code class="quick-code">python 03_TOOLS/scripts/aos_check.py</code>
@@ -1984,7 +3404,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo"><span class="g">AOS</span></div>
-  <div class="footer-desc" data-i18n="footer.desc">Agent Operating System — 给 AI 助手装上记忆大脑和工作台</div>
+  <div class="footer-desc" data-i18n="footer.desc">Agent Operating System — AI 助手的操作系统：内核 · 文件系统 · 桌面 · 记忆大脑</div>
   <div class="footer-links">
     <a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank" rel="noopener" data-i18n="footer.github">GitHub</a>
     <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/docs/trae-setup-guide.md" target="_blank" rel="noopener" data-i18n="footer.guide">配置指南</a>
@@ -2001,19 +3421,30 @@ const i18n = {
     'nav.pain': '痛点',
     'nav.how': '原理',
     'nav.structure': '结构',
+    'nav.desktop': '桌面',
+    'nav.lifecycle': '闭环',
     'nav.ability': '能力',
     'nav.value': '价值',
     'nav.start': '快速开始',
 
     // HERO
-    'hero.badge': 'v1.0.0 已发布 · MIT 协议',
-    'hero.title': '给 AI 助手装上<br><span class="gradient-text">记忆大脑和工作台</span>',
-    'hero.subtitle': 'AOS 是一套<strong>纯文件系统</strong>的 Agent 运行时框架——<br>让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>',
+    'hero.badge': 'v1.1.0 已发布 · MIT 协议',
+    'hero.title': 'AI 助手的<br><span class="gradient-text">操作系统</span>',
+    'hero.subtitle': 'AOS 是一套<strong>操作系统形态的 Agent 运行框架</strong>——<span class="hero-kw">内核</span> · <span class="hero-kw">文件系统</span> · <span class="hero-kw">桌面</span> · <span class="hero-kw">记忆大脑</span><br>让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>',
     'hero.action.start': '快速开始',
     'hero.action.source': '查看源码',
-    'hero.stat.code': '代码依赖',
+    // hero 多窗口悬浮卡
+    'hero.window.left.title': '系统状态',
+    'hero.window.right.title': '项目工作区',
+    'hero.window.tag.loaded': '已加载',
+    'hero.window.tag.synced': '已同步',
+    'hero.window.tag.ready': '就绪',
+    'hero.window.tag.active': '活跃',
+    'hero.window.tag.deployed': '已部署',
+    'hero.window.tag.running': '运行中',
+    'hero.stat.layers': 'OS 架构层级',
     'hero.stat.dir': '标准化目录',
-    'hero.stat.platform': '适配平台',
+    'hero.stat.modules': '桌面模块',
     'hero.stat.memory': '记忆持久化',
 
     // PAIN POINTS
@@ -2111,6 +3542,121 @@ const i18n = {
     'dir.09.desc': '知识库<br>唯一参考源，禁止重复',
     'dir.09.tooltip': '铁律 6|所有知识只允许存在一份，其他位置只能引用路径。含 system/、web/、_index.md',
 
+    // DESKTOP (AOS Viewer 桌面环境)
+    'desktop.label': '🖥️ 桌面',
+    'desktop.title': 'AOS Viewer：你的 AI 系统桌面',
+    'desktop.desc': 'v1.1.0 的核心革新——让 AOS 从"一组文件"进化为"一套可见、可控、可操作的 OS 形态运行框架"。',
+    'desktop.mockup.badge': 'Liquid Glass',
+    'desktop.mockup.tooltip': '还原展示|以下为 AOS Viewer 桌面界面的网页还原展示（macOS 三段式：菜单栏 + 内容区 + Dock），实际桌面应用支持 Liquid Glass 玻璃拟态、菜单栏、Spotlight 搜索等完整交互',
+    'desktop.titlebar.title': 'AOS Viewer — 系统桌面',
+    // 菜单栏
+    'desktop.menu.file': '文件',
+    'desktop.menu.view': '视图',
+    'desktop.menu.tools': '工具',
+    'desktop.menu.help': '帮助',
+    'desktop.menu.source': '本地',
+    // 内容区
+    'desktop.content.title': '系统总览',
+    'desktop.stat.version': '版本',
+    'desktop.stat.kernel': '内核状态',
+    'desktop.stat.kernel.value': '正常',
+    'desktop.stat.init': '初始化',
+    'desktop.stat.updated': '最后更新',
+    // 双列面板
+    'desktop.panel.components': '组件状态',
+    'desktop.panel.runtime': '运行时统计',
+    'desktop.comp.1': '已加载',
+    'desktop.comp.3': '已索引',
+    'desktop.comp.4': '0 待办',
+    'desktop.rt.projects': '活跃项目',
+    'desktop.rt.memory': '记忆条目',
+    'desktop.rt.skills': '已注册 Skill',
+    'desktop.rt.modules': '桌面模块',
+    'desktop.rt.loops': 'Loop 任务',
+    'desktop.rt.logs': '日志条目',
+    // 事件日志时间线
+    'desktop.timeline.title': '事件日志',
+    'desktop.log.1': '项目 astrbot 识别完成',
+    'desktop.log.2': 'Skill SK_0001 调用记录',
+    'desktop.log.3': '记忆 INDEX.md 更新',
+    // Dock 栏
+    'desktop.dock.overview': '总览',
+    'desktop.dock.skills': 'Skill',
+    'desktop.dock.projects': '项目',
+    'desktop.dock.memory': '记忆',
+    'desktop.dock.knowledge': '知识',
+    'desktop.dock.loop': 'Loop',
+    'desktop.dock.agent': 'Agent',
+    'desktop.dock.logs': '日志',
+    'desktop.dock.console': '控制台',
+    'desktop.value.1.title': '可见性',
+    'desktop.value.1.desc': '系统总览 / Skill / 项目 / 记忆 / 知识库 / 日志，一眼全览，不再靠 find 和记忆',
+    'desktop.value.1.tooltip': '对比传统方式|文件散落各处，全靠 find 和记忆。AOS Viewer 让系统总览/Skill/项目/记忆/知识库/日志一眼全览',
+    'desktop.value.2.title': '可控性',
+    'desktop.value.2.desc': '控制台一键触发自检 / 同步 / 迁移，进度实时可见，不用记命令、敲终端',
+    'desktop.value.2.tooltip': '控制台能力|一键触发自检/同步/迁移，进度实时可见。不用记命令，不用敲终端',
+    'desktop.value.3.title': '系统感',
+    'desktop.value.3.desc': 'Liquid Glass 玻璃拟态桌面 + 菜单栏 + Spotlight 搜索 + 通知中心，像操作真实 OS',
+    'desktop.value.3.tooltip': '视觉设计|Liquid Glass 玻璃拟态桌面 + 菜单栏 + Spotlight 搜索 + 通知中心，提供类操作系统的工作体验',
+    'desktop.feature.1': '启动动画 + 动态背景光晕',
+    'desktop.feature.2': '菜单栏（文件/视图/工具/帮助）',
+    'desktop.feature.3': 'Spotlight 全局搜索',
+    'desktop.feature.4': '通知中心实时反馈',
+    'desktop.feature.5': '三种主题（深色/浅色/极简）',
+    'desktop.feature.6': 'i18n 中英双语切换',
+    'desktop.feature.7': '数据源切换（本地/API）',
+    'desktop.feature.8': '设置持久化（重启不丢失）',
+
+    // LIFECYCLE (AOS 工作全流程闭环)
+    'lifecycle.label': '🔄 闭环',
+    'lifecycle.title': 'AOS 的标准工作流：从启动到归档，全程留痕',
+    'lifecycle.desc': '不只是"能跑"，而是把 AI 助手的工作过程变成可追溯、可审计、可复用的闭环——',
+    'lifecycle.step.1': '第 1 步',
+    'lifecycle.step.2': '第 2 步',
+    'lifecycle.step.3': '第 3 步',
+    'lifecycle.step.4': '第 4 步',
+    'lifecycle.step.5': '第 5 步',
+    'lifecycle.1.title': '项目启动前：自动生成标准化文件结构',
+    'lifecycle.1.tag': '自动初始化',
+    'lifecycle.1.desc': '新建项目的瞬间，AOS 自动按标准模板创建专属目录与配套文件——项目配置、状态跟踪、知识引用一应俱全，无需手动建文件夹、写样板。',
+    'lifecycle.1.tooltip': '自动初始化|新建项目时，AOS 自动创建 AGENTS.md + README.md + STATUS.md + reference_links.md，无需手动建文件',
+    'lifecycle.1.problem': '手动建目录、写样板、遗漏配置，每个项目都从空白开始，重复造轮子',
+    'lifecycle.2.title': '工作过程：实时留存记录与上下文',
+    'lifecycle.2.tag': '实时落盘',
+    'lifecycle.2.desc': '每次会话开始自动加载历史记忆，结束时把新增经验、反馈、项目状态写回磁盘——不依赖 AI 运行时记忆，新对话从文件恢复完整上下文。',
+    'lifecycle.2.tooltip': '实时落盘|每次会话首条消息读取 INDEX.md + 用户画像，会话结束状态自动落盘到 04_MEMORY/，全程不依赖运行时记忆',
+    'lifecycle.2.problem': '上下文仅存于对话窗口，关闭即失忆，新对话要重新介绍项目背景、技术栈、约束',
+    'lifecycle.3.title': '工作结束：自动归档规范操作',
+    'lifecycle.3.tag': '归档规范',
+    'lifecycle.3.desc': '交付物按"项目名 + 交付类型"分层归档，状态同步更新到 STATUS.md 和 04_MEMORY/project/——下次接手时无需"考古"，所有进度一眼可见。',
+    'lifecycle.3.tooltip': '归档规范|所有输出必须经 Project→Export 流程，按 07_EXPORTS/{project}/{deliverable}/ 分层存放，禁止直接 export',
+    'lifecycle.3.problem': '交付物散落各处，无分层归档，下次接手靠"考古"翻聊天记录，进度不可追溯',
+    'lifecycle.4.title': '每日自主巡检：版本与结构健康验证',
+    'lifecycle.4.tag': '自检脚本',
+    'lifecycle.4.desc': '运行自检脚本扫描版本号同步、交叉引用完整性、目录合规性——发现残留旧版本号或断链立即报警，杜绝"改了一处忘了十处"的隐患。',
+    'lifecycle.4.tooltip': '自检脚本|python aos_check.py 扫描版本一致性/交叉引用/目录合规，输出 PASS/FAIL 报告，4 项全过才算健康',
+    'lifecycle.4.problem': '改了一处忘了十处，版本号不一致、断链无人发现，bug 潜伏到用户报障才暴露',
+    'lifecycle.5.title': '文件结构规整：10 目录各司其职',
+    'lifecycle.5.tag': '强约束目录',
+    'lifecycle.5.desc': '每个目录有且仅有一个职责，禁止业务污染——系统规则、项目数据、临时缓存、知识库、日志各有归处，AOS 高效规整混乱的文件结构，AI 不再"找不着文件"。',
+    'lifecycle.5.tooltip': '强约束目录|10 个目录各司其职：00_BOOT 系统规则 / 01_PROJECTS 项目隔离 / 04_MEMORY 状态持久化 / 09_REFERENCE 唯一知识库等',
+    'lifecycle.5.problem': '文件散落无规整，靠 find 和记忆找文件，AI"找不着北"，越用越乱直至无法维护',
+    'lifecycle.contrast.title': '⚖️ 完整对比：官方 Agent 软件 vs AOS 系统',
+    'lifecycle.contrast.bad.header': '😫 官方 Agent 软件',
+    'lifecycle.contrast.good.header': '😎 AOS 系统',
+    'lifecycle.contrast.1': '启动项目时流程杂乱：无标准目录、无配置模板，每次都从空白开始',
+    'lifecycle.contrast.2': '日常工作中遗忘此前完成的内容：上下文仅存于当前对话窗口，关闭即失忆',
+    'lifecycle.contrast.3': '工作过程未及时记录：没有日志、没有反馈经验沉淀，踩过的坑下次还会踩',
+    'lifecycle.contrast.4': '上下文信息混乱：多项目同时进行时，配置互窜、张冠李戴',
+    'lifecycle.contrast.5': '工作流程全盘出错：缺失自检机制，改了 A 忘了 B，bug 频发',
+    'lifecycle.contrast.6': '文件散落无规整：没有强约束目录，靠 find 和记忆找文件，越用越乱',
+    'lifecycle.contrast.good.1': '新建项目即自动生成标准目录 + AGENTS.md + STATUS.md，0 配置秒启动',
+    'lifecycle.contrast.good.2': '每次会话首条消息自动加载 INDEX.md + 用户画像，跨会话记忆不丢失',
+    'lifecycle.contrast.good.3': '工作过程实时写回 04_MEMORY/feedback/，踩过的坑只踩一次，经验持续积累',
+    'lifecycle.contrast.good.4': '01_PROJECTS/ 目录隔离 + 项目级 AGENTS.md，多项目互不串台',
+    'lifecycle.contrast.good.5': 'aos_check.py 自检脚本扫描版本一致性 / 交叉引用 / 目录合规，4 项全过才健康',
+    'lifecycle.contrast.good.6': '10 目录强约束各司其职，系统规则 / 项目 / 记忆 / 知识库 / 日志各有归处',
+
     // ABILITIES
     'ability.label': '🛡️ 能力',
     'ability.title': '三大核心能力',
@@ -2147,6 +3693,12 @@ const i18n = {
     'table.dim': '对比维度',
     'table.aos': 'AOS',
     'table.trad': '传统方案',
+    'table.os.dim': '系统形态',
+    'table.os.aos': 'OS 形态：内核 + 文件系统 + 桌面 + 应用',
+    'table.os.trad': '单一框架或脚本',
+    'table.vis.dim': '可见性',
+    'table.vis.aos': 'AOS Viewer 桌面一眼全览',
+    'table.vis.trad': '文件散落，全靠 find 和记忆',
     'table.1.dim': '技术依赖',
     'table.1.aos': '纯文件系统，零代码',
     'table.1.trad': '需要安装框架/运行时',
@@ -2168,11 +3720,14 @@ const i18n = {
 
     // QUICK START
     'start.label': '🚀 快速开始',
-    'start.title': '三步上手 AOS',
+    'start.title': '四步上手 AOS',
     'start.desc': '纯文件系统，无需安装任何依赖——',
     'start.1.title': '获取 AOS',
     'start.1.desc': '克隆仓库或下载压缩包，AOS 是纯文件结构，无需安装任何依赖。',
     'start.1.tooltip': '替代方案|下载 ZIP 解压即可。无需 git，无需 Node.js，无需任何运行时环境',
+    'start.2b.title': '启动 AOS Viewer 桌面（推荐）',
+    'start.2b.desc': '从 GitHub Release 下载 AOS Viewer.exe，双击即可启动——无需 Python 环境，自带 Liquid Glass 桌面界面，自动扫描文件系统展示全貌。',
+    'start.2b.tooltip': '推荐方式|从 GitHub Release 下载 AOS Viewer.exe，双击即可启动。无需 Python 环境，自带 Liquid Glass 桌面界面',
     'start.2.title': '在 AI 工具中打开',
     'start.2.desc': '用 TRAE Work（推荐）、Claude Code 或 Codex 打开 AOS 目录，AI 会自动读取根目录的 AGENTS.md。',
     'start.2.tooltip': '自动行为|AI 会自动读取 AGENTS.md + 识别当前项目 + 加载项目级 AGENTS.md。TRAE Work 的 Code 模式最优',
@@ -2199,7 +3754,7 @@ const i18n = {
     'platform.3.tooltip': '适配方式|通过配置映射适配。03_TOOLS/adapters/ 提供 Codex 专用适配器模板',
 
     // FOOTER
-    'footer.desc': 'Agent Operating System — 给 AI 助手装上记忆大脑和工作台',
+    'footer.desc': 'Agent Operating System — AI 助手的操作系统：内核 · 文件系统 · 桌面 · 记忆大脑',
     'footer.github': 'GitHub',
     'footer.guide': '配置指南',
     'footer.rules': '系统规则',
@@ -2210,19 +3765,30 @@ const i18n = {
     'nav.pain': 'Pain Points',
     'nav.how': 'How It Works',
     'nav.structure': 'Structure',
+    'nav.desktop': 'Desktop',
+    'nav.lifecycle': 'Lifecycle',
     'nav.ability': 'Abilities',
     'nav.value': 'Value',
     'nav.start': 'Quick Start',
 
     // HERO
-    'hero.badge': 'v1.0.0 Released · MIT License',
-    'hero.title': 'Give Your AI Assistant a<br><span class="gradient-text">Memory and a Workspace</span>',
-    'hero.subtitle': 'AOS is a <strong>pure file-system</strong> Agent runtime framework——<br>that ends AI <strong>amnesia</strong>, keeps projects <strong>perfectly isolated</strong>, and lets hard-won experience <strong>compound over time</strong>.',
+    'hero.badge': 'v1.1.0 Released · MIT License',
+    'hero.title': 'The Operating System<br><span class="gradient-text">for Your AI Assistant</span>',
+    'hero.subtitle': 'AOS is an <strong>operating-system-shaped agent runtime framework</strong> — <span class="hero-kw">Kernel</span> · <span class="hero-kw">File System</span> · <span class="hero-kw">Desktop</span> · <span class="hero-kw">Memory Brain</span><br>that ends AI <strong>amnesia</strong>, keeps projects <strong>perfectly isolated</strong>, and lets hard-won experience <strong>compound over time</strong>.',
     'hero.action.start': 'Get Started',
     'hero.action.source': 'View Source',
-    'hero.stat.code': 'Code Dependencies',
+    // hero floating multi-window cards
+    'hero.window.left.title': 'System Status',
+    'hero.window.right.title': 'Project Workspace',
+    'hero.window.tag.loaded': 'Loaded',
+    'hero.window.tag.synced': 'Synced',
+    'hero.window.tag.ready': 'Ready',
+    'hero.window.tag.active': 'Active',
+    'hero.window.tag.deployed': 'Deployed',
+    'hero.window.tag.running': 'Running',
+    'hero.stat.layers': 'OS Architecture Layers',
     'hero.stat.dir': 'Standard Directories',
-    'hero.stat.platform': 'Supported Platforms',
+    'hero.stat.modules': 'Desktop Modules',
     'hero.stat.memory': 'Persistent Memory',
 
     // PAIN POINTS
@@ -2320,6 +3886,121 @@ const i18n = {
     'dir.09.desc': 'Reference Library<br>Single source of truth, no duplicates',
     'dir.09.tooltip': 'Iron Rule 6|All knowledge exists in exactly one copy; other locations may only reference the path. Contains system/, web/, _index.md.',
 
+    // DESKTOP (AOS Viewer Desktop Environment)
+    'desktop.label': '🖥️ Desktop',
+    'desktop.title': 'AOS Viewer: Your AI System Desktop',
+    'desktop.desc': 'The v1.1.0 breakthrough — evolving AOS from "a set of files" into "a visible, controllable, operable OS-shaped runtime framework".',
+    'desktop.mockup.badge': 'Liquid Glass',
+    'desktop.mockup.tooltip': 'Web Recreation|Below is a web recreation of the AOS Viewer desktop interface (macOS three-segment: menu bar + content + Dock). The actual desktop app supports full Liquid Glass, menu bar, Spotlight search, and more.',
+    'desktop.titlebar.title': 'AOS Viewer — Desktop',
+    // Menu bar
+    'desktop.menu.file': 'File',
+    'desktop.menu.view': 'View',
+    'desktop.menu.tools': 'Tools',
+    'desktop.menu.help': 'Help',
+    'desktop.menu.source': 'Local',
+    // Content
+    'desktop.content.title': 'System Overview',
+    'desktop.stat.version': 'Version',
+    'desktop.stat.kernel': 'Kernel Status',
+    'desktop.stat.kernel.value': 'Healthy',
+    'desktop.stat.init': 'Initialized',
+    'desktop.stat.updated': 'Last Update',
+    // Dual-column panels
+    'desktop.panel.components': 'Component Status',
+    'desktop.panel.runtime': 'Runtime Stats',
+    'desktop.comp.1': 'Loaded',
+    'desktop.comp.3': 'Indexed',
+    'desktop.comp.4': '0 pending',
+    'desktop.rt.projects': 'Active Projects',
+    'desktop.rt.memory': 'Memory Entries',
+    'desktop.rt.skills': 'Registered Skills',
+    'desktop.rt.modules': 'Desktop Modules',
+    'desktop.rt.loops': 'Loop Tasks',
+    'desktop.rt.logs': 'Log Entries',
+    // Event timeline
+    'desktop.timeline.title': 'Event Log',
+    'desktop.log.1': 'Project astrbot identified',
+    'desktop.log.2': 'Skill SK_0001 invoked',
+    'desktop.log.3': 'Memory INDEX.md updated',
+    // Dock
+    'desktop.dock.overview': 'Overview',
+    'desktop.dock.skills': 'Skill',
+    'desktop.dock.projects': 'Projects',
+    'desktop.dock.memory': 'Memory',
+    'desktop.dock.knowledge': 'Knowledge',
+    'desktop.dock.loop': 'Loop',
+    'desktop.dock.agent': 'Agent',
+    'desktop.dock.logs': 'Logs',
+    'desktop.dock.console': 'Console',
+    'desktop.value.1.title': 'Visibility',
+    'desktop.value.1.desc': 'System overview / Skills / Projects / Memory / Knowledge / Logs — all at a glance, no more find or memorization',
+    'desktop.value.1.tooltip': 'vs Traditional|Files scattered everywhere, relying on find and memory. AOS Viewer shows everything at a glance.',
+    'desktop.value.2.title': 'Controllability',
+    'desktop.value.2.desc': 'One-click self-check / sync / migration from the console — real-time progress, no commands to memorize',
+    'desktop.value.2.tooltip': 'Console Power|Trigger self-check/sync/migration with one click. Real-time progress visible. No commands needed.',
+    'desktop.value.3.title': 'System Feel',
+    'desktop.value.3.desc': 'Liquid Glass desktop + menu bar + Spotlight search + notification center — like operating a real OS',
+    'desktop.value.3.tooltip': 'Visual Design|Liquid Glass + menu bar + Spotlight search + notification center, an OS-like working experience.',
+    'desktop.feature.1': 'Boot animation + dynamic ambient glow',
+    'desktop.feature.2': 'Menu bar (File/View/Tools/Help)',
+    'desktop.feature.3': 'Spotlight global search',
+    'desktop.feature.4': 'Notification center real-time feedback',
+    'desktop.feature.5': 'Three themes (Dark/Light/Minimal)',
+    'desktop.feature.6': 'i18n zh-CN / en-US switching',
+    'desktop.feature.7': 'Data source switching (Local/API)',
+    'desktop.feature.8': 'Persistent settings (survives restart)',
+
+    // LIFECYCLE (AOS end-to-end closed-loop workflow)
+    'lifecycle.label': '🔄 Closed Loop',
+    'lifecycle.title': 'AOS Standard Workflow: From Startup to Archive, Fully Traceable',
+    'lifecycle.desc': 'Not just "it runs" — AOS turns the AI assistant\'s work process into a traceable, auditable, reusable closed loop——',
+    'lifecycle.step.1': 'Step 1',
+    'lifecycle.step.2': 'Step 2',
+    'lifecycle.step.3': 'Step 3',
+    'lifecycle.step.4': 'Step 4',
+    'lifecycle.step.5': 'Step 5',
+    'lifecycle.1.title': 'Pre-Project: Auto-Generated Standard File Structure',
+    'lifecycle.1.tag': 'Auto-Init',
+    'lifecycle.1.desc': 'The moment you create a new project, AOS auto-generates its dedicated directory and companion files from standard templates — project config, status tracking, knowledge references all in place. No manual folder creation, no boilerplate writing.',
+    'lifecycle.1.tooltip': 'Auto-Init|On new project creation, AOS auto-generates AGENTS.md + README.md + STATUS.md + reference_links.md — no manual file scaffolding',
+    'lifecycle.1.problem': 'Manual folder creation, boilerplate writing, missing configs — every project starts from a blank slate, reinventing the wheel',
+    'lifecycle.2.title': 'During Work: Real-Time State Persistence & Context',
+    'lifecycle.2.tag': 'Real-Time Flush',
+    'lifecycle.2.desc': 'Every session auto-loads historical memory on start and writes new experience, feedback, and project state back to disk on exit — no reliance on AI runtime memory. New conversations restore full context from files.',
+    'lifecycle.2.tooltip': 'Real-Time Flush|First message of every session reads INDEX.md + user profile; session-end state auto-flushed to 04_MEMORY/. Zero reliance on runtime memory.',
+    'lifecycle.2.problem': 'Context lives only in the chat window — close it, lose everything. New conversations must re-explain project background, tech stack, and constraints',
+    'lifecycle.3.title': 'Post-Work: Standardized Archival of Deliverables',
+    'lifecycle.3.tag': 'Archive Standard',
+    'lifecycle.3.desc': 'Deliverables are layered and archived by "project name + delivery type", with state synced to STATUS.md and 04_MEMORY/project/. No "archaeology" needed when picking up where you left off — all progress visible at a glance.',
+    'lifecycle.3.tooltip': 'Archive Standard|All outputs must go through the Project→Export flow, stored under 07_EXPORTS/{project}/{deliverable}/. Direct export is forbidden.',
+    'lifecycle.3.problem': 'Deliverables scattered everywhere, no layered archiving. Picking up where you left off means "archaeology" through chat logs — progress is untraceable',
+    'lifecycle.4.title': 'Daily Self-Inspection: Version & Structure Health Check',
+    'lifecycle.4.tag': 'Self-Check Script',
+    'lifecycle.4.desc': 'Run the self-check script to scan version-number sync, cross-reference integrity, and directory compliance — any residual old version numbers or broken links trigger an immediate alert. No more "fixed one, forgot ten" hidden risks.',
+    'lifecycle.4.tooltip': 'Self-Check Script|python aos_check.py scans version consistency / cross-references / directory compliance. Outputs PASS/FAIL report — all 4 items must pass for healthy status.',
+    'lifecycle.4.problem': 'Fix one thing, forget ten others — version numbers drift out of sync, broken links go unnoticed, bugs lurk until users report them',
+    'lifecycle.5.title': 'File Structure Discipline: 10 Directories, One Job Each',
+    'lifecycle.5.tag': 'Strict Directories',
+    'lifecycle.5.desc': 'Every directory has exactly one responsibility — no business pollution. System rules, project data, temp cache, knowledge base, and logs each have their own home. AOS efficiently organizes chaotic file structures — the AI never "can\'t find the file" again.',
+    'lifecycle.5.tooltip': 'Strict Directories|10 directories with single responsibilities: 00_BOOT system rules / 01_PROJECTS project isolation / 04_MEMORY state persistence / 09_REFERENCE single source of truth, etc.',
+    'lifecycle.5.problem': 'Files scattered with no organization — rely on find and memory to locate them. The AI "can\'t find its way around," chaos grows until unmaintainable',
+    'lifecycle.contrast.title': '⚖️ Full Comparison: Plain Official Agent vs AOS',
+    'lifecycle.contrast.bad.header': '😫 Plain Official Agent',
+    'lifecycle.contrast.good.header': '😎 AOS System',
+    'lifecycle.contrast.1': 'Chaotic project startup: no standard directory, no config template — every project starts from a blank slate',
+    'lifecycle.contrast.2': 'Forgetting prior work mid-session: context lives only in the current chat window — close it, lose it all',
+    'lifecycle.contrast.3': 'No real-time logging during work: no logs, no feedback accumulation — the same pit gets stepped in twice',
+    'lifecycle.contrast.4': 'Context confusion: when juggling multiple projects, configs cross-pollinate and identity mix-ups abound',
+    'lifecycle.contrast.5': 'Whole workflow breaks down: no self-check mechanism — fix A, forget B, bugs multiply',
+    'lifecycle.contrast.6': 'Files scattered everywhere: no strict directories — rely on find and memory to locate files, growing chaos over time',
+    'lifecycle.contrast.good.1': 'New projects auto-generate standard directory + AGENTS.md + STATUS.md — zero-config instant startup',
+    'lifecycle.contrast.good.2': 'First message of every session auto-loads INDEX.md + user profile — cross-session memory never lost',
+    'lifecycle.contrast.good.3': 'Real-time writes to 04_MEMORY/feedback/ during work — pitfalls are hit only once, experience compounds',
+    'lifecycle.contrast.good.4': '01_PROJECTS/ directory isolation + per-project AGENTS.md — multiple projects never cross-contaminate',
+    'lifecycle.contrast.good.5': 'aos_check.py self-check script scans version consistency / cross-references / directory compliance — all 4 must pass',
+    'lifecycle.contrast.good.6': '10 strict directories with single responsibilities — system rules / projects / memory / knowledge / logs each have a home',
+
     // ABILITIES
     'ability.label': '🛡️ Abilities',
     'ability.title': 'Three Core Abilities',
@@ -2356,6 +4037,12 @@ const i18n = {
     'table.dim': 'Dimension',
     'table.aos': 'AOS',
     'table.trad': 'Traditional Solutions',
+    'table.os.dim': 'System Form',
+    'table.os.aos': 'OS-form: Kernel + File System + Desktop + Apps',
+    'table.os.trad': 'Single framework or script',
+    'table.vis.dim': 'Visibility',
+    'table.vis.aos': 'AOS Viewer desktop — everything at a glance',
+    'table.vis.trad': 'Files scattered, relying on find and memory',
     'table.1.dim': 'Tech Dependency',
     'table.1.aos': 'Pure file system, zero code',
     'table.1.trad': 'Requires installing frameworks/runtimes',
@@ -2377,11 +4064,14 @@ const i18n = {
 
     // QUICK START
     'start.label': '🚀 Quick Start',
-    'start.title': 'Get Started with AOS in Three Steps',
+    'start.title': 'Get Started with AOS in Four Steps',
     'start.desc': 'Pure file system — no dependencies to install——',
     'start.1.title': 'Get AOS',
     'start.1.desc': 'Clone the repository or download the archive. AOS is a pure file structure with no dependencies to install.',
     'start.1.tooltip': 'Alternative|Just download the ZIP and extract. No git, no Node.js, no runtime environment required.',
+    'start.2b.title': 'Launch AOS Viewer Desktop (Recommended)',
+    'start.2b.desc': 'Download AOS Viewer.exe from GitHub Release, double-click to launch — no Python needed, ships with Liquid Glass desktop UI, auto-scans the file system to show the full picture.',
+    'start.2b.tooltip': 'Recommended|Download AOS Viewer.exe from GitHub Release, double-click to launch. No Python environment needed, ships with Liquid Glass desktop UI.',
     'start.2.title': 'Open It in Your AI Tool',
     'start.2.desc': 'Open the AOS directory in TRAE Work (recommended), Claude Code, or Codex — the AI will auto-read the root AGENTS.md.',
     'start.2.tooltip': 'Auto Behavior|The AI auto-reads AGENTS.md + identifies the current project + loads the project-level AGENTS.md. TRAE Work\'s Code mode works best.',
@@ -2408,7 +4098,7 @@ const i18n = {
     'platform.3.tooltip': 'Adaptation|Adapted via config mapping. 03_TOOLS/adapters/ provides a Codex-specific adapter template.',
 
     // FOOTER
-    'footer.desc': 'Agent Operating System — Give Your AI Assistant a Memory and a Workspace',
+    'footer.desc': 'Agent Operating System — The OS for Your AI Assistant: Kernel · File System · Desktop · Memory Brain',
     'footer.github': 'GitHub',
     'footer.guide': 'Setup Guide',
     'footer.rules': 'System Rules',

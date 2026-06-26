@@ -20,4 +20,3 @@
 | aos-loop-engine-v2 | AOS Loop Engine v2 | aos, loop, engine, scheduled, goal, visualization | AOS内部设计 | 1.0 | 09_REFERENCE/system/ |
 | aos-harness-framework | AOS Harness 六层架构 | aos, harness, reliability, engineering, safety | AOS内部设计 | 1.0 | 09_REFERENCE/system/ |
 | competitor-research | 竞品调研：Agent操作系统与规则框架 | aos, competitor, pilotdeck, openhands, claude-md | 2026-06全网调研 | 0.9 | 09_REFERENCE/system/ |
-| web-template-specification | 网页模板规范文档 | web, template, css, animation, glassmorphism, aurora, aos, lingxi | AOS+灵犀网站开发经验 | 1.0 | 09_REFERENCE/web/ |

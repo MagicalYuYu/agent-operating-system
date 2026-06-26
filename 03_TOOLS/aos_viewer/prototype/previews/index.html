@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOS 美学方向对比 — 三选一</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Serif+SC:wght@400;600&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Serif SC', serif;
+  background: #0a0a0a;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(139, 94, 60, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(0, 255, 65, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(192, 57, 43, 0.05) 0%, transparent 50%);
+  color: #fff;
+  min-height: 100vh;
+  padding: 60px 40px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.header-title {
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 4px;
+}
+.header-subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.card {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+/* 方向 A 预览 */
+.card-a .card-preview {
+  background: linear-gradient(135deg, #1A1F2E 0%, #0F131C 100%);
+  background-image: repeating-linear-gradient(90deg, rgba(139,94,60,0.03) 0px, rgba(139,94,60,0.03) 2px, transparent 2px, transparent 8px);
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.card-a .preview-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #00FF9C;
+  letter-spacing: 3px;
+  position: absolute;
+  top: 12px; left: 12px;
+}
+.card-a .preview-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  color: #C4915C;
+  letter-spacing: 4px;
+}
+.card-a .preview-handle {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, transparent, #C4915C, transparent);
+}
+
+/* 方向 B 预览 */
+.card-b .card-preview {
+  background: #050705;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-image: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,255,65,0.04) 2px, rgba(0,255,65,0.04) 4px);
+}
+.card-b .preview-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #FF8C00;
+  letter-spacing: 3px;
+  position: absolute;
+  top: 12px; left: 12px;
+}
+.card-b .preview-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  color: #00FF41;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px rgba(0,255,65,0.5), 0 0 20px rgba(0,255,65,0.3);
+}
+
+/* 方向 C 预览 */
+.card-c .card-preview {
+  background: #F5F0E8;
+  background-image:
+    radial-gradient(circle at 30% 40%, rgba(192,57,43,0.04) 0%, transparent 40%),
+    repeating-linear-gradient(45deg, transparent 0px, transparent 2px, rgba(139,111,71,0.02) 2px, rgba(139,111,71,0.02) 4px);
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.card-c .preview-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 10px;
+  color: rgba(26,26,26,0.4);
+  letter-spacing: 3px;
+  position: absolute;
+  top: 12px; left: 12px;
+}
+.card-c .preview-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 36px;
+  color: #1A1A1A;
+  letter-spacing: 8px;
+  font-weight: 600;
+}
+.card-c .preview-seal {
+  position: absolute;
+  bottom: 16px; right: 16px;
+  width: 32px; height: 32px;
+  background: #C0392B;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+}
+
+.card-body {
+  padding: 24px;
+  background: rgba(255,255,255,0.02);
+}
+.card-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.card-concept {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.card-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.card-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
+}
+
+.card-a .card-tag { color: #C4915C; border-color: rgba(196,145,92,0.3); }
+.card-b .card-tag { color: #00FF41; border-color: rgba(0,255,65,0.3); }
+.card-c .card-tag { color: #C0392B; border-color: rgba(192,57,43,0.3); }
+
+.footer {
+  text-align: center;
+  margin-top: 60px;
+  color: rgba(255,255,255,0.3);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1 class="header-title">AOS 美学方向对比</h1>
+  <div class="header-subtitle">// THREE DIRECTIONS · CHOOSE YOUR VISUAL LANGUAGE</div>
+</div>
+
+<div class="grid">
+
+  <!-- 方向 A -->
+  <a href="a_cyber_archive.html" class="card card-a">
+    <div class="card-preview">
+      <div class="preview-label">DIRECTION A</div>
+      <div class="preview-handle"></div>
+      <div class="preview-title">赛博档案室</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title">赛博档案室</div>
+      <div class="card-concept">
+        AOS = 数字档案室。暖色木质纹理承载古典秩序，冷色科技线条注入未来感。档案编号系统强化"规范即内核"。
+      </div>
+      <div class="card-meta">
+        <span class="card-tag">琥珀棕</span>
+        <span class="card-tag">磷光绿</span>
+        <span class="card-tag">深墨蓝</span>
+        <span class="card-tag">档案编号</span>
+        <span class="card-tag">木质纹理</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- 方向 B -->
+  <a href="b_terminal_organism.html" class="card card-b">
+    <div class="card-preview">
+      <div class="preview-label">DIRECTION B</div>
+      <div class="preview-title">终端有机体</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title">终端有机体</div>
+      <div class="card-concept">
+        AOS = 有生命的终端。Retro Terminal 扫描线 + 有机生长曲线，磷光是脉搏，规范是基因，演化是本能。
+      </div>
+      <div class="card-meta">
+        <span class="card-tag">磷光绿</span>
+        <span class="card-tag">琥珀橙</span>
+        <span class="card-tag">深空黑</span>
+        <span class="card-tag">扫描线</span>
+        <span class="card-tag">CRT质感</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- 方向 C -->
+  <a href="c_oriental_void.html" class="card card-c">
+    <div class="card-preview">
+      <div class="preview-label">DIRECTION C</div>
+      <div class="preview-title">东方留白</div>
+      <div class="preview-seal"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-title">东方留白</div>
+      <div class="card-concept">
+        AOS = 现代水墨。大量留白，信息密度极低，关键数据像印章点睛。少即是多，无即是有。
+      </div>
+      <div class="card-meta">
+        <span class="card-tag">宣纸白</span>
+        <span class="card-tag">墨黑</span>
+        <span class="card-tag">朱砂红</span>
+        <span class="card-tag">水墨晕染</span>
+        <span class="card-tag">印章</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<div class="footer">
+  // 点击任意卡片进入完整预览 · AOS VIEWER · DIRECTIONS COMPARISON
+</div>
+
+</body>
+</html>

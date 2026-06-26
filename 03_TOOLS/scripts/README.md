@@ -1,17 +1,29 @@
-# AOS v1.0 — 工具脚本
+# AOS v1.1.0 — 工具脚本
 
-AOS 内置的 Python 工具脚本。
+AOS 内置的 Python 工具脚本，所有脚本自动检测 AOS 根目录（向上查找 AGENTS.md），无需手动配置路径。
 
 ## 脚本列表
-- aos_check.py — 一致性自检（版本号/引用/索引/目录）
-- aos_migrate_collect.py — 迁移采集（项目扫描/对话提取/服务器环境调研）
-- aos_migrate_classify.py — 迁移分类（决策树+去重+关联分析）
-- aos_migrate_ingest.py — 迁移入库（脱敏+写入+索引更新）
+
+| 脚本 | 说明 |
+|------|------|
+| aos_check.py | 一致性自检（版本号 / 引用 / 索引 / 目录） |
+| aos_generate_data.py | 扫描 AOS 文件系统生成 data.js，供 AOS Viewer 使用（v1.1.0 新增） |
+| aos_sync_github.py | GitHub 仓库同步（白名单过滤 + 内容脱敏，v1.1.0 新增） |
+| aos_migrate_collect.py | 迁移采集（项目扫描 / 对话提取 / 服务器环境调研） |
+| aos_migrate_classify.py | 迁移分类（决策树 + 去重 + 关联分析） |
+| aos_migrate_ingest.py | 迁移入库（脱敏 + 写入 + 索引更新） |
 
 ## 用法
+
 ```bash
 # 一致性自检
 python 03_TOOLS/scripts/aos_check.py
+
+# 生成 AOS Viewer 数据
+python 03_TOOLS/scripts/aos_generate_data.py
+
+# 同步到 GitHub 上传目录
+python 03_TOOLS/scripts/aos_sync_github.py
 
 # 迁移采集
 python 03_TOOLS/scripts/aos_migrate_collect.py --source=project --path="项目路径"
@@ -27,4 +39,5 @@ python 03_TOOLS/scripts/aos_migrate_ingest.py --confirm
 ```
 
 ## 注意
+
 所有脚本自动检测 AOS 根目录（向上查找 AGENTS.md），无需手动配置路径。

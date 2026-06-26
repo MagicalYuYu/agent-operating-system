@@ -1,4 +1,4 @@
-# AOS v1.0 - Reference 目录
+# AOS v1.1.0 — 09_REFERENCE
 
 唯一参考知识库入口，知识只存一份，禁止重复。
 

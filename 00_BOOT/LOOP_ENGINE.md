@@ -1,4 +1,4 @@
-# AOS v1.0 — Loop Engine
+# AOS v1.1.0 — Loop Engine
 
 > 单次触发式 Agent 的循环执行引擎
 

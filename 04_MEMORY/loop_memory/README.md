@@ -1,4 +1,4 @@
-# AOS v1.0 - Loop Memory
+# AOS v1.1.0 — 04_MEMORY/loop_memory
 
 Loop 持久记忆，每个 Loop 一个文件。
 

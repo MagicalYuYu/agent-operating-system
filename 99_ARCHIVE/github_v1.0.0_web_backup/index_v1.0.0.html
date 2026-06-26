@@ -1,0 +1,2779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOS — Agent Operating System</title>
+<meta name="description" content="AOS 是一套纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力。零代码依赖，适用于 TRAE、Claude Code、Codex 等任何 AI 编程助手。">
+<meta name="keywords" content="AOS, Agent Operating System, AI 助手, 跨会话记忆, 项目隔离, 技能复用, TRAE, Claude Code, Codex, 纯文件系统">
+<meta name="author" content="MagicalYuYu">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://magicalyuyu.github.io/agent-operating-system/">
+<!-- Open Graph -->
+<meta property="og:title" content="AOS — Agent Operating System">
+<meta property="og:description" content="给 AI 助手装上记忆大脑和工作台 — 纯文件系统的 Agent 运行时框架">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://magicalyuyu.github.io/agent-operating-system/">
+<meta property="og:image" content="https://magicalyuyu.github.io/agent-operating-system/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AOS — Agent Operating System">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AOS — Agent Operating System">
+<meta name="twitter:description" content="给 AI 助手装上记忆大脑和工作台 — 纯文件系统的 Agent 运行时框架">
+<meta name="twitter:image" content="https://magicalyuyu.github.io/agent-operating-system/og-image.png">
+<meta name="twitter:creator" content="@MagicalYuYu">
+<!-- 结构化数据 JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AOS — Agent Operating System",
+  "description": "纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力",
+  "url": "https://magicalyuyu.github.io/agent-operating-system/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Cross-platform",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "license": "https://github.com/MagicalYuYu/agent-operating-system/blob/main/LICENSE",
+  "author": {
+    "@type": "Person",
+    "name": "MagicalYuYu",
+    "url": "https://github.com/MagicalYuYu"
+  }
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<!-- 性能优化：预加载关键资源 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<!-- PWA 支持 -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#08080d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+  /* 字体已通过 <link> 预加载，无需 @import */
+
+  :root {
+    --bg-primary: #08080d;
+    --bg-secondary: #0f0f18;
+    --bg-card: rgba(21, 21, 34, 0.55);
+    --bg-card-solid: #151522;
+    --bg-card-hover: rgba(28, 28, 48, 0.65);
+    --accent-blue: #4f8fff;
+    --accent-cyan: #00d4ff;
+    --accent-purple: #a855f7;
+    --accent-pink: #f472b6;
+    --accent-green: #34d399;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+    --accent-yellow: #fbbf24;
+    --text-primary: #eeeef2;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(79, 143, 255, 0.35);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glow-blue: 0 0 60px rgba(79, 143, 255, 0.18);
+    --glow-purple: 0 0 60px rgba(168, 85, 247, 0.18);
+    --glow-cyan: 0 0 60px rgba(0, 212, 255, 0.18);
+    --glow-green: 0 0 60px rgba(52, 211, 153, 0.18);
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 24px;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; font-size: 18px; }
+
+  body {
+    font-family: 'Noto Sans SC', 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  @media (hover: none) { body { cursor: auto; } }
+
+  /* ===== CURSOR GLOW ===== */
+  .cursor-glow {
+    position: fixed;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79, 143, 255, 0.08) 0%, rgba(168, 85, 247, 0.04) 35%, transparent 65%);
+    pointer-events: none;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.4s;
+    mix-blend-mode: screen;
+    filter: blur(20px);
+    will-change: transform;
+  }
+
+  .cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s var(--ease-out), opacity 0.3s;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+  }
+
+  @media (hover: none) { .cursor-glow, .cursor-dot { display: none; } }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 2rem;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8, 8, 13, 0.55);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.4s var(--ease-out);
+  }
+
+  nav.scrolled {
+    background: rgba(8, 8, 13, 0.75);
+    border-bottom-color: var(--glass-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-logo .logo-orb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan), var(--accent-purple));
+    background-size: 200% 200%;
+    animation: gradient-flow 4s ease infinite;
+    box-shadow: 0 0 16px rgba(79, 143, 255, 0.5);
+  }
+
+  .nav-logo .g {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan), var(--accent-purple));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-flow 4s ease infinite;
+  }
+
+  @keyframes gradient-flow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a:not(.nav-cta)::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+    transition: width 0.3s var(--ease-out);
+  }
+
+  .nav-links a:not(.nav-cta):hover { color: var(--text-primary); }
+  .nav-links a:not(.nav-cta):hover::after { width: 100%; }
+
+  .nav-cta {
+    padding: 10px 24px !important;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    background-size: 200% 200%;
+    border-radius: 100px !important;
+    color: white !important;
+    font-weight: 600 !important;
+    transition: transform 0.3s var(--ease-spring), box-shadow 0.3s, background-position 0.6s !important;
+    box-shadow: 0 4px 16px rgba(79, 143, 255, 0.25);
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 28px rgba(79, 143, 255, 0.45);
+    background-position: 100% 50%;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding-top: 72px;
+  }
+
+  /* Aurora 流动背景 */
+  .aurora {
+    position: absolute;
+    inset: -20%;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .aurora-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    will-change: transform;
+  }
+
+  .aurora-blob.b1 {
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, var(--accent-blue), transparent 70%);
+    top: 10%;
+    left: 5%;
+    animation: aurora-1 18s ease-in-out infinite;
+  }
+
+  .aurora-blob.b2 {
+    width: 45vw;
+    height: 45vw;
+    background: radial-gradient(circle, var(--accent-purple), transparent 70%);
+    top: 30%;
+    right: 0%;
+    animation: aurora-2 22s ease-in-out infinite;
+  }
+
+  .aurora-blob.b3 {
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, var(--accent-cyan), transparent 70%);
+    bottom: 5%;
+    left: 30%;
+    animation: aurora-3 20s ease-in-out infinite;
+  }
+
+  .aurora-blob.b4 {
+    width: 35vw;
+    height: 35vw;
+    background: radial-gradient(circle, var(--accent-pink), transparent 70%);
+    bottom: 20%;
+    right: 20%;
+    opacity: 0.35;
+    animation: aurora-4 24s ease-in-out infinite;
+  }
+
+  @keyframes aurora-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(20vw, 10vh) scale(1.15); }
+    66% { transform: translate(-10vw, 20vh) scale(0.9); }
+  }
+  @keyframes aurora-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-15vw, 15vh) scale(0.85); }
+    66% { transform: translate(10vw, -10vh) scale(1.2); }
+  }
+  @keyframes aurora-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(15vw, -20vh) scale(1.25); }
+  }
+  @keyframes aurora-4 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20vw, -10vh) scale(1.1); }
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 10%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 10%, transparent 70%);
+    z-index: 1;
+  }
+
+  .hero-noise {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* 浮动 emoji */
+  .floating-emoji {
+    position: absolute;
+    font-size: 2.3rem;
+    opacity: 0.5;
+    z-index: 3;
+    pointer-events: none;
+    filter: drop-shadow(0 0 12px rgba(79, 143, 255, 0.4));
+    animation: float-emoji 8s ease-in-out infinite;
+  }
+
+  .floating-emoji.e1 { top: 18%; left: 12%; animation-delay: 0s; }
+  .floating-emoji.e2 { top: 25%; right: 14%; animation-delay: 1.5s; font-size: 2.1rem; }
+  .floating-emoji.e3 { bottom: 22%; left: 18%; animation-delay: 3s; font-size: 2.5rem; }
+  .floating-emoji.e4 { bottom: 28%; right: 16%; animation-delay: 4.5s; }
+  .floating-emoji.e5 { top: 50%; left: 8%; animation-delay: 2s; font-size: 1.9rem; }
+  .floating-emoji.e6 { top: 40%; right: 9%; animation-delay: 5s; font-size: 2.2rem; }
+
+  @keyframes float-emoji {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(8deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    max-width: 960px;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 22px;
+    background: rgba(79, 143, 255, 0.08);
+    border: 1px solid rgba(79, 143, 255, 0.2);
+    border-radius: 100px;
+    font-size: 0.95rem;
+    color: var(--accent-blue);
+    margin-bottom: 2rem;
+    letter-spacing: 0.3px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 0.8s var(--ease-out) 0.2s forwards;
+  }
+
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 8px var(--accent-green);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.3); }
+  }
+
+  @keyframes fade-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-title {
+    font-size: clamp(2.38rem, 5.525vw, 5.1rem);
+    font-weight: 900;
+    line-height: 1.08;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fade-up 1s var(--ease-out) 0.4s forwards;
+  }
+
+  .hero-title .gradient-text {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 35%, var(--accent-purple) 70%, var(--accent-pink) 100%);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-flow 6s ease infinite;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+    line-height: 1.9;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 1s var(--ease-out) 0.6s forwards;
+  }
+
+  .hero-subtitle strong { color: var(--text-primary); font-weight: 600; }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 1s var(--ease-out) 0.8s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s var(--ease-spring);
+    cursor: none;
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    background-size: 200% 200%;
+    color: white;
+    box-shadow: 0 4px 20px rgba(79, 143, 255, 0.3);
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transition: left 0.6s var(--ease-out);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 36px rgba(79, 143, 255, 0.5);
+    background-position: 100% 50%;
+  }
+
+  .btn-primary:hover::before { left: 100%; }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--border-hover);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 1s var(--ease-out) 1s forwards;
+  }
+
+  .hero-stat {
+    text-align: center;
+    position: relative;
+  }
+
+  .hero-stat:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 30px;
+    background: var(--border-color);
+  }
+
+  .hero-stat-num {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan), var(--accent-purple));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-flow 5s ease infinite;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .hero-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fade-up 1s var(--ease-out) 1.4s forwards;
+  }
+
+  .scroll-hint .arrow {
+    display: block;
+    width: 1px;
+    height: 30px;
+    background: linear-gradient(180deg, var(--text-muted), transparent);
+    margin: 8px auto 0;
+    animation: scroll-arrow 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-arrow {
+    0%, 100% { transform: scaleY(1); opacity: 0.5; }
+    50% { transform: scaleY(1.5); opacity: 1; }
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 7rem 2rem;
+    position: relative;
+    z-index: 5;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: 1rem;
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+  }
+
+  .section-label.blue { color: var(--accent-blue); background: rgba(79, 143, 255, 0.06); border-color: rgba(79, 143, 255, 0.15); }
+  .section-label.purple { color: var(--accent-purple); background: rgba(168, 85, 247, 0.06); border-color: rgba(168, 85, 247, 0.15); }
+  .section-label.cyan { color: var(--accent-cyan); background: rgba(0, 212, 255, 0.06); border-color: rgba(0, 212, 255, 0.15); }
+  .section-label.green { color: var(--accent-green); background: rgba(52, 211, 153, 0.06); border-color: rgba(52, 211, 153, 0.15); }
+  .section-label.orange { color: var(--accent-orange); background: rgba(251, 146, 60, 0.06); border-color: rgba(251, 146, 60, 0.15); }
+  .section-label.pink { color: var(--accent-pink); background: rgba(244, 114, 182, 0.06); border-color: rgba(244, 114, 182, 0.15); }
+  .section-label.red { color: var(--accent-red); background: rgba(248, 113, 113, 0.06); border-color: rgba(248, 113, 113, 0.15); }
+
+  .section-title {
+    font-size: clamp(1.53rem, 2.975vw, 2.55rem);
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-desc {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 760px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  .section-desc strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  }
+
+  .reveal-stagger.visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; }
+  .reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.15s; }
+  .reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.25s; }
+  .reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.35s; }
+  .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.45s; }
+  .reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.55s; }
+  .reveal-stagger.visible > *:nth-child(7) { transition-delay: 0.65s; }
+  .reveal-stagger.visible > *:nth-child(8) { transition-delay: 0.75s; }
+  .reveal-stagger.visible > *:nth-child(9) { transition-delay: 0.85s; }
+  .reveal-stagger.visible > *:nth-child(10) { transition-delay: 0.95s; }
+
+  /* ===== PAIN CARDS - 横向无限滚动 ===== */
+  .pain-marquee {
+    position: relative;
+    overflow: hidden;
+    margin: 0 -2rem;
+    padding: 1rem 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .pain-track {
+    display: flex;
+    gap: 18px;
+    width: max-content;
+    animation: marquee-scroll 45s linear infinite;
+  }
+
+  .pain-marquee:hover .pain-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 9px)); }
+  }
+
+  .pain-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 2.2rem;
+    transition: all 0.4s var(--ease-out);
+    position: relative;
+    overflow: hidden;
+    width: 320px;
+    flex-shrink: 0;
+  }
+
+  .pain-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .pain-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(248, 113, 113, 0.08), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .pain-card:hover::before { opacity: 1; }
+  .pain-card:hover::after { opacity: 1; }
+  .pain-card:hover {
+    border-color: rgba(248, 113, 113, 0.25);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(248, 113, 113, 0.1);
+  }
+
+  .pain-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .pain-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .pain-desc { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
+
+  /* ===== COMPARISON - 呼吸感浮动 + 视差 ===== */
+  .comparison-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    perspective: 1000px;
+  }
+
+  @media (max-width: 768px) { .comparison-wrapper { grid-template-columns: 1fr; } }
+
+  .comparison-col {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 2.4rem;
+    position: relative;
+    overflow: hidden;
+    animation: breathe 6s ease-in-out infinite;
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .comparison-col.before {
+    border-color: rgba(248, 113, 113, 0.15);
+    animation-delay: 0s;
+  }
+
+  .comparison-col.after {
+    border-color: rgba(52, 211, 153, 0.15);
+    animation-delay: 3s;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .comparison-col::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .comparison-col.before::before { background: linear-gradient(90deg, var(--accent-red), var(--accent-orange)); }
+  .comparison-col.after::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
+
+  .comparison-col::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(79, 143, 255, 0.06), transparent 60%);
+    pointer-events: none;
+  }
+
+  .comparison-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  .comparison-header.before-h { color: var(--accent-red); }
+  .comparison-header.after-h { color: var(--accent-green); }
+
+  .chat-bubble {
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .chat-bubble.user {
+    background: rgba(79, 143, 255, 0.08);
+    border: 1px solid rgba(79, 143, 255, 0.15);
+    margin-left: 15%;
+  }
+
+  .chat-bubble.ai {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    margin-right: 15%;
+  }
+
+  .chat-bubble .label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .chat-bubble.user .label { color: var(--accent-blue); }
+  .chat-bubble.ai .label { color: var(--accent-purple); }
+
+  .chat-tag {
+    font-size: 0.82rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .chat-tag.auto { background: rgba(0, 212, 255, 0.12); color: var(--accent-cyan); }
+  .chat-tag.mem { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); }
+
+  /* ===== FLOW ===== */
+  .flow-container {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 3.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flow-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(79, 143, 255, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 1rem 0;
+  }
+
+  .flow-step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .flow-step-num {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s var(--ease-spring);
+  }
+
+  .flow-step:hover .flow-step-num {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .flow-step-line {
+    width: 2px;
+    flex: 1;
+    min-height: 16px;
+    background: linear-gradient(180deg, rgba(79, 143, 255, 0.3), rgba(168, 85, 247, 0.3));
+  }
+
+  .flow-step:last-child .flow-step-line { display: none; }
+
+  .flow-step-content { flex: 1; padding-top: 8px; }
+  .flow-step-title { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+  .flow-step-desc { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; }
+
+  .flow-step-tag {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  /* ===== DIR VISUAL ===== */
+  .dir-visual {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .dir-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 1.8rem;
+    transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .dir-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(79, 143, 255, 0.12), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .dir-card:hover::after { opacity: 1; }
+  .dir-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--glow-blue);
+  }
+
+  .dir-card-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .dir-card-name { font-weight: 700; font-size: 1rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; }
+  .dir-card-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+
+  /* ===== ABILITIES ===== */
+  .ability-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) { .ability-grid { grid-template-columns: 1fr; } }
+
+  .ability-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 3rem 2.2rem;
+    text-align: center;
+    transition: transform 0.4s var(--ease-spring), border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ability-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--glow-color, rgba(79, 143, 255, 0.08)), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+
+  .ability-card:hover { transform: translateY(-8px); }
+  .ability-card:hover::before { opacity: 1; }
+  .ability-card:nth-child(1) { --glow-color: rgba(79, 143, 255, 0.12); }
+  .ability-card:nth-child(1):hover { border-color: rgba(79, 143, 255, 0.3); box-shadow: var(--glow-blue); }
+  .ability-card:nth-child(2) { --glow-color: rgba(168, 85, 247, 0.12); }
+  .ability-card:nth-child(2):hover { border-color: rgba(168, 85, 247, 0.3); box-shadow: var(--glow-purple); }
+  .ability-card:nth-child(3) { --glow-color: rgba(0, 212, 255, 0.12); }
+  .ability-card:nth-child(3):hover { border-color: rgba(0, 212, 255, 0.3); box-shadow: var(--glow-cyan); }
+
+  .ability-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    transition: transform 0.4s var(--ease-spring);
+  }
+
+  .ability-card:hover .ability-icon {
+    transform: scale(1.15) rotate(-5deg);
+  }
+
+  .ability-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.3rem; }
+  .ability-analogy { font-size: 0.95rem; color: var(--accent-blue); font-weight: 500; margin-bottom: 0.7rem; }
+  .ability-desc { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
+
+  /* ===== VALUE ===== */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px;
+  }
+
+  .value-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 2.4rem;
+    transition: transform 0.3s var(--ease-out), border-color 0.3s;
+  }
+
+  .value-card:hover { transform: translateY(-4px); border-color: var(--border-hover); }
+
+  .value-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .value-card-icon { font-size: 1.5rem; }
+  .value-card-title { font-weight: 700; font-size: 1.2rem; }
+
+  .value-card-list { list-style: none; }
+
+  .value-card-list li {
+    padding: 9px 0;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+    transition: color 0.2s, padding-left 0.3s var(--ease-out);
+  }
+
+  .value-card-list li:hover {
+    color: var(--text-primary);
+    padding-left: 6px;
+  }
+
+  .value-card-list li:last-child { border-bottom: none; }
+  .value-card-list li .check { color: var(--accent-green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .compare-table th, .compare-table td {
+    padding: 16px 26px;
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  .compare-table thead th {
+    background: rgba(255, 255, 255, 0.03);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .compare-table thead th:nth-child(2) { color: var(--accent-cyan); }
+
+  .compare-table tbody td {
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    transition: background 0.2s;
+  }
+
+  .compare-table tbody tr:hover td {
+    background: rgba(79, 143, 255, 0.03);
+  }
+
+  .compare-table tbody tr:last-child td { border-bottom: none; }
+  .compare-table tbody td:nth-child(2) { color: var(--accent-cyan); font-weight: 600; }
+  .compare-table tbody td:nth-child(3) { color: var(--text-muted); }
+
+  /* ===== QUICK START ===== */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .quick-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 2.4rem;
+    transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quick-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .quick-card:hover::before { transform: scaleX(1); }
+  .quick-card:hover { transform: translateY(-5px); border-color: rgba(244, 114, 182, 0.25); box-shadow: 0 12px 36px rgba(244, 114, 182, 0.08); }
+
+  .quick-step {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-pink);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+
+  .quick-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+
+  .quick-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .quick-code {
+    display: block;
+    margin-top: 0.8rem;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--accent-cyan);
+    overflow-x: auto;
+  }
+
+  /* ===== PLATFORMS ===== */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .platform-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 1.8rem;
+    text-align: center;
+    transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .platform-card:hover { transform: translateY(-5px); border-color: var(--border-hover); }
+
+  .platform-card.best { border-color: rgba(79, 143, 255, 0.25); }
+  .platform-card.best:hover { box-shadow: var(--glow-blue); }
+
+  .platform-name { font-weight: 700; font-size: 1.15rem; margin-bottom: 0.3rem; }
+  .platform-status { font-size: 0.9rem; color: var(--text-muted); }
+  .platform-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .platform-badge.recommended { background: rgba(79, 143, 255, 0.12); color: var(--accent-blue); }
+  .platform-badge.supported { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 5rem 2rem;
+    border-top: 1px solid var(--border-color);
+    position: relative;
+    z-index: 5;
+    background: rgba(8, 8, 13, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .footer-logo {
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-logo .g {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan), var(--accent-purple));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-flow 5s ease infinite;
+  }
+
+  .footer-desc { font-size: 0.95rem; color: var(--text-muted); max-width: 460px; margin: 0 auto 1.5rem; }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent-blue); }
+
+  /* ===== DIVIDER ===== */
+  .divider { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+  .divider-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .hero-stat:not(:last-child)::after { display: none; }
+    .section { padding: 4rem 1.5rem; }
+    .floating-emoji { display: none; }
+    .flow-container { padding: 2rem 1.5rem; }
+  }
+
+  /* ===== LANG SWITCH ===== */
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 12px;
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+  .lang-btn.active {
+    color: var(--text-primary);
+    background: rgba(79, 143, 255, 0.12);
+  }
+  .lang-btn:hover {
+    color: var(--text-primary);
+  }
+  .lang-divider {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* ===== TOOLTIP 悬浮弹窗 ===== */
+  .aos-tooltip {
+    position: fixed;
+    z-index: 10000;
+    max-width: 320px;
+    padding: 12px 16px;
+    background: rgba(8, 8, 13, 0.96);
+    border: 1px solid rgba(79, 143, 255, 0.5);
+    border-radius: 10px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(79, 143, 255, 0.15), 0 0 0 1px rgba(0, 212, 255, 0.08);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+    transition: opacity 0.22s var(--ease-out), transform 0.22s var(--ease-out), visibility 0s 0.22s;
+    will-change: opacity, transform;
+    font-family: 'Noto Sans SC', 'Inter', -apple-system, sans-serif;
+  }
+
+  .aos-tooltip.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.22s var(--ease-out), transform 0.22s var(--ease-out), visibility 0s 0s;
+  }
+
+  .aos-tooltip-title {
+    color: #4f8fff;
+    font-weight: 700;
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+  }
+
+  .aos-tooltip-body {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .aos-tooltip-title:empty { display: none; }
+  .aos-tooltip-body:empty { display: none; }
+
+  .aos-tooltip-arrow {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(8, 8, 13, 0.96);
+    border: 1px solid rgba(79, 143, 255, 0.5);
+    transform: rotate(45deg);
+    pointer-events: none;
+  }
+
+  .aos-tooltip[data-placement="top"] .aos-tooltip-arrow {
+    bottom: -5px;
+    left: 50%;
+    margin-left: -4px;
+    border-top: none;
+    border-left: none;
+  }
+
+  .aos-tooltip[data-placement="bottom"] .aos-tooltip-arrow {
+    top: -5px;
+    left: 50%;
+    margin-left: -4px;
+    border-bottom: none;
+    border-right: none;
+  }
+
+  .aos-tooltip[data-placement="left"] .aos-tooltip-arrow {
+    right: -5px;
+    top: 50%;
+    margin-top: -4px;
+    border-left: none;
+    border-bottom: none;
+  }
+
+  .aos-tooltip[data-placement="right"] .aos-tooltip-arrow {
+    left: -5px;
+    top: 50%;
+    margin-top: -4px;
+    border-right: none;
+    border-top: none;
+  }
+
+  /* ===== 可访问性：跳转到主内容 ===== */
+  .skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--accent-blue, #4f8fff);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 0 0 8px 0;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 10000;
+    transition: top 0.3s ease;
+  }
+  .skip-to-content:focus {
+    top: 0;
+  }
+
+  /* ===== 性能优化：字体显示策略 ===== */
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Noto Sans SC';
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-display: swap;
+  }
+</style>
+</head>
+<body>
+
+<!-- 可访问性：跳转到主内容 -->
+<a href="#main-content" class="skip-to-content" aria-label="跳转到主内容">跳转到主内容</a>
+
+<!-- 鼠标光晕 -->
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo"><span class="logo-orb"></span><span class="g">AOS</span></a>
+  <ul class="nav-links">
+    <li><a href="#pain" data-i18n="nav.pain">痛点</a></li>
+    <li><a href="#how" data-i18n="nav.how">原理</a></li>
+    <li><a href="#structure" data-i18n="nav.structure">结构</a></li>
+    <li><a href="#ability" data-i18n="nav.ability">能力</a></li>
+    <li><a href="#value" data-i18n="nav.value">价值</a></li>
+    <li><a href="#start" data-i18n="nav.start">快速开始</a></li>
+    <li><a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
+    <li>
+      <div class="lang-switch">
+        <button class="lang-btn" data-lang="zh">中</button>
+        <span class="lang-divider">/</span>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="main-content">
+  <div class="aurora">
+    <div class="aurora-blob b1"></div>
+    <div class="aurora-blob b2"></div>
+    <div class="aurora-blob b3"></div>
+    <div class="aurora-blob b4"></div>
+  </div>
+  <div class="hero-grid"></div>
+  <div class="hero-noise"></div>
+  <span class="floating-emoji e1">🧠</span>
+  <span class="floating-emoji e2">⚙️</span>
+  <span class="floating-emoji e3">📁</span>
+  <span class="floating-emoji e4">🔧</span>
+  <span class="floating-emoji e5">💡</span>
+  <span class="floating-emoji e6">🚀</span>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span data-i18n="hero.badge">v1.1.0 已发布 · MIT 协议</span>
+    </div>
+    <h1 class="hero-title" data-i18n="hero.title">
+      给 AI 助手装上<br><span class="gradient-text">记忆大脑和工作台</span>
+    </h1>
+    <p class="hero-subtitle" data-i18n="hero.subtitle">
+      AOS 是一套<strong>纯文件系统</strong>的 Agent 运行时框架——<br>
+      让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>
+    </p>
+    <div class="hero-actions">
+      <a href="#start" class="btn btn-primary" data-i18n="hero.action.start">快速开始</a>
+      <a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="hero.action.source">查看源码</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="0" data-suffix="">0</div>
+        <div class="hero-stat-label" data-i18n="hero.stat.code">代码依赖</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="10" data-suffix="">0</div>
+        <div class="hero-stat-label" data-i18n="hero.stat.dir">标准化目录</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="3" data-suffix="+">0</div>
+        <div class="hero-stat-label" data-i18n="hero.stat.platform">适配平台</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="∞" data-suffix="" data-static="true">∞</div>
+        <div class="hero-stat-label" data-i18n="hero.stat.memory">记忆持久化</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    Scroll
+    <span class="arrow"></span>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- PAIN POINTS -->
+<section class="section" id="pain">
+  <div class="section-label red reveal" data-i18n="pain.label">❌ 痛点</div>
+  <h2 class="section-title reveal" data-i18n="pain.title">AI 助手很聪明，但它"没有记忆"</h2>
+  <p class="section-desc reveal" data-i18n="pain.desc">如果你经常用 AI 助手工作，这些场景一定不陌生——</p>
+
+  <div class="pain-marquee">
+    <div class="pain-track">
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.1.tooltip" data-tooltip="实测数据|平均每次新对话浪费 3-5 分钟介绍项目背景。AOS 通过 04_MEMORY/ 自动加载项目上下文，新对话 0 秒启动">
+        <div class="pain-icon">🔄</div>
+        <div class="pain-title" data-i18n="pain.1.title">重复介绍，浪费 30%+ 时间</div>
+        <div class="pain-desc" data-i18n="pain.1.desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.2.tooltip" data-tooltip="典型场景|AI 把 A 项目的 .env 配置写到 B 项目。AOS 通过 01_PROJECTS/ 目录隔离 + 项目级 AGENTS.md 杜绝串台">
+        <div class="pain-icon">🔀</div>
+        <div class="pain-title" data-i18n="pain.2.title">多项目上下文混淆</div>
+        <div class="pain-desc" data-i18n="pain.2.desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.3.tooltip" data-tooltip="AOS 方案|feedback 记忆采用只追加策略，每条含规则+Why+How to apply 三要素，新对话自动读取">
+        <div class="pain-icon">🕳️</div>
+        <div class="pain-title" data-i18n="pain.3.title">同一个坑踩两次</div>
+        <div class="pain-desc" data-i18n="pain.3.desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.4.tooltip" data-tooltip="AOS 方案|经验写入 04_MEMORY/feedback/，区分记录型（只追加）和状态型（覆盖+变更注释）">
+        <div class="pain-icon">📦</div>
+        <div class="pain-title" data-i18n="pain.4.title">经验无法沉淀和复用</div>
+        <div class="pain-desc" data-i18n="pain.4.desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.5.tooltip" data-tooltip="AOS 方案|所有状态写入磁盘：项目状态在 STATUS.md，系统状态在 SYSTEM_STATE.md，会话结束自动落盘">
+        <div class="pain-icon">🔇</div>
+        <div class="pain-title" data-i18n="pain.5.title">对话一关，一切归零</div>
+        <div class="pain-desc" data-i18n="pain.5.desc">AI 之前做的所有事情、所有决策，对话关闭后全部消失，无法延续到下次。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.6.tooltip" data-tooltip="AOS 方案|Skill 模块把工作流封装成步骤序列，每个 Skill 有 SKILL.md + gotchas.md，一次定义反复调用">
+        <div class="pain-icon">🧩</div>
+        <div class="pain-title" data-i18n="pain.6.title">工作流无法标准化</div>
+        <div class="pain-desc" data-i18n="pain.6.desc">每次让 AI 干活都要从头描述流程，没有标准化的操作手册可复用。</div>
+      </div>
+      <!-- 复制一份实现无缝循环 -->
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.1.tooltip" data-tooltip="实测数据|平均每次新对话浪费 3-5 分钟介绍项目背景。AOS 通过 04_MEMORY/ 自动加载项目上下文，新对话 0 秒启动">
+        <div class="pain-icon">🔄</div>
+        <div class="pain-title" data-i18n="pain.1.title">重复介绍，浪费 30%+ 时间</div>
+        <div class="pain-desc" data-i18n="pain.1.desc">每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.2.tooltip" data-tooltip="典型场景|AI 把 A 项目的 .env 配置写到 B 项目。AOS 通过 01_PROJECTS/ 目录隔离 + 项目级 AGENTS.md 杜绝串台">
+        <div class="pain-icon">🔀</div>
+        <div class="pain-title" data-i18n="pain.2.title">多项目上下文混淆</div>
+        <div class="pain-desc" data-i18n="pain.2.desc">同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.3.tooltip" data-tooltip="AOS 方案|feedback 记忆采用只追加策略，每条含规则+Why+How to apply 三要素，新对话自动读取">
+        <div class="pain-icon">🕳️</div>
+        <div class="pain-title" data-i18n="pain.3.title">同一个坑踩两次</div>
+        <div class="pain-desc" data-i18n="pain.3.desc">上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.4.tooltip" data-tooltip="AOS 方案|经验写入 04_MEMORY/feedback/，区分记录型（只追加）和状态型（覆盖+变更注释）">
+        <div class="pain-icon">📦</div>
+        <div class="pain-title" data-i18n="pain.4.title">经验无法沉淀和复用</div>
+        <div class="pain-desc" data-i18n="pain.4.desc">好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.5.tooltip" data-tooltip="AOS 方案|所有状态写入磁盘：项目状态在 STATUS.md，系统状态在 SYSTEM_STATE.md，会话结束自动落盘">
+        <div class="pain-icon">🔇</div>
+        <div class="pain-title" data-i18n="pain.5.title">对话一关，一切归零</div>
+        <div class="pain-desc" data-i18n="pain.5.desc">AI 之前做的所有事情、所有决策，对话关闭后全部消失，无法延续到下次。</div>
+      </div>
+      <div class="pain-card" data-i18n-attr="data-tooltip:pain.6.tooltip" data-tooltip="AOS 方案|Skill 模块把工作流封装成步骤序列，每个 Skill 有 SKILL.md + gotchas.md，一次定义反复调用">
+        <div class="pain-icon">🧩</div>
+        <div class="pain-title" data-i18n="pain.6.title">工作流无法标准化</div>
+        <div class="pain-desc" data-i18n="pain.6.desc">每次让 AI 干活都要从头描述流程，没有标准化的操作手册可复用。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- BEFORE/AFTER -->
+<section class="section">
+  <div class="section-label green reveal" data-i18n="compare.label">✨ 对比</div>
+  <h2 class="section-title reveal" data-i18n="compare.title">有 AOS vs 没有 AOS</h2>
+  <p class="section-desc reveal" data-i18n="compare.desc">同样的任务，完全不同的体验——</p>
+
+  <div class="comparison-wrapper reveal">
+    <div class="comparison-col before" data-parallax>
+      <div class="comparison-header before-h" data-i18n="compare.before.header">😫 没有 AOS</div>
+      <div class="chat-bubble user">
+        <div class="label" data-i18n="compare.label.you">你</div>
+        <span data-i18n="compare.before.user1">帮我改一下用户认证模块</span>
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label" data-i18n="compare.label.ai">AI</div>
+        <span data-i18n="compare.before.ai1">好的，请问你用什么语言？什么框架？数据库是什么？认证方案是 JWT 还是 Session？</span>
+      </div>
+      <div class="chat-bubble user">
+        <div class="label" data-i18n="compare.label.you">你</div>
+        <span data-i18n="compare.before.user2">……（第 N 次重复介绍项目背景）</span>
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label" data-i18n="compare.label.ai">AI</div>
+        <span data-i18n="compare.before.ai2">好的，我来处理……（把配置写到了错误的项目路径）</span>
+      </div>
+    </div>
+
+    <div class="comparison-col after" data-parallax>
+      <div class="comparison-header after-h" data-i18n="compare.after.header">😎 有了 AOS</div>
+      <div class="chat-bubble user">
+        <div class="label" data-i18n="compare.label.you">你</div>
+        <span data-i18n="compare.after.user1">帮我改一下用户认证模块</span>
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label" data-i18n="compare.label.ai">AI</div>
+        <span class="chat-tag auto" data-i18n="compare.after.ai1.tag">[自动加载项目上下文]</span><br>
+        <span data-i18n="compare.after.ai1">好的，你的 Next.js 项目，使用 Prisma + PostgreSQL，上次认证模块改过 JWT 策略，我继续在这个基础上调整。</span>
+      </div>
+      <div class="chat-bubble ai">
+        <div class="label" data-i18n="compare.label.ai">AI</div>
+        <span class="chat-tag mem" data-i18n="compare.after.ai2.tag">[读取反馈记忆]</span><br>
+        <span data-i18n="compare.after.ai2">注意到上次误把 refreshToken 写进响应体，这次会严格检查。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-label purple reveal" data-i18n="how.label">⚙️ 原理</div>
+  <h2 class="section-title reveal" data-i18n="how.title">AOS 是怎么工作的</h2>
+  <p class="section-desc reveal" data-i18n="how.desc">核心理念：<strong>AI 的记忆不靠"记住"，靠"读文件"</strong>。每次对话自动读写磁盘，新对话从文件恢复全部上下文。</p>
+
+  <div class="flow-container reveal">
+    <div class="flow-steps">
+      <div class="flow-step" data-i18n-attr="data-tooltip:how.1.tooltip" data-tooltip="识别优先级|1.文件路径匹配 2.上下文关键词匹配 3.项目目录扫描。匹配后读取 01_PROJECTS/{name}/AGENTS.md">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#4f8fff,#3b82f6);">1</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title" data-i18n="how.1.title">🔍 识别项目</div>
+          <div class="flow-step-desc" data-i18n="how.1.desc">自动检测当前操作涉及哪个项目，加载该项目的专属配置和状态</div>
+          <span class="flow-step-tag" style="background:rgba(79,143,255,0.12);color:var(--accent-blue);" data-i18n="how.1.tag">自动触发</span>
+        </div>
+      </div>
+      <div class="flow-step" data-i18n-attr="data-tooltip:how.2.tooltip" data-tooltip="加载内容|用户画像、项目事实、反馈经验、知识索引。INDEX.md 是索引不是内容，硬上限 200 行/25KB">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#a855f7,#8b5cf6);">2</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title" data-i18n="how.2.title">🧠 读取记忆</div>
+          <div class="flow-step-desc" data-i18n="how.2.desc">加载历史经验、已知坑点、用户偏好、项目事实——AI 瞬间"想起"一切</div>
+          <span class="flow-step-tag" style="background:rgba(168,85,247,0.12);color:var(--accent-purple);" data-i18n="how.2.tag">04_MEMORY/</span>
+        </div>
+      </div>
+      <div class="flow-step" data-i18n-attr="data-tooltip:how.3.tooltip" data-tooltip="Skill 结构|SKILL.md（必须）+ gotchas.md（必须）+ 可选 scripts/templates。步骤序列最后一步必须是状态更新">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#00d4ff,#06b6d4);">3</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title" data-i18n="how.3.title">🔧 执行任务</div>
+          <div class="flow-step-desc" data-i18n="how.3.desc">调用技能模块（Skill），按标准化步骤序列执行，每步都有可视化输出</div>
+          <span class="flow-step-tag" style="background:rgba(0,212,255,0.12);color:var(--accent-cyan);" data-i18n="how.3.tag">03_TOOLS/skills/</span>
+        </div>
+      </div>
+      <div class="flow-step" data-i18n-attr="data-tooltip:how.4.tooltip" data-tooltip="铁律 2|记录型只追加不覆盖；状态型覆盖旧值并保留变更注释（如 React（2026-06-15 更新，原为 Vue））">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#34d399,#10b981);">4</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title" data-i18n="how.4.title">💾 写入记忆</div>
+          <div class="flow-step-desc" data-i18n="how.4.desc">新经验追加到反馈记录，项目状态更新落盘——不依赖 AI 的"记忆力"</div>
+          <span class="flow-step-tag" style="background:rgba(52,211,153,0.12);color:var(--accent-green);" data-i18n="how.4.tag">强制步骤</span>
+        </div>
+      </div>
+      <div class="flow-step" data-i18n-attr="data-tooltip:how.5.tooltip" data-tooltip="检查项|版本号同步、交叉引用同步、状态同步。用 Grep 扫描残留旧版本号引用，输出一致性验证结果">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#fb923c,#f97316);">5</div>
+          <div class="flow-step-line"></div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title" data-i18n="how.5.title">✅ 自检验证</div>
+          <div class="flow-step-desc" data-i18n="how.5.desc">检查版本一致性、交叉引用完整性、目录合规性——确保没有遗漏</div>
+          <span class="flow-step-tag" style="background:rgba(251,146,60,0.12);color:var(--accent-orange);" data-i18n="how.5.tag">自动检查</span>
+        </div>
+      </div>
+      <div class="flow-step" data-i18n-attr="data-tooltip:how.6.tooltip" data-tooltip="分层规则|07_EXPORTS/{project_name}/{deliverable}/。禁止直接 export，必须经过 Project→Export 流程">
+        <div class="flow-step-indicator">
+          <div class="flow-step-num" style="background:linear-gradient(135deg,#f472b6,#ec4899);">6</div>
+        </div>
+        <div class="flow-step-content">
+          <div class="flow-step-title" data-i18n="how.6.title">📤 输出成果</div>
+          <div class="flow-step-desc" data-i18n="how.6.desc">最终交付物进入 07_EXPORTS/，按项目名和交付类型分层存放</div>
+          <span class="flow-step-tag" style="background:rgba(244,114,182,0.12);color:var(--accent-pink);" data-i18n="how.6.tag">07_EXPORTS/</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- DIRECTORY STRUCTURE -->
+<section class="section" id="structure">
+  <div class="section-label cyan reveal" data-i18n="dir.label">📂 结构</div>
+  <h2 class="section-title reveal" data-i18n="dir.title">标准化工作台：每个目录一个职责</h2>
+  <p class="section-desc reveal" data-i18n="dir.desc">AOS 用 10 个目录搭建 AI 的"办公桌"——每个抽屉只放一类东西，绝不混装。</p>
+
+  <div class="dir-visual reveal-stagger" data-magnetic>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.00.tooltip" data-tooltip="核心文件|AGENTS.md（系统规则）、SKILL_REGISTRY.md（技能注册表）、SYSTEM_STATE.md（系统状态）。不可被业务污染">
+      <div class="dir-card-icon">📋</div>
+      <div class="dir-card-name" style="color:var(--accent-blue)">00_BOOT/</div>
+      <div class="dir-card-desc" data-i18n="dir.00.desc">系统规则层<br>AI 的"行为准则"</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.01.tooltip" data-tooltip="标准结构|每个项目含 AGENTS.md + README.md + STATUS.md + docs/ + src/ + config/。缺少 AGENTS.md 视为未完成初始化">
+      <div class="dir-card-icon">📁</div>
+      <div class="dir-card-name" style="color:var(--accent-purple)">01_PROJECTS/</div>
+      <div class="dir-card-desc" data-i18n="dir.01.desc">项目工作台<br>每个项目独立隔间</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.02.tooltip" data-tooltip="典型用途|测试新 Skill、验证迁移脚本、实验性代码。所有不确定操作必须先进入这里">
+      <div class="dir-card-icon">🧪</div>
+      <div class="dir-card-name" style="color:var(--accent-orange)">02_SANDBOX/</div>
+      <div class="dir-card-desc" data-i18n="dir.02.desc">实验区<br>不确定的操作先试再定</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.03.tooltip" data-tooltip="目录结构|含 skills/（Skill 模块）、scripts/（脚本）、adapters/（平台适配器）。禁止 skill/loop/project 混合存储">
+      <div class="dir-card-icon">🔧</div>
+      <div class="dir-card-name" style="color:var(--accent-cyan)">03_TOOLS/</div>
+      <div class="dir-card-desc" data-i18n="dir.03.desc">技能库<br>可复用的 AI 工作流</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.04.tooltip" data-tooltip="子目录|user/（用户画像）、project/（项目事实）、feedback/（反馈经验）、INDEX.md（索引）。所有状态必须写入此目录">
+      <div class="dir-card-icon">🧠</div>
+      <div class="dir-card-name" style="color:var(--accent-green)">04_MEMORY/</div>
+      <div class="dir-card-desc" data-i18n="dir.04.desc">记忆中心<br>经验、反馈、知识索引</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.05.tooltip" data-tooltip="典型用途|克隆的仓库、临时下载、中间产物。可随时删除，不可存放重要数据">
+      <div class="dir-card-icon">💨</div>
+      <div class="dir-card-name" style="color:var(--text-muted)">05_CACHE/</div>
+      <div class="dir-card-desc" data-i18n="dir.05.desc">临时数据<br>可随时清空</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.06.tooltip" data-tooltip="分层规则|06_LOGS/{project_name}/{YYYYMMDD}.log。只追加不修改，用于审计和问题排查">
+      <div class="dir-card-icon">📝</div>
+      <div class="dir-card-name" style="color:var(--text-muted)">06_LOGS/</div>
+      <div class="dir-card-desc" data-i18n="dir.06.desc">运行日志<br>只追加不修改</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.07.tooltip" data-tooltip="分层规则|07_EXPORTS/{project_name}/{deliverable}/。所有输出必须从这里导出，禁止直接 export">
+      <div class="dir-card-icon">📤</div>
+      <div class="dir-card-name" style="color:var(--accent-pink)">07_EXPORTS/</div>
+      <div class="dir-card-desc" data-i18n="dir.07.desc">成果输出<br>最终交付物</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.08.tooltip" data-tooltip="子目录|raw/（按日期分层 raw/{YYYYMMDD}/）、migration/（迁移数据）。所有外部输入必须先进这里">
+      <div class="dir-card-icon">📥</div>
+      <div class="dir-card-name" style="color:var(--accent-orange)">08_INBOX/</div>
+      <div class="dir-card-desc" data-i18n="dir.08.desc">外部输入<br>网页抓取、迁移数据</div>
+    </div>
+    <div class="dir-card" data-magnetic-item data-i18n-attr="data-tooltip:dir.09.tooltip" data-tooltip="铁律 6|所有知识只允许存在一份，其他位置只能引用路径。含 system/、web/、_index.md">
+      <div class="dir-card-icon">📚</div>
+      <div class="dir-card-name" style="color:var(--accent-blue)">09_REFERENCE/</div>
+      <div class="dir-card-desc" data-i18n="dir.09.desc">知识库<br>唯一参考源，禁止重复</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- CORE ABILITIES -->
+<section class="section" id="ability">
+  <div class="section-label orange reveal" data-i18n="ability.label">🛡️ 能力</div>
+  <h2 class="section-title reveal" data-i18n="ability.title">三大核心能力</h2>
+  <p class="section-desc reveal" data-i18n="ability.desc">解决 AI 助手最根本的三个问题——</p>
+
+  <div class="ability-grid reveal-stagger">
+    <div class="ability-card" data-i18n-attr="data-tooltip:ability.1.tooltip" data-tooltip="技术实现|AI 每次对话首条消息读取 04_MEMORY/INDEX.md，会话结束时状态落盘。不依赖 AI 运行时记忆">
+      <div class="ability-icon">🧠</div>
+      <div class="ability-title" data-i18n="ability.1.title">跨会话记忆</div>
+      <div class="ability-analogy" data-i18n="ability.1.analogy">→ 助手的笔记本</div>
+      <div class="ability-desc" data-i18n="ability.1.desc">AI 每次对话自动读写记忆文件，新对话从磁盘恢复全部上下文。不再"失忆"，经验持续积累。</div>
+    </div>
+    <div class="ability-card" data-i18n-attr="data-tooltip:ability.2.tooltip" data-tooltip="隔离机制|每个项目有独立 AGENTS.md（项目级约束优先于系统默认）+ STATUS.md + reference_links.md（只存指针）">
+      <div class="ability-icon">📁</div>
+      <div class="ability-title" data-i18n="ability.2.title">项目隔离</div>
+      <div class="ability-analogy" data-i18n="ability.2.analogy">→ 独立办公桌</div>
+      <div class="ability-desc" data-i18n="ability.2.desc">每个项目有独立的配置、状态、文档。切换项目时自动加载对应上下文，杜绝"张冠李戴"。</div>
+    </div>
+    <div class="ability-card" data-i18n-attr="data-tooltip:ability.3.tooltip" data-tooltip="Skill 生命周期|新建→注册到 SKILL_REGISTRY.md→调用时更新 call_count→持续追加 gotchas.md 坑点清单">
+      <div class="ability-icon">🔧</div>
+      <div class="ability-title" data-i18n="ability.3.title">技能复用</div>
+      <div class="ability-analogy" data-i18n="ability.3.analogy">→ 标准操作手册</div>
+      <div class="ability-desc" data-i18n="ability.3.desc">把常用工作流封装成 Skill，一次定义、反复调用。团队共享最佳实践，避免重复造轮子。</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- VALUE -->
+<section class="section" id="value">
+  <div class="section-label green reveal" data-i18n="value.label">💎 价值</div>
+  <h2 class="section-title reveal" data-i18n="value.title">价值与差异化</h2>
+  <p class="section-desc reveal" data-i18n="value.desc">AOS 让 AI 助手从"一次性工具"升级为"可持续协作伙伴"——</p>
+
+  <div class="value-grid reveal-stagger" style="margin-bottom:2.5rem;">
+    <div class="value-card">
+      <div class="value-card-header">
+        <span class="value-card-icon">📈</span>
+        <span class="value-card-title" data-i18n="value.1.title">效率提升</span>
+      </div>
+      <ul class="value-card-list">
+        <li><span class="check">✓</span><span data-i18n="value.1.1">减少 60%+ 重复沟通成本</span></li>
+        <li><span class="check">✓</span><span data-i18n="value.1.2">项目隔离消除上下文混淆</span></li>
+        <li><span class="check">✓</span><span data-i18n="value.1.3">反馈记忆避免重复犯错</span></li>
+        <li><span class="check">✓</span><span data-i18n="value.1.4">技能一次定义、反复复用</span></li>
+      </ul>
+    </div>
+    <div class="value-card">
+      <div class="value-card-header">
+        <span class="value-card-icon">🌍</span>
+        <span class="value-card-title" data-i18n="value.2.title">社会价值</span>
+      </div>
+      <ul class="value-card-list">
+        <li><span class="check">✓</span><span data-i18n="value.2.1">开源 AI 工作流管理标准</span></li>
+        <li><span class="check">✓</span><span data-i18n="value.2.2">零代码依赖降低使用门槛</span></li>
+        <li><span class="check">✓</span><span data-i18n="value.2.3">跨平台通用（TRAE/Claude/Codex）</span></li>
+        <li><span class="check">✓</span><span data-i18n="value.2.4">推动 AI 辅助开发规范化</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <table class="compare-table reveal">
+    <thead>
+      <tr>
+        <th data-i18n="table.dim">对比维度</th>
+        <th data-i18n="table.aos">AOS</th>
+        <th data-i18n="table.trad">传统方案</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-i18n="table.1.dim">技术依赖</td>
+        <td data-i18n="table.1.aos">纯文件系统，零代码</td>
+        <td data-i18n="table.1.trad">需要安装框架/运行时</td>
+      </tr>
+      <tr>
+        <td data-i18n="table.2.dim">上手成本</td>
+        <td data-i18n="table.2.aos">创建目录即可开始</td>
+        <td data-i18n="table.2.trad">学习 API、配置环境</td>
+      </tr>
+      <tr>
+        <td data-i18n="table.3.dim">跨工具兼容</td>
+        <td data-i18n="table.3.aos">任何 AI 助手都能用</td>
+        <td data-i18n="table.3.trad">绑定特定平台</td>
+      </tr>
+      <tr>
+        <td data-i18n="table.4.dim">可审计性</td>
+        <td data-i18n="table.4.aos">所有状态都是可读文件</td>
+        <td data-i18n="table.4.trad">状态藏在数据库/内存中</td>
+      </tr>
+      <tr>
+        <td data-i18n="table.5.dim">记忆持久化</td>
+        <td data-i18n="table.5.aos">磁盘写入，永不过期</td>
+        <td data-i18n="table.5.trad">内存存储，会话结束即消失</td>
+      </tr>
+      <tr>
+        <td data-i18n="table.6.dim">团队协作</td>
+        <td data-i18n="table.6.aos">文件即协议，Git 友好</td>
+        <td data-i18n="table.6.trad">需要额外同步机制</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- QUICK START -->
+<section class="section" id="start">
+  <div class="section-label pink reveal" data-i18n="start.label">🚀 快速开始</div>
+  <h2 class="section-title reveal" data-i18n="start.title">三步上手 AOS</h2>
+  <p class="section-desc reveal" data-i18n="start.desc">纯文件系统，无需安装任何依赖——</p>
+
+  <div class="quick-grid reveal-stagger">
+    <div class="quick-card" data-i18n-attr="data-tooltip:start.1.tooltip" data-tooltip="替代方案|下载 ZIP 解压即可。无需 git，无需 Node.js，无需任何运行时环境">
+      <div class="quick-step">Step 1</div>
+      <div class="quick-title" data-i18n="start.1.title">获取 AOS</div>
+      <div class="quick-desc" data-i18n="start.1.desc">克隆仓库或下载压缩包，AOS 是纯文件结构，无需安装任何依赖。</div>
+      <code class="quick-code">git clone https://github.com/MagicalYuYu/agent-operating-system.git</code>
+    </div>
+    <div class="quick-card" data-i18n-attr="data-tooltip:start.2.tooltip" data-tooltip="自动行为|AI 会自动读取 AGENTS.md + 识别当前项目 + 加载项目级 AGENTS.md。TRAE Work 的 Code 模式最优">
+      <div class="quick-step">Step 2</div>
+      <div class="quick-title" data-i18n="start.2.title">在 AI 工具中打开</div>
+      <div class="quick-desc" data-i18n="start.2.desc">用 TRAE Work（推荐）、Claude Code 或 Codex 打开 AOS 目录，AI 会自动读取根目录的 AGENTS.md。</div>
+    </div>
+    <div class="quick-card" data-i18n-attr="data-tooltip:start.3.tooltip" data-tooltip="3 条 Rules|aos-consistency-guard（版本一致性）、aos-memory-rules（记忆规则）、aos-skill-rules（Skill 规则）。自检脚本扫描目录合规性">
+      <div class="quick-step">Step 3</div>
+      <div class="quick-title" data-i18n="start.3.title">配置 Rules 并验证</div>
+      <div class="quick-desc" data-i18n="start.3.desc">添加 3 条 Rules（详见配置指南），然后运行自检脚本验证安装。</div>
+      <code class="quick-code">python 03_TOOLS/scripts/aos_check.py</code>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:2.5rem;" class="reveal">
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/docs/trae-setup-guide.md" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="start.guide">📖 完整配置指南</a>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- PLATFORMS -->
+<section class="section">
+  <div class="section-label blue reveal" data-i18n="platform.label">🖥️ 平台</div>
+  <h2 class="section-title reveal" data-i18n="platform.title">适配平台</h2>
+  <p class="section-desc reveal" data-i18n="platform.desc">AOS 基于文件系统设计，天然跨平台——</p>
+
+  <div class="platform-grid reveal-stagger">
+    <div class="platform-card best" data-i18n-attr="data-tooltip:platform.1.tooltip" data-tooltip="最优原因|原生支持 Rules 体系（3 条核心 Rules）+ Skill 调用 + Schedule 定时任务。推荐使用 Code 模式">
+      <div class="platform-name" data-i18n="platform.1.name">TRAE Work</div>
+      <div class="platform-status" data-i18n="platform.1.status">最优适配，规则体系原生支持</div>
+      <span class="platform-badge recommended" data-i18n="platform.1.badge">推荐</span>
+    </div>
+    <div class="platform-card" data-i18n-attr="data-tooltip:platform.2.tooltip" data-tooltip="适配方式|通过 CLAUDE.md 模板映射 AOS 规则。需手动维护 Rules 到 CLAUDE.md 的同步">
+      <div class="platform-name" data-i18n="platform.2.name">Claude Code</div>
+      <div class="platform-status" data-i18n="platform.2.status">通过 CLAUDE.md 模板适配</div>
+      <span class="platform-badge supported" data-i18n="platform.2.badge">支持</span>
+    </div>
+    <div class="platform-card" data-i18n-attr="data-tooltip:platform.3.tooltip" data-tooltip="适配方式|通过配置映射适配。03_TOOLS/adapters/ 提供 Codex 专用适配器模板">
+      <div class="platform-name" data-i18n="platform.3.name">Codex</div>
+      <div class="platform-status" data-i18n="platform.3.status">通过配置映射适配</div>
+      <span class="platform-badge supported" data-i18n="platform.3.badge">支持</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span class="g">AOS</span></div>
+  <div class="footer-desc" data-i18n="footer.desc">Agent Operating System — 给 AI 助手装上记忆大脑和工作台</div>
+  <div class="footer-links">
+    <a href="https://github.com/MagicalYuYu/agent-operating-system" target="_blank" rel="noopener" data-i18n="footer.github">GitHub</a>
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/docs/trae-setup-guide.md" target="_blank" rel="noopener" data-i18n="footer.guide">配置指南</a>
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/AGENTS.md" target="_blank" rel="noopener" data-i18n="footer.rules">系统规则</a>
+    <a href="https://github.com/MagicalYuYu/agent-operating-system/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="footer.license">MIT 协议</a>
+  </div>
+</footer>
+
+<script>
+// ===== i18n 国际化系统 =====
+const i18n = {
+  zh: {
+    // NAV
+    'nav.pain': '痛点',
+    'nav.how': '原理',
+    'nav.structure': '结构',
+    'nav.ability': '能力',
+    'nav.value': '价值',
+    'nav.start': '快速开始',
+
+    // HERO
+    'hero.badge': 'v1.1.0 已发布 · MIT 协议',
+    'hero.title': '给 AI 助手装上<br><span class="gradient-text">记忆大脑和工作台</span>',
+    'hero.subtitle': 'AOS 是一套<strong>纯文件系统</strong>的 Agent 运行时框架——<br>让 AI 助手<strong>不再失忆</strong>，让多项目<strong>互不串台</strong>，让经验<strong>持续积累</strong>',
+    'hero.action.start': '快速开始',
+    'hero.action.source': '查看源码',
+    'hero.stat.code': '代码依赖',
+    'hero.stat.dir': '标准化目录',
+    'hero.stat.platform': '适配平台',
+    'hero.stat.memory': '记忆持久化',
+
+    // PAIN POINTS
+    'pain.label': '❌ 痛点',
+    'pain.title': 'AI 助手很聪明，但它"没有记忆"',
+    'pain.desc': '如果你经常用 AI 助手工作，这些场景一定不陌生——',
+    'pain.1.title': '重复介绍，浪费 30%+ 时间',
+    'pain.1.desc': '每次新对话都要重新说明项目背景、技术栈、约束条件。AI 的"记忆力"仅限于当前对话窗口。',
+    'pain.1.tooltip': '实测数据|平均每次新对话浪费 3-5 分钟介绍项目背景。AOS 通过 04_MEMORY/ 自动加载项目上下文，新对话 0 秒启动',
+    'pain.2.title': '多项目上下文混淆',
+    'pain.2.desc': '同时推进多个项目时，AI 经常把 A 项目的配置写到 B 项目里，张冠李戴，越帮越忙。',
+    'pain.2.tooltip': '典型场景|AI 把 A 项目的 .env 配置写到 B 项目。AOS 通过 01_PROJECTS/ 目录隔离 + 项目级 AGENTS.md 杜绝串台',
+    'pain.3.title': '同一个坑踩两次',
+    'pain.3.desc': '上次犯过的错误，下次对话还会再犯。AI 没有机制记住"上次踩过的坑"和"为什么那样不行"。',
+    'pain.3.tooltip': 'AOS 方案|feedback 记忆采用只追加策略，每条含规则+Why+How to apply 三要素，新对话自动读取',
+    'pain.4.title': '经验无法沉淀和复用',
+    'pain.4.desc': '好不容易摸索出的最佳实践、踩坑经验，随着对话关闭而消失。下次又得从头来过。',
+    'pain.4.tooltip': 'AOS 方案|经验写入 04_MEMORY/feedback/，区分记录型（只追加）和状态型（覆盖+变更注释）',
+    'pain.5.title': '对话一关，一切归零',
+    'pain.5.desc': 'AI 之前做的所有事情、所有决策，对话关闭后全部消失，无法延续到下次。',
+    'pain.5.tooltip': 'AOS 方案|所有状态写入磁盘：项目状态在 STATUS.md，系统状态在 SYSTEM_STATE.md，会话结束自动落盘',
+    'pain.6.title': '工作流无法标准化',
+    'pain.6.desc': '每次让 AI 干活都要从头描述流程，没有标准化的操作手册可复用。',
+    'pain.6.tooltip': 'AOS 方案|Skill 模块把工作流封装成步骤序列，每个 Skill 有 SKILL.md + gotchas.md，一次定义反复调用',
+
+    // COMPARISON
+    'compare.label': '✨ 对比',
+    'compare.title': '有 AOS vs 没有 AOS',
+    'compare.desc': '同样的任务，完全不同的体验——',
+    'compare.before.header': '😫 没有 AOS',
+    'compare.after.header': '😎 有了 AOS',
+    'compare.label.you': '你',
+    'compare.label.ai': 'AI',
+    'compare.before.user1': '帮我改一下用户认证模块',
+    'compare.before.ai1': '好的，请问你用什么语言？什么框架？数据库是什么？认证方案是 JWT 还是 Session？',
+    'compare.before.user2': '……（第 N 次重复介绍项目背景）',
+    'compare.before.ai2': '好的，我来处理……（把配置写到了错误的项目路径）',
+    'compare.after.user1': '帮我改一下用户认证模块',
+    'compare.after.ai1.tag': '[自动加载项目上下文]',
+    'compare.after.ai1': '好的，你的 Next.js 项目，使用 Prisma + PostgreSQL，上次认证模块改过 JWT 策略，我继续在这个基础上调整。',
+    'compare.after.ai2.tag': '[读取反馈记忆]',
+    'compare.after.ai2': '注意到上次误把 refreshToken 写进响应体，这次会严格检查。',
+
+    // HOW IT WORKS
+    'how.label': '⚙️ 原理',
+    'how.title': 'AOS 是怎么工作的',
+    'how.desc': '核心理念：<strong>AI 的记忆不靠"记住"，靠"读文件"</strong>。每次对话自动读写磁盘，新对话从文件恢复全部上下文。',
+    'how.1.title': '🔍 识别项目',
+    'how.1.desc': '自动检测当前操作涉及哪个项目，加载该项目的专属配置和状态',
+    'how.1.tag': '自动触发',
+    'how.1.tooltip': '识别优先级|1.文件路径匹配 2.上下文关键词匹配 3.项目目录扫描。匹配后读取 01_PROJECTS/{name}/AGENTS.md',
+    'how.2.title': '🧠 读取记忆',
+    'how.2.desc': '加载历史经验、已知坑点、用户偏好、项目事实——AI 瞬间"想起"一切',
+    'how.2.tag': '04_MEMORY/',
+    'how.2.tooltip': '加载内容|用户画像、项目事实、反馈经验、知识索引。INDEX.md 是索引不是内容，硬上限 200 行/25KB',
+    'how.3.title': '🔧 执行任务',
+    'how.3.desc': '调用技能模块（Skill），按标准化步骤序列执行，每步都有可视化输出',
+    'how.3.tag': '03_TOOLS/skills/',
+    'how.3.tooltip': 'Skill 结构|SKILL.md（必须）+ gotchas.md（必须）+ 可选 scripts/templates。步骤序列最后一步必须是状态更新',
+    'how.4.title': '💾 写入记忆',
+    'how.4.desc': '新经验追加到反馈记录，项目状态更新落盘——不依赖 AI 的"记忆力"',
+    'how.4.tag': '强制步骤',
+    'how.4.tooltip': '铁律 2|记录型只追加不覆盖；状态型覆盖旧值并保留变更注释（如 React（2026-06-15 更新，原为 Vue））',
+    'how.5.title': '✅ 自检验证',
+    'how.5.desc': '检查版本一致性、交叉引用完整性、目录合规性——确保没有遗漏',
+    'how.5.tag': '自动检查',
+    'how.5.tooltip': '检查项|版本号同步、交叉引用同步、状态同步。用 Grep 扫描残留旧版本号引用，输出一致性验证结果',
+    'how.6.title': '📤 输出成果',
+    'how.6.desc': '最终交付物进入 07_EXPORTS/，按项目名和交付类型分层存放',
+    'how.6.tag': '07_EXPORTS/',
+    'how.6.tooltip': '分层规则|07_EXPORTS/{project_name}/{deliverable}/。禁止直接 export，必须经过 Project→Export 流程',
+
+    // DIRECTORY STRUCTURE
+    'dir.label': '📂 结构',
+    'dir.title': '标准化工作台：每个目录一个职责',
+    'dir.desc': 'AOS 用 10 个目录搭建 AI 的"办公桌"——每个抽屉只放一类东西，绝不混装。',
+    'dir.00.desc': '系统规则层<br>AI 的"行为准则"',
+    'dir.00.tooltip': '核心文件|AGENTS.md（系统规则）、SKILL_REGISTRY.md（技能注册表）、SYSTEM_STATE.md（系统状态）。不可被业务污染',
+    'dir.01.desc': '项目工作台<br>每个项目独立隔间',
+    'dir.01.tooltip': '标准结构|每个项目含 AGENTS.md + README.md + STATUS.md + docs/ + src/ + config/。缺少 AGENTS.md 视为未完成初始化',
+    'dir.02.desc': '实验区<br>不确定的操作先试再定',
+    'dir.02.tooltip': '典型用途|测试新 Skill、验证迁移脚本、实验性代码。所有不确定操作必须先进入这里',
+    'dir.03.desc': '技能库<br>可复用的 AI 工作流',
+    'dir.03.tooltip': '目录结构|含 skills/（Skill 模块）、scripts/（脚本）、adapters/（平台适配器）。禁止 skill/loop/project 混合存储',
+    'dir.04.desc': '记忆中心<br>经验、反馈、知识索引',
+    'dir.04.tooltip': '子目录|user/（用户画像）、project/（项目事实）、feedback/（反馈经验）、INDEX.md（索引）。所有状态必须写入此目录',
+    'dir.05.desc': '临时数据<br>可随时清空',
+    'dir.05.tooltip': '典型用途|克隆的仓库、临时下载、中间产物。可随时删除，不可存放重要数据',
+    'dir.06.desc': '运行日志<br>只追加不修改',
+    'dir.06.tooltip': '分层规则|06_LOGS/{project_name}/{YYYYMMDD}.log。只追加不修改，用于审计和问题排查',
+    'dir.07.desc': '成果输出<br>最终交付物',
+    'dir.07.tooltip': '分层规则|07_EXPORTS/{project_name}/{deliverable}/。所有输出必须从这里导出，禁止直接 export',
+    'dir.08.desc': '外部输入<br>网页抓取、迁移数据',
+    'dir.08.tooltip': '子目录|raw/（按日期分层 raw/{YYYYMMDD}/）、migration/（迁移数据）。所有外部输入必须先进这里',
+    'dir.09.desc': '知识库<br>唯一参考源，禁止重复',
+    'dir.09.tooltip': '铁律 6|所有知识只允许存在一份，其他位置只能引用路径。含 system/、web/、_index.md',
+
+    // ABILITIES
+    'ability.label': '🛡️ 能力',
+    'ability.title': '三大核心能力',
+    'ability.desc': '解决 AI 助手最根本的三个问题——',
+    'ability.1.title': '跨会话记忆',
+    'ability.1.analogy': '→ 助手的笔记本',
+    'ability.1.desc': 'AI 每次对话自动读写记忆文件，新对话从磁盘恢复全部上下文。不再"失忆"，经验持续积累。',
+    'ability.1.tooltip': '技术实现|AI 每次对话首条消息读取 04_MEMORY/INDEX.md，会话结束时状态落盘。不依赖 AI 运行时记忆',
+    'ability.2.title': '项目隔离',
+    'ability.2.analogy': '→ 独立办公桌',
+    'ability.2.desc': '每个项目有独立的配置、状态、文档。切换项目时自动加载对应上下文，杜绝"张冠李戴"。',
+    'ability.2.tooltip': '隔离机制|每个项目有独立 AGENTS.md（项目级约束优先于系统默认）+ STATUS.md + reference_links.md（只存指针）',
+    'ability.3.title': '技能复用',
+    'ability.3.analogy': '→ 标准操作手册',
+    'ability.3.desc': '把常用工作流封装成 Skill，一次定义、反复调用。团队共享最佳实践，避免重复造轮子。',
+    'ability.3.tooltip': 'Skill 生命周期|新建→注册到 SKILL_REGISTRY.md→调用时更新 call_count→持续追加 gotchas.md 坑点清单',
+
+    // VALUE
+    'value.label': '💎 价值',
+    'value.title': '价值与差异化',
+    'value.desc': 'AOS 让 AI 助手从"一次性工具"升级为"可持续协作伙伴"——',
+    'value.1.title': '效率提升',
+    'value.1.1': '减少 60%+ 重复沟通成本',
+    'value.1.2': '项目隔离消除上下文混淆',
+    'value.1.3': '反馈记忆避免重复犯错',
+    'value.1.4': '技能一次定义、反复复用',
+    'value.2.title': '社会价值',
+    'value.2.1': '开源 AI 工作流管理标准',
+    'value.2.2': '零代码依赖降低使用门槛',
+    'value.2.3': '跨平台通用（TRAE/Claude/Codex）',
+    'value.2.4': '推动 AI 辅助开发规范化',
+
+    // COMPARE TABLE
+    'table.dim': '对比维度',
+    'table.aos': 'AOS',
+    'table.trad': '传统方案',
+    'table.1.dim': '技术依赖',
+    'table.1.aos': '纯文件系统，零代码',
+    'table.1.trad': '需要安装框架/运行时',
+    'table.2.dim': '上手成本',
+    'table.2.aos': '创建目录即可开始',
+    'table.2.trad': '学习 API、配置环境',
+    'table.3.dim': '跨工具兼容',
+    'table.3.aos': '任何 AI 助手都能用',
+    'table.3.trad': '绑定特定平台',
+    'table.4.dim': '可审计性',
+    'table.4.aos': '所有状态都是可读文件',
+    'table.4.trad': '状态藏在数据库/内存中',
+    'table.5.dim': '记忆持久化',
+    'table.5.aos': '磁盘写入，永不过期',
+    'table.5.trad': '内存存储，会话结束即消失',
+    'table.6.dim': '团队协作',
+    'table.6.aos': '文件即协议，Git 友好',
+    'table.6.trad': '需要额外同步机制',
+
+    // QUICK START
+    'start.label': '🚀 快速开始',
+    'start.title': '三步上手 AOS',
+    'start.desc': '纯文件系统，无需安装任何依赖——',
+    'start.1.title': '获取 AOS',
+    'start.1.desc': '克隆仓库或下载压缩包，AOS 是纯文件结构，无需安装任何依赖。',
+    'start.1.tooltip': '替代方案|下载 ZIP 解压即可。无需 git，无需 Node.js，无需任何运行时环境',
+    'start.2.title': '在 AI 工具中打开',
+    'start.2.desc': '用 TRAE Work（推荐）、Claude Code 或 Codex 打开 AOS 目录，AI 会自动读取根目录的 AGENTS.md。',
+    'start.2.tooltip': '自动行为|AI 会自动读取 AGENTS.md + 识别当前项目 + 加载项目级 AGENTS.md。TRAE Work 的 Code 模式最优',
+    'start.3.title': '配置 Rules 并验证',
+    'start.3.desc': '添加 3 条 Rules（详见配置指南），然后运行自检脚本验证安装。',
+    'start.3.tooltip': '3 条 Rules|aos-consistency-guard（版本一致性）、aos-memory-rules（记忆规则）、aos-skill-rules（Skill 规则）。自检脚本扫描目录合规性',
+    'start.guide': '📖 完整配置指南',
+
+    // PLATFORMS
+    'platform.label': '🖥️ 平台',
+    'platform.title': '适配平台',
+    'platform.desc': 'AOS 基于文件系统设计，天然跨平台——',
+    'platform.1.name': 'TRAE Work',
+    'platform.1.status': '最优适配，规则体系原生支持',
+    'platform.1.badge': '推荐',
+    'platform.1.tooltip': '最优原因|原生支持 Rules 体系（3 条核心 Rules）+ Skill 调用 + Schedule 定时任务。推荐使用 Code 模式',
+    'platform.2.name': 'Claude Code',
+    'platform.2.status': '通过 CLAUDE.md 模板适配',
+    'platform.2.badge': '支持',
+    'platform.2.tooltip': '适配方式|通过 CLAUDE.md 模板映射 AOS 规则。需手动维护 Rules 到 CLAUDE.md 的同步',
+    'platform.3.name': 'Codex',
+    'platform.3.status': '通过配置映射适配',
+    'platform.3.badge': '支持',
+    'platform.3.tooltip': '适配方式|通过配置映射适配。03_TOOLS/adapters/ 提供 Codex 专用适配器模板',
+
+    // FOOTER
+    'footer.desc': 'Agent Operating System — 给 AI 助手装上记忆大脑和工作台',
+    'footer.github': 'GitHub',
+    'footer.guide': '配置指南',
+    'footer.rules': '系统规则',
+    'footer.license': 'MIT 协议'
+  },
+  en: {
+    // NAV
+    'nav.pain': 'Pain Points',
+    'nav.how': 'How It Works',
+    'nav.structure': 'Structure',
+    'nav.ability': 'Abilities',
+    'nav.value': 'Value',
+    'nav.start': 'Quick Start',
+
+    // HERO
+    'hero.badge': 'v1.1.0 Released · MIT License',
+    'hero.title': 'Give Your AI Assistant a<br><span class="gradient-text">Memory and a Workspace</span>',
+    'hero.subtitle': 'AOS is a <strong>pure file-system</strong> Agent runtime framework——<br>that ends AI <strong>amnesia</strong>, keeps projects <strong>perfectly isolated</strong>, and lets hard-won experience <strong>compound over time</strong>.',
+    'hero.action.start': 'Get Started',
+    'hero.action.source': 'View Source',
+    'hero.stat.code': 'Code Dependencies',
+    'hero.stat.dir': 'Standard Directories',
+    'hero.stat.platform': 'Supported Platforms',
+    'hero.stat.memory': 'Persistent Memory',
+
+    // PAIN POINTS
+    'pain.label': '❌ Pain Points',
+    'pain.title': 'AI Assistants Are Smart — But They Have No Memory',
+    'pain.desc': 'If you work with AI assistants regularly, these scenarios will feel all too familiar——',
+    'pain.1.title': 'Repeating Yourself, Wasting 30%+ of Your Time',
+    'pain.1.desc': 'Every new conversation means re-explaining the project background, tech stack, and constraints. The AI\'s "memory" is limited to the current chat window.',
+    'pain.1.tooltip': 'Measured Data|On average, 3–5 minutes per new conversation are wasted re-introducing project context. AOS auto-loads project context via 04_MEMORY/, enabling zero-second startup.',
+    'pain.2.title': 'Multi-Project Context Confusion',
+    'pain.2.desc': 'When juggling multiple projects, the AI often writes Project A\'s config into Project B — a costly case of mistaken identity that only creates more mess.',
+    'pain.2.tooltip': 'Typical Scenario|The AI writes Project A\'s .env into Project B. AOS prevents this via 01_PROJECTS/ directory isolation + per-project AGENTS.md.',
+    'pain.3.title': 'Falling Into the Same Trap Twice',
+    'pain.3.desc': 'Mistakes from the last conversation resurface in the next one. The AI has no mechanism to remember "the pit we hit last time" or "why that approach didn\'t work".',
+    'pain.3.tooltip': 'AOS Solution|Feedback memory uses an append-only strategy. Each entry contains three elements: Rule + Why + How to apply. New conversations auto-load them.',
+    'pain.4.title': 'Experience Never Accumulates or Reuses',
+    'pain.4.desc': 'Hard-won best practices and lessons learned vanish the moment the chat closes. Next time, you start from scratch all over again.',
+    'pain.4.tooltip': 'AOS Solution|Experience is written to 04_MEMORY/feedback/, distinguishing record-type (append-only) from state-type (overwrite + change notes).',
+    'pain.5.title': 'Close the Chat, Lose Everything',
+    'pain.5.desc': 'Everything the AI did and every decision it made disappears when the conversation ends. Nothing carries over to the next session.',
+    'pain.5.tooltip': 'AOS Solution|All state is written to disk: project state in STATUS.md, system state in SYSTEM_STATE.md. Auto-flushed on session end.',
+    'pain.6.title': 'Workflows Can\'t Be Standardized',
+    'pain.6.desc': 'Every time you ask the AI to do something, you have to describe the workflow from scratch. There\'s no reusable operations manual.',
+    'pain.6.tooltip': 'AOS Solution|The Skill module encapsulates workflows into step sequences. Each Skill has SKILL.md + gotchas.md — define once, invoke repeatedly.',
+
+    // COMPARISON
+    'compare.label': '✨ Comparison',
+    'compare.title': 'With AOS vs Without AOS',
+    'compare.desc': 'Same task, completely different experience——',
+    'compare.before.header': '😫 Without AOS',
+    'compare.after.header': '😎 With AOS',
+    'compare.label.you': 'You',
+    'compare.label.ai': 'AI',
+    'compare.before.user1': 'Help me update the user authentication module.',
+    'compare.before.ai1': 'Sure — what language? What framework? What database? JWT or Session-based auth?',
+    'compare.before.user2': '... (explaining the project background for the Nth time)',
+    'compare.before.ai2': 'Got it, on it... (writes the config to the wrong project path)',
+    'compare.after.user1': 'Help me update the user authentication module.',
+    'compare.after.ai1.tag': '[Auto-loaded project context]',
+    'compare.after.ai1': 'Sure — your Next.js project uses Prisma + PostgreSQL, and we updated the JWT strategy last time. I\'ll build on that.',
+    'compare.after.ai2.tag': '[Reading feedback memory]',
+    'compare.after.ai2': 'Noting that refreshToken was accidentally leaked into the response body last time — I\'ll strictly check that this round.',
+
+    // HOW IT WORKS
+    'how.label': '⚙️ How It Works',
+    'how.title': 'How AOS Works',
+    'how.desc': 'Core philosophy: <strong>AI memory doesn\'t come from "remembering" — it comes from reading files</strong>. Every conversation auto-reads and writes to disk; new sessions restore full context from files.',
+    'how.1.title': '🔍 Identify the Project',
+    'how.1.desc': 'Auto-detects which project the current operation involves, then loads that project\'s dedicated config and state.',
+    'how.1.tag': 'Auto-triggered',
+    'how.1.tooltip': 'Detection Priority|1. File path match 2. Context keyword match 3. Project directory scan. On match, reads 01_PROJECTS/{name}/AGENTS.md.',
+    'how.2.title': '🧠 Load Memory',
+    'how.2.desc': 'Loads historical experience, known pitfalls, user preferences, and project facts — the AI instantly "remembers" everything.',
+    'how.2.tag': '04_MEMORY/',
+    'how.2.tooltip': 'Loaded Content|User profile, project facts, feedback experience, knowledge index. INDEX.md is an index, not content — hard cap 200 lines/25KB.',
+    'how.3.title': '🔧 Execute the Task',
+    'how.3.desc': 'Invokes Skill modules and runs them as standardized step sequences, with visual output at every step.',
+    'how.3.tag': '03_TOOLS/skills/',
+    'how.3.tooltip': 'Skill Structure|SKILL.md (required) + gotchas.md (required) + optional scripts/templates. The last step of any sequence must be a state update.',
+    'how.4.title': '💾 Write to Memory',
+    'how.4.desc': 'New experience is appended to feedback records; project state is flushed to disk — no reliance on the AI\'s "memory".',
+    'how.4.tag': 'Mandatory step',
+    'how.4.tooltip': 'Iron Rule 2|Record-type is append-only; state-type overwrites the old value but keeps a change note (e.g., "React (updated 2026-06-15, was Vue)").',
+    'how.5.title': '✅ Self-Verification',
+    'how.5.desc': 'Checks version consistency, cross-reference integrity, and directory compliance — nothing slips through.',
+    'how.5.tag': 'Auto-checked',
+    'how.5.tooltip': 'Checklist|Version sync, cross-reference sync, state sync. Uses Grep to scan for residual old version references and outputs a consistency report.',
+    'how.6.title': '📤 Deliver Output',
+    'how.6.desc': 'Final deliverables land in 07_EXPORTS/, organized by project name and delivery type.',
+    'how.6.tag': '07_EXPORTS/',
+    'how.6.tooltip': 'Layering Rule|07_EXPORTS/{project_name}/{deliverable}/. Direct exports are forbidden — everything must go through the Project→Export flow.',
+
+    // DIRECTORY STRUCTURE
+    'dir.label': '📂 Structure',
+    'dir.title': 'A Standardized Workspace: One Responsibility per Directory',
+    'dir.desc': 'AOS sets up the AI\'s "desk" with 10 directories — each drawer holds exactly one category, never mixed.',
+    'dir.00.desc': 'System Rules Layer<br>The AI\'s "Code of Conduct"',
+    'dir.00.tooltip': 'Core Files|AGENTS.md (system rules), SKILL_REGISTRY.md (skill registry), SYSTEM_STATE.md (system state). Cannot be polluted by business logic.',
+    'dir.01.desc': 'Project Workspace<br>Each project gets its own room',
+    'dir.01.tooltip': 'Standard Structure|Each project contains AGENTS.md + README.md + STATUS.md + docs/ + src/ + config/. Missing AGENTS.md means initialization is incomplete.',
+    'dir.02.desc': 'Sandbox<br>Try uncertain operations first',
+    'dir.02.tooltip': 'Typical Use|Testing new Skills, validating migration scripts, experimental code. All uncertain operations must go here first.',
+    'dir.03.desc': 'Skill Library<br>Reusable AI workflows',
+    'dir.03.tooltip': 'Directory Structure|Contains skills/ (Skill modules), scripts/ (scripts), adapters/ (platform adapters). Mixing skill/loop/project storage is forbidden.',
+    'dir.04.desc': 'Memory Center<br>Experience, feedback, knowledge index',
+    'dir.04.tooltip': 'Subdirectories|user/ (user profile), project/ (project facts), feedback/ (feedback experience), INDEX.md (index). All state must be written here.',
+    'dir.05.desc': 'Cache<br>Safe to clear anytime',
+    'dir.05.tooltip': 'Typical Use|Cloned repos, temporary downloads, intermediate artifacts. Can be deleted at any time; never store important data here.',
+    'dir.06.desc': 'Runtime Logs<br>Append-only, never modified',
+    'dir.06.tooltip': 'Layering Rule|06_LOGS/{project_name}/{YYYYMMDD}.log. Append-only, never modified — used for audit and troubleshooting.',
+    'dir.07.desc': 'Exports<br>Final deliverables',
+    'dir.07.tooltip': 'Layering Rule|07_EXPORTS/{project_name}/{deliverable}/. All output must be exported from here; direct exports are forbidden.',
+    'dir.08.desc': 'Inbox<br>Web scraping, migration data',
+    'dir.08.tooltip': 'Subdirectories|raw/ (layered by date raw/{YYYYMMDD}/), migration/ (migration data). All external input must enter here first.',
+    'dir.09.desc': 'Reference Library<br>Single source of truth, no duplicates',
+    'dir.09.tooltip': 'Iron Rule 6|All knowledge exists in exactly one copy; other locations may only reference the path. Contains system/, web/, _index.md.',
+
+    // ABILITIES
+    'ability.label': '🛡️ Abilities',
+    'ability.title': 'Three Core Abilities',
+    'ability.desc': 'Solving the three most fundamental problems of AI assistants——',
+    'ability.1.title': 'Cross-Session Memory',
+    'ability.1.analogy': '→ The assistant\'s notebook',
+    'ability.1.desc': 'The AI auto-reads and writes memory files every conversation. New sessions restore full context from disk — no more amnesia, experience compounds.',
+    'ability.1.tooltip': 'Implementation|The AI reads 04_MEMORY/INDEX.md on the first message of every conversation and flushes state on session end. No reliance on runtime memory.',
+    'ability.2.title': 'Project Isolation',
+    'ability.2.analogy': '→ A dedicated desk',
+    'ability.2.desc': 'Each project has its own config, state, and docs. Switching projects auto-loads the right context — no more "mistaken identity".',
+    'ability.2.tooltip': 'Isolation Mechanism|Each project has its own AGENTS.md (project-level rules override system defaults) + STATUS.md + reference_links.md (pointers only).',
+    'ability.3.title': 'Skill Reuse',
+    'ability.3.analogy': '→ Standard operating manual',
+    'ability.3.desc': 'Encapsulate common workflows into Skills — define once, invoke anywhere. Teams share best practices and stop reinventing the wheel.',
+    'ability.3.tooltip': 'Skill Lifecycle|Create → register in SKILL_REGISTRY.md → update call_count on invocation → continuously append to gotchas.md pitfall list.',
+
+    // VALUE
+    'value.label': '💎 Value',
+    'value.title': 'Value & Differentiation',
+    'value.desc': 'AOS upgrades your AI assistant from a "disposable tool" into a "sustainable collaboration partner"——',
+    'value.1.title': 'Productivity Gains',
+    'value.1.1': 'Cuts 60%+ of repetitive communication overhead',
+    'value.1.2': 'Project isolation eliminates context confusion',
+    'value.1.3': 'Feedback memory prevents repeated mistakes',
+    'value.1.4': 'Skills are defined once and reused endlessly',
+    'value.2.title': 'Social Value',
+    'value.2.1': 'An open-source standard for AI workflow management',
+    'value.2.2': 'Zero code dependencies lower the barrier to entry',
+    'value.2.3': 'Cross-platform by design (TRAE / Claude / Codex)',
+    'value.2.4': 'Advancing the standardization of AI-assisted development',
+
+    // COMPARE TABLE
+    'table.dim': 'Dimension',
+    'table.aos': 'AOS',
+    'table.trad': 'Traditional Solutions',
+    'table.1.dim': 'Tech Dependency',
+    'table.1.aos': 'Pure file system, zero code',
+    'table.1.trad': 'Requires installing frameworks/runtimes',
+    'table.2.dim': 'Onboarding Cost',
+    'table.2.aos': 'Create directories and start',
+    'table.2.trad': 'Learn APIs, configure environments',
+    'table.3.dim': 'Cross-Tool Compatibility',
+    'table.3.aos': 'Works with any AI assistant',
+    'table.3.trad': 'Locked to a specific platform',
+    'table.4.dim': 'Auditability',
+    'table.4.aos': 'All state is human-readable files',
+    'table.4.trad': 'State hidden in databases/memory',
+    'table.5.dim': 'Memory Persistence',
+    'table.5.aos': 'Written to disk, never expires',
+    'table.5.trad': 'In-memory, gone when the session ends',
+    'table.6.dim': 'Team Collaboration',
+    'table.6.aos': 'Files as protocol, Git-friendly',
+    'table.6.trad': 'Requires extra sync mechanisms',
+
+    // QUICK START
+    'start.label': '🚀 Quick Start',
+    'start.title': 'Get Started with AOS in Three Steps',
+    'start.desc': 'Pure file system — no dependencies to install——',
+    'start.1.title': 'Get AOS',
+    'start.1.desc': 'Clone the repository or download the archive. AOS is a pure file structure with no dependencies to install.',
+    'start.1.tooltip': 'Alternative|Just download the ZIP and extract. No git, no Node.js, no runtime environment required.',
+    'start.2.title': 'Open It in Your AI Tool',
+    'start.2.desc': 'Open the AOS directory in TRAE Work (recommended), Claude Code, or Codex — the AI will auto-read the root AGENTS.md.',
+    'start.2.tooltip': 'Auto Behavior|The AI auto-reads AGENTS.md + identifies the current project + loads the project-level AGENTS.md. TRAE Work\'s Code mode works best.',
+    'start.3.title': 'Configure Rules & Verify',
+    'start.3.desc': 'Add 3 Rules (see the setup guide for details), then run the self-check script to verify the installation.',
+    'start.3.tooltip': '3 Rules|aos-consistency-guard (version consistency), aos-memory-rules (memory rules), aos-skill-rules (Skill rules). The self-check script scans directory compliance.',
+    'start.guide': '📖 Full Setup Guide',
+
+    // PLATFORMS
+    'platform.label': '🖥️ Platforms',
+    'platform.title': 'Supported Platforms',
+    'platform.desc': 'AOS is built on the file system — cross-platform by nature——',
+    'platform.1.name': 'TRAE Work',
+    'platform.1.status': 'Best fit, native rule-system support',
+    'platform.1.badge': 'Recommended',
+    'platform.1.tooltip': 'Why Best|Native support for the Rules system (3 core Rules) + Skill invocation + Schedule cron tasks. Code mode is recommended.',
+    'platform.2.name': 'Claude Code',
+    'platform.2.status': 'Adapted via CLAUDE.md template',
+    'platform.2.badge': 'Supported',
+    'platform.2.tooltip': 'Adaptation|Maps AOS rules via a CLAUDE.md template. Manual sync from Rules to CLAUDE.md is required.',
+    'platform.3.name': 'Codex',
+    'platform.3.status': 'Adapted via config mapping',
+    'platform.3.badge': 'Supported',
+    'platform.3.tooltip': 'Adaptation|Adapted via config mapping. 03_TOOLS/adapters/ provides a Codex-specific adapter template.',
+
+    // FOOTER
+    'footer.desc': 'Agent Operating System — Give Your AI Assistant a Memory and a Workspace',
+    'footer.github': 'GitHub',
+    'footer.guide': 'Setup Guide',
+    'footer.rules': 'System Rules',
+    'footer.license': 'MIT License'
+  }
+};
+
+function detectLanguage() {
+  const saved = localStorage.getItem('aos-lang');
+  if (saved) return saved;
+  const browserLang = navigator.language || navigator.userLanguage || 'en';
+  return browserLang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+}
+
+function applyLanguage(lang) {
+  localStorage.setItem('aos-lang', lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  // 翻译元素内容
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
+  });
+  // 翻译元素属性（如 data-tooltip）
+  document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
+    const attrs = el.getAttribute('data-i18n-attr').split(',');
+    attrs.forEach(function (attrPair) {
+      const parts = attrPair.split(':');
+      const attr = parts[0].trim();
+      const key = parts[1].trim();
+      if (i18n[lang][key] !== undefined) {
+        el.setAttribute(attr, i18n[lang][key]);
+      }
+    });
+  });
+  // 更新切换按钮状态
+  document.querySelectorAll('.lang-btn').forEach(function (btn) {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+
+// 绑定语言切换按钮
+document.querySelectorAll('.lang-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    applyLanguage(this.dataset.lang);
+  });
+});
+
+// 初始化语言
+applyLanguage(detectLanguage());
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  // ===== 鼠标光晕跟随 =====
+  const cursorGlow = document.getElementById('cursorGlow');
+  const cursorDot = document.getElementById('cursorDot');
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let glowX = mouseX;
+  let glowY = mouseY;
+  let dotX = mouseX;
+  let dotY = mouseY;
+
+  document.addEventListener('mousemove', function (e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function animateCursor() {
+    // 光晕缓慢跟随
+    glowX += (mouseX - glowX) * 0.12;
+    glowY += (mouseY - glowY) * 0.12;
+    cursorGlow.style.transform = 'translate(' + glowX + 'px, ' + glowY + 'px) translate(-50%, -50%)';
+    // 小点快速跟随
+    dotX += (mouseX - dotX) * 0.35;
+    dotY += (mouseY - dotY) * 0.35;
+    cursorDot.style.transform = 'translate(' + dotX + 'px, ' + dotY + 'px) translate(-50%, -50%)';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // 悬停在可交互元素上时光晕放大
+  document.querySelectorAll('a, button, .dir-card, .ability-card, .pain-card, .quick-card, .platform-card, .value-card').forEach(function (el) {
+    el.addEventListener('mouseenter', function () {
+      cursorDot.style.transform += ' scale(2.5)';
+      cursorGlow.style.opacity = '1.4';
+    });
+    el.addEventListener('mouseleave', function () {
+      cursorGlow.style.opacity = '';
+    });
+  });
+
+  // ===== 导航栏滚动效果 =====
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 30) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+
+  // ===== IntersectionObserver 滚动入场动画 =====
+  const revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      } else {
+        entry.target.classList.remove('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) {
+    revealObserver.observe(el);
+  });
+
+  // ===== 数字滚动动画 =====
+  const numberObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        if (el.dataset.static === 'true') {
+          el.textContent = el.dataset.count;
+          numberObserver.unobserve(el);
+          return;
+        }
+        const target = parseFloat(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        if (isNaN(target)) {
+          el.textContent = el.dataset.count;
+          numberObserver.unobserve(el);
+          return;
+        }
+        const duration = 1600;
+        const startTime = performance.now();
+        function tick(now) {
+          const progress = Math.min((now - startTime) / duration, 1);
+          // easeOutExpo
+          const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+          const value = Math.round(target * eased);
+          el.textContent = value + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            el.textContent = target + suffix;
+          }
+        }
+        requestAnimationFrame(tick);
+        numberObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.hero-stat-num').forEach(function (el) {
+    numberObserver.observe(el);
+  });
+
+  // ===== 磁吸悬停效果（目录卡片） =====
+  document.querySelectorAll('[data-magnetic-item]').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -6;
+      const rotateY = ((x - centerX) / centerX) * 6;
+      card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+      card.style.setProperty('--mx', (x / rect.width * 100) + '%');
+      card.style.setProperty('--my', (y / rect.height * 100) + '%');
+    });
+    card.addEventListener('mouseleave', function () {
+      card.style.transform = '';
+    });
+  });
+
+  // ===== 痛点卡片光斑跟随 =====
+  document.querySelectorAll('.pain-card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
+  });
+
+  // ===== 对比板块鼠标视差 =====
+  document.querySelectorAll('[data-parallax]').forEach(function (col) {
+    col.addEventListener('mousemove', function (e) {
+      const rect = col.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      col.style.transform = 'translateY(-8px) rotateX(' + (-y * 4) + 'deg) rotateY(' + (x * 4) + 'deg)';
+    });
+    col.addEventListener('mouseleave', function () {
+      col.style.transform = '';
+    });
+  });
+
+  // ===== 平滑滚动导航（修正偏移） =====
+  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      e.preventDefault();
+      const navHeight = 72;
+      const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 10;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  });
+
+  // ===== 触摸设备隐藏自定义光标 =====
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    cursorGlow.style.display = 'none';
+    cursorDot.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }
+
+  // ===== Tooltip 悬浮弹窗交互增强 =====
+  (function initTooltip() {
+    let tooltipEl = null;
+    let showTimer = null;
+    let currentTarget = null;
+
+    // 动态创建 tooltip DOM
+    function createTooltip() {
+      if (tooltipEl) return tooltipEl;
+      tooltipEl = document.createElement('div');
+      tooltipEl.className = 'aos-tooltip';
+      tooltipEl.innerHTML = '<div class="aos-tooltip-title"></div><div class="aos-tooltip-body"></div><div class="aos-tooltip-arrow"></div>';
+      document.body.appendChild(tooltipEl);
+      return tooltipEl;
+    }
+
+    // 智能定位：根据组件在视口中的位置选择弹出方向
+    function positionTooltip(target) {
+      const rect = target.getBoundingClientRect();
+      const tip = tooltipEl;
+      const tipRect = tip.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const centerX = rect.left + rect.width / 2;
+      const centerRatio = centerX / vw;
+      const gap = 12;
+
+      // 方向判定：中心点 < 35% 视口宽度 → 右侧弹出；> 65% → 左侧弹出；35%-65% → 上方弹出
+      let placement = 'top';
+      if (centerRatio < 0.35) placement = 'right';
+      else if (centerRatio > 0.65) placement = 'left';
+      else placement = 'top';
+
+      let left = 0;
+      let top = 0;
+
+      if (placement === 'top') {
+        left = centerX - tipRect.width / 2;
+        top = rect.top - tipRect.height - gap;
+        // 顶部空间不足时翻转为底部弹出
+        if (top < 8) {
+          top = rect.bottom + gap;
+          placement = 'bottom';
+        }
+      } else if (placement === 'left') {
+        left = rect.left - tipRect.width - gap;
+        top = rect.top + rect.height / 2 - tipRect.height / 2;
+        // 左侧空间不足时翻转为右侧弹出
+        if (left < 8) {
+          left = rect.right + gap;
+          placement = 'right';
+        }
+      } else if (placement === 'right') {
+        left = rect.right + gap;
+        top = rect.top + rect.height / 2 - tipRect.height / 2;
+        // 右侧空间不足时翻转为左侧弹出
+        if (left + tipRect.width > vw - 8) {
+          left = rect.left - tipRect.width - gap;
+          placement = 'left';
+        }
+      }
+
+      // 视口边界修正
+      if (left < 8) left = 8;
+      if (left + tipRect.width > vw - 8) left = vw - tipRect.width - 8;
+      if (top < 8) top = 8;
+      if (top + tipRect.height > vh - 8) top = vh - tipRect.height - 8;
+
+      tip.style.left = left + 'px';
+      tip.style.top = top + 'px';
+      tip.setAttribute('data-placement', placement);
+    }
+
+    // 显示 tooltip：支持 | 分隔标题和正文
+    function showTooltip(target) {
+      const raw = target.getAttribute('data-tooltip');
+      if (!raw) return;
+      const tip = createTooltip();
+      const titleEl = tip.querySelector('.aos-tooltip-title');
+      const bodyEl = tip.querySelector('.aos-tooltip-body');
+      const parts = raw.split('|');
+      if (parts.length >= 2) {
+        titleEl.textContent = parts[0].trim();
+        bodyEl.textContent = parts.slice(1).join('|').trim();
+      } else {
+        titleEl.textContent = '';
+        bodyEl.textContent = raw.trim();
+      }
+      // visibility:hidden 时 getBoundingClientRect 仍可获取尺寸，先定位再显示
+      positionTooltip(target);
+      tip.classList.add('show');
+      currentTarget = target;
+    }
+
+    function hideTooltip() {
+      if (!tooltipEl) return;
+      tooltipEl.classList.remove('show');
+      currentTarget = null;
+    }
+
+    function bindEvents() {
+      // 事件委托：鼠标悬浮 150ms 后显示
+      document.addEventListener('mouseover', function (e) {
+        const target = e.target.closest('[data-tooltip]');
+        if (!target) return;
+        if (currentTarget === target) return;
+        clearTimeout(showTimer);
+        showTimer = setTimeout(function () {
+          showTooltip(target);
+        }, 150);
+      });
+
+      // 移出立即隐藏
+      document.addEventListener('mouseout', function (e) {
+        const target = e.target.closest('[data-tooltip]');
+        if (!target) return;
+        const related = e.relatedTarget;
+        // 如果鼠标移动到目标内部的子元素，不隐藏
+        if (related && target.contains(related)) return;
+        clearTimeout(showTimer);
+        hideTooltip();
+      });
+
+      // 滚动时自动隐藏
+      window.addEventListener('scroll', function () {
+        if (currentTarget) {
+          clearTimeout(showTimer);
+          hideTooltip();
+        }
+      }, { passive: true, capture: true });
+
+      // 窗口尺寸变化时重新定位
+      window.addEventListener('resize', function () {
+        if (currentTarget) {
+          positionTooltip(currentTarget);
+        }
+      });
+    }
+
+    bindEvents();
+  })();
+})();
+</script>
+
+</body>
+</html>

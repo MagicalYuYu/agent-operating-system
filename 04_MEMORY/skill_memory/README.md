@@ -1,4 +1,4 @@
-# AOS v1.0 - Skill Memory
+# AOS v1.1.0 — 04_MEMORY/skill_memory
 
 Skill 持久记忆，每个 Skill 一个文件。
 

@@ -1,4 +1,4 @@
-# AOS v1.0 - Exports 目录
+# AOS v1.1.0 — 07_EXPORTS
 
 输出导出区，所有输出必须从这里导出。
 

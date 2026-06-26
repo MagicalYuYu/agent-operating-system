@@ -1,0 +1,359 @@
+{
+  "manifest_version": "1.0",
+  "release_version": "1.1.0",
+  "previous_version": "1.0.0",
+  "release_date": "2026-06-25",
+  "description": "AOS 1.1.0 文件变更清单（相对 1.0.0）",
+  "new_files": [
+    {
+      "path": "03_TOOLS/aos_viewer/README.md",
+      "desensitize": false,
+      "description": "AOS Viewer 模块说明（v1.1.0 新增）"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/aos_viewer_server.py",
+      "desensitize": false,
+      "description": "后端服务 + PyWebView 桌面应用入口"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/aos_viewer.spec",
+      "desensitize": false,
+      "description": "PyInstaller 打包配置（onedir 模式）"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/aos_viewer.ico",
+      "desensitize": false,
+      "description": "应用图标"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/index.html",
+      "desensitize": false,
+      "description": "AOS Viewer 主入口页面"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/favicon.ico",
+      "desensitize": false,
+      "description": "页面 favicon"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/css/style.css",
+      "desensitize": false,
+      "description": "主样式（Liquid Glass 风格）"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/js/app.js",
+      "desensitize": false,
+      "description": "交互逻辑"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/js/data.js",
+      "desensitize": true,
+      "desensitize_method": "replace_with_example",
+      "description": "运行时数据（GitHub 上传版替换为 example_data.js 内容）"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/js/data_content.js",
+      "desensitize": false,
+      "exclude": true,
+      "description": "大文本内容缓存（不上传 GitHub）"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/js/i18n.js",
+      "desensitize": false,
+      "description": "国际化字典（zh-CN / en-US）"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/previews/README.md",
+      "desensitize": false,
+      "description": "备用美学方向归档说明"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/previews/a_cyber_archive.html",
+      "desensitize": false,
+      "description": "备用美学方向 A：赛博档案室"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/previews/b_terminal_organism.html",
+      "desensitize": false,
+      "description": "备用美学方向 B：终端有机体"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/previews/c_oriental_void.html",
+      "desensitize": false,
+      "description": "备用美学方向 C：东方留白"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/previews/index.html",
+      "desensitize": false,
+      "description": "预览索引页"
+    },
+    {
+      "path": "03_TOOLS/scripts/aos_generate_data.py",
+      "desensitize": false,
+      "description": "数据生成脚本（扫描 AOS 文件系统生成 data.js）"
+    },
+    {
+      "path": "07_EXPORTS/aos_viewer/example_data.js",
+      "desensitize": false,
+      "description": "脱敏版示例数据（GitHub 上传版 data.js 的源文件）"
+    },
+    {
+      "path": "07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md",
+      "desensitize": false,
+      "description": "Agent 辅助更新提示词（方案一）"
+    },
+    {
+      "path": "07_EXPORTS/aos_viewer/MIGRATION_GUIDE_1.1.0.md",
+      "desensitize": false,
+      "description": "手动升级指南（方案三）"
+    },
+    {
+      "path": "07_EXPORTS/aos_viewer/CHANGELOG_1.1.0.md",
+      "desensitize": false,
+      "description": "1.1.0 变更日志"
+    },
+    {
+      "path": "07_EXPORTS/aos_viewer/FILE_MANIFEST_1.1.0.json",
+      "desensitize": false,
+      "description": "本文件"
+    },
+    {
+      "path": "00_BOOT/SYSTEM_INSPECTION.md",
+      "desensitize": false,
+      "description": "系统级巡检规范（从 DAILY_INSPECTION.md 拆分）"
+    },
+    {
+      "path": "00_BOOT/PROJECT_INSPECTION.md",
+      "desensitize": false,
+      "description": "项目级巡检规范（从 DAILY_INSPECTION.md 拆分）"
+    }
+  ],
+  "modified_files": [
+    {
+      "path": "AGENTS.md",
+      "desensitize": true,
+      "desensitize_method": "agents_dual_machine",
+      "changes": [
+        "新增：项目内标准结构（类型一单一项目 / 类型二项目集）",
+        "新增：禁止 src/ 下嵌套同名目录约束",
+        "新增：双机环境章节（仅工作目录版，GitHub 上传版自动剥离）",
+        "变更：巡检规范引用从启动自检流程移至详细规则引用表"
+      ]
+    },
+    {
+      "path": "00_BOOT/SYSTEM_STATE.md",
+      "desensitize": true,
+      "desensitize_method": "system_state",
+      "changes": [
+        "版本号 1.0.0 → 1.1.0",
+        "最后更新描述更新",
+        "追加 v1.1.0 发布事件",
+        "追加首次正式巡检事件",
+        "追加巡检规范拆分事件"
+      ]
+    },
+    {
+      "path": "00_BOOT/CORE.md",
+      "desensitize": false,
+      "changes": [
+        "版本号 1.0.0 → 1.1.0",
+        "最后更新描述更新"
+      ]
+    },
+    {
+      "path": "README.md",
+      "desensitize": false,
+      "changes": [
+        "版本徽章 1.0.0 → 1.1.0"
+      ]
+    },
+    {
+      "path": "04_MEMORY/INDEX.md",
+      "desensitize": true,
+      "desensitize_method": "index",
+      "changes": [
+        "proj-aos-v1-status 描述更新为 v1.1.0"
+      ]
+    },
+    {
+      "path": "04_MEMORY/project/proj_aos_v1_status.md",
+      "desensitize": true,
+      "desensitize_method": "proj_aos_status",
+      "changes": [
+        "版本 1.0.0 → 1.1.0",
+        "GitHub 发布状态 → v1.1.0 发布",
+        "追加 AOS Viewer 状态字段",
+        "追加 AOS Viewer 功能字段",
+        "已知缺陷标题 v1.0.0 → v1.1.0"
+      ]
+    },
+    {
+      "path": "03_TOOLS/scripts/aos_sync_github.py",
+      "desensitize": false,
+      "changes": [
+        "新增：AOS_Viewer/ 和 release/ 目录排除",
+        "新增：7个私有项目文件排除",
+        "新增：agents_dual_machine 脱敏类型",
+        "新增：system_state 脱敏类型（统计归零+事件过滤）",
+        "新增：proj_aos_status 脱敏类型",
+        "增强：index 脱敏逻辑（保留 proj-aos-v1-status 模板描述）",
+        "新增：data.js 替换步骤（example_data.js → GitHub 目录 data.js）",
+        "新增：EXCLUDE_DIRS 添加 logs（运行时日志目录）",
+        "新增：MEMORY_EXCLUDE 添加 agent_pool（Agent 任务池运行时数据）",
+        "新增：99_ARCHIVE/migration/ 排除规则（含迁移扫描数据）",
+        "新增：xiaolin-* 文件排除规则（私有收藏不上传 GitHub）",
+        "新增：reference_index 脱敏类型（剥离 _index.md 中 xiaolin 行）",
+        "新增：SENSITIVE_PATTERNS 添加 xiaolin-（安全验证兜底）",
+        "新增：.log 文件排除规则（排除搜狗输入法 debug.log 等运行时日志）",
+        "新增：SENSITIVE_PATTERNS 添加 debug.log（安全验证兜底）"
+      ]
+    },
+    {
+      "path": "09_REFERENCE/_index.md",
+      "desensitize": true,
+      "desensitize_method": "reference_index",
+      "changes": [
+        "追加15条 xiaolin-* 索引（修复一致性自检失败）",
+        "同步脚本脱敏时剥离 xiaolin 行（私有收藏不上传 GitHub）"
+      ]
+    },
+    {
+      "path": "03_TOOLS/scripts/aos_generate_data.py",
+      "desensitize": false,
+      "changes": [
+        "fallback version 1.0.0 → 1.1.0"
+      ]
+    },
+    {
+      "path": "docs/index.html",
+      "desensitize": false,
+      "changes": [
+        "hero.badge v1.0.0 → v1.1.0（zh-CN HTML + zh-CN i18n + en-US i18n，共3处）"
+      ]
+    },
+    {
+      "path": "docs/AOS_creative_proposal.html",
+      "desensitize": false,
+      "changes": [
+        "hero.badge v1.0.0 → v1.1.0（zh-CN HTML + zh-CN i18n + en-US i18n，共3处）"
+      ]
+    },
+    {
+      "path": "09_REFERENCE/web/web-template-specification.md",
+      "desensitize": false,
+      "changes": [
+        "示例版本号 v1.0.0 → v1.1.0"
+      ]
+    }
+  ],
+  "deleted_files": [
+    {
+      "path": "00_BOOT/DAILY_INSPECTION.md",
+      "reason": "拆分为 SYSTEM_INSPECTION.md + PROJECT_INSPECTION.md",
+      "migrated_to": [
+        "00_BOOT/SYSTEM_INSPECTION.md",
+        "00_BOOT/PROJECT_INSPECTION.md"
+      ]
+    }
+  ],
+  "excluded_from_github": [
+    {
+      "path": "04_MEMORY/credentials.json",
+      "reason": "明文凭据"
+    },
+    {
+      "path": "04_MEMORY/user/user_profile.md",
+      "reason": "个人画像"
+    },
+    {
+      "path": "04_MEMORY/feedback/",
+      "reason": "个人经验记录"
+    },
+    {
+      "path": "04_MEMORY/project/proj_astrbot.md",
+      "reason": "个人项目状态"
+    },
+    {
+      "path": "04_MEMORY/project/proj_clash_omega.md",
+      "reason": "个人项目状态"
+    },
+    {
+      "path": "04_MEMORY/project/proj_oncepad.md",
+      "reason": "个人项目状态"
+    },
+    {
+      "path": "04_MEMORY/project/proj_bishoujo_web.md",
+      "reason": "个人项目状态"
+    },
+    {
+      "path": "01_PROJECTS/astrbot/",
+      "reason": "个人项目"
+    },
+    {
+      "path": "01_PROJECTS/clash_omega/",
+      "reason": "个人项目"
+    },
+    {
+      "path": "01_PROJECTS/oncepad/",
+      "reason": "个人项目"
+    },
+    {
+      "path": "01_PROJECTS/bishoujo-web/",
+      "reason": "个人项目"
+    },
+    {
+      "path": "01_PROJECTS/napcat/",
+      "reason": "个人项目"
+    },
+    {
+      "path": "03_TOOLS/aos_viewer/prototype/js/data_content.js",
+      "reason": "含实际项目大文本"
+    },
+    {
+      "path": "07_EXPORTS/github-release-prompt.md",
+      "reason": "含发布流程个人信息"
+    },
+    {
+      "path": "07_EXPORTS/aos_viewer/RELEASE_ANALYSIS_1.1.0.md",
+      "reason": "内部发布策略分析报告"
+    },
+    {
+      "path": "AOS_Viewer/",
+      "reason": "PyInstaller 构建产物（根目录）"
+    },
+    {
+      "path": "07_EXPORTS/aos_viewer/release/",
+      "reason": "发布包（含 exe/DLL/用户数据）"
+    },
+    {
+      "path": "09_REFERENCE/system/xiaolin-*.md",
+      "reason": "小林coding 私有收藏文章（15篇，禁止上传）"
+    },
+    {
+      "path": "09_REFERENCE/system/xiaolin-*.metadata.json",
+      "reason": "小林coding 私有收藏元数据（15个，禁止上传）"
+    },
+    {
+      "path": "04_MEMORY/agent_pool/",
+      "reason": "Agent 任务池运行时数据"
+    },
+    {
+      "path": "99_ARCHIVE/migration/",
+      "reason": "迁移扫描数据（含用户文件路径）"
+    },
+    {
+      "path": "logs/",
+      "reason": "运行时日志目录（AOS Viewer 等工具生成）"
+    },
+    {
+      "path": "debug.log",
+      "reason": "根目录运行时日志（搜狗输入法等生成，非 AOS 文件）"
+    }
+  ],
+  "statistics": {
+    "new_files_count": 24,
+    "modified_files_count": 12,
+    "deleted_files_count": 1,
+    "excluded_count": 23
+  }
+}

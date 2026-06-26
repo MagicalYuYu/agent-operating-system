@@ -19,9 +19,14 @@ Thumbs.db
 04_MEMORY/credentials.json
 04_MEMORY/user/
 04_MEMORY/feedback/
-05_CACHE/
+05_CACHE/*
+!05_CACHE/README.md
 06_LOGS/*/
 !06_LOGS/README.md
 08_INBOX/migration/
 02_SANDBOX/*/
 !02_SANDBOX/README.md
+
+# 99_ARCHIVE 仅保留 README.md
+99_ARCHIVE/*
+!99_ARCHIVE/README.md

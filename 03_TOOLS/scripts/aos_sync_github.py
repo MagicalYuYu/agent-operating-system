@@ -49,6 +49,8 @@ EXCLUDE_DIRS = {
     "logs",            # 运行时日志目录（小写，AOS Viewer 等工具生成）
     "build",           # PyInstaller 构建缓存目录（03_TOOLS/aos_viewer/build/）
     "dist",            # PyInstaller 输出目录（03_TOOLS/aos_viewer/dist/）
+    "astrbot",         # 99_ARCHIVE 下的项目私有备份（仅保留 99_ARCHIVE/README.md）
+    "github_v1.0.0_web_backup",  # 99_ARCHIVE 下的本地备份（不上传）
 }
 
 # 01_PROJECTS 下仅保留示例项目和 README.md
@@ -94,6 +96,7 @@ EXTRA_EXCLUDE_FILES = {
     "07_EXPORTS/bishoujo-web/bishoujo_web_status_report.md",        # 私有项目报告
     "07_EXPORTS/bishoujo-web/heat_distribution_report.json",        # 私有项目数据
     "07_EXPORTS/bishoujo-web/web_gacha_astrbot_integration_plan.md", # 私有项目规划
+    "99_ARCHIVE/aos-v2.1-original-design.md",  # 框架历史设计文档（不上传，仅本地保留）
     "07_EXPORTS/aos_viewer/RELEASE_ANALYSIS_1.1.0.md",              # 含私有项目分析
     # 2026-06-26 已迁移：AOS_creative_proposal.html → 02_SANDBOX/，domain_setup_result.md → 06_LOGS/aos_system/
     # 这两个目录已在 EXCLUDE_DIRS 中完全排除，无需在此重复声明

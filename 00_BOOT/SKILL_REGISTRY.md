@@ -10,6 +10,7 @@
 |----------|------|----------|------|------|------|
 | SK_0001 | Web Knowledge Ingestion Skill | 当用户提供URL并要求抓取/入库/归档/知识提取时使用 | 2.0.0 | ACTIVE | 03_TOOLS/skills/web_knowledge_ingestion/ |
 | SK_0002 | Legacy Migration Skill | 当用户要求迁移/导入历史项目、对话记录、存量内容到AOS时使用 | 1.0.0 | ACTIVE | 03_TOOLS/skills/legacy_migration/ |
+| SK_0003 | Ponytail Code Quality Skill | 当用户要求编写/修改代码时使用：6级决策阶梯（YAGNI→stdlib→原生→已装依赖→一行→最小实现），默认full强度 | 1.0.0 | ACTIVE | 03_TOOLS/skills/ponytail_code_quality/ |
 
 ---
 
@@ -79,8 +80,9 @@
 | 2026-06-21 | SK_0001 | CREATE | WKIS 初始注册 |
 | 2026-06-21 | SK_0001 | 1.0.0-dev3 | 重构：description改为触发条件式；新增gotchas.md；新增可视化执行规范 |
 | 2026-06-21 | SK_0001 | PATCH | 1.0.0-rc1：运行时铁律适配——状态更新嵌入Skill步骤 |
-| 2026-06-21 | SK_0002 | CREATE | Legacy Migration Skill 初始注册
+| 2026-06-21 | SK_0002 | CREATE | Legacy Migration Skill 初始注册 |
 | 2026-06-21 | SK_0002 | EXEC | 示例项目迁移：6个插件(5活跃+1归档)+15个ZIP备份+2个教程文档迁入AOS |
+| 2026-06-27 | SK_0003 | CREATE | ponytail_code_quality Skill 注册：源自 DietrichGebert/ponytail（18.4k star），6级决策阶梯，默认full强度，所有模型通用 |
 
 ---
 

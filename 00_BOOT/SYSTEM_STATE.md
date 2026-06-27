@@ -87,6 +87,8 @@
 | 2026-06-25 | BUGFIX | 修复LS工具可靠性问题：所有文件存在性检查改用PowerShell Test-Path/Get-ChildItem -Force验证，避免误报
 | 2026-06-25 | REFACTOR | 巡检规范拆分：DAILY_INSPECTION.md 拆分为 SYSTEM_INSPECTION.md（系统级）+ PROJECT_INSPECTION.md（项目级），AGENTS.md 引用从启动自检流程移至详细规则引用表（标注Layer 3手动触发） |
 | 2026-06-25 | SYSTEM_RELEASE | v1.1.0 发布：新增 AOS Viewer 可视化界面（Liquid Glass 风格+i18n 国际化+PyWebView 桌面模式+HTTP API），新增 aos_generate_data.py 数据生成脚本，同步脚本增强脱敏逻辑 |
+| 2026-06-27 | SKILL_REGISTER | ponytail_code_quality (SK_0003) 注册：源自 DietrichGebert/ponytail（18.4k star），6级决策阶梯（YAGNI→stdlib→原生→已装依赖→一行→最小实现），默认 full 强度，所有模型通用，适配 Trae 无 hooks 架构 |
+| 2026-06-28 | BRANCH_MERGE | master 分支合并至 main：ponytail Skill 迁移完成，master 分支删除，统一主线为 main |
 
 ---
 

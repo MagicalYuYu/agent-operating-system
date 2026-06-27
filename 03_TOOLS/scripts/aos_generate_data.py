@@ -46,8 +46,10 @@ def find_aos_root():
     for parent in [script_dir] + list(script_dir.parents):
         if (parent / "AGENTS.md").exists():
             return parent
-    # 4. 常见路径
-    for p in [Path("D:/AOS"), Path("C:/AOS"), Path("d:/AOS"), Path("c:/AOS")]:
+    # 4. 环境变量 AOS_ROOT（用户可自定义）
+    env_root = os.environ.get("AOS_ROOT")
+    if env_root:
+        p = Path(env_root)
         if p.exists() and (p / "AGENTS.md").exists():
             return p
     print("错误：无法找到 AOS 根目录（需包含 AGENTS.md）")

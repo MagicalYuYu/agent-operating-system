@@ -1,0 +1,15 @@
+{
+  "name": "ponytail_code_quality",
+  "version": "1.0.0",
+  "type": "code_quality",
+  "author": "ponytail (DietrichGebert) + AOS adaptation",
+  "license": "MIT",
+  "description": "强制执行 ponytail 6 级决策阶梯，减少代码冗余。默认 full 强度，所有模型通用",
+  "trigger_keywords": ["ponytail", "懒人模式", "最简方案", "YAGNI", "减少依赖", "简化代码", "过度工程"],
+  "default_intensity": "full",
+  "available_intensities": ["lite", "full", "ultra"],
+  "platform": "Trae",
+  "upstream": "https://github.com/DietrichGebert/ponytail",
+  "upstream_version": "5.1.0",
+  "created": "2026-06-27"
+}

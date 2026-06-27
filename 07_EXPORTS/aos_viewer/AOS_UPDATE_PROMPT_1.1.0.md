@@ -1,8 +1,11 @@
 # AOS 1.1.0 更新指令（Agent 辅助）
 
-> **用途**：在 Trae / Claude Code / Codex 对话框中输入"请读取 `07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md` 并执行其中的更新流程"，Agent 将自动执行从 1.0.0 到 1.1.0 的更新流程。
+> **用途**：在 Trae / Claude Code / Codex 对话框中输入"请通过 WebFetch 读取 `https://raw.githubusercontent.com/MagicalYuYu/agent-operating-system/main/07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md` 并执行其中的更新流程"，Agent 将自动执行从 1.0.0 到 1.1.0 的更新流程。
 >
-> **前置条件**：Agent 已加载 AOS 工作目录（含 `AGENTS.md`），Python 3.8+ 可用。
+> **前置条件**：
+> - Agent 已加载 AOS 工作目录（含 `AGENTS.md`）
+> - Agent 具备 GitHub 网络访问权限（或用户已下载源码包到本地）
+> - Python 3.8+ 可用
 >
 > **路径约定**：以下脚本中的 `$aosRoot` 变量表示 AOS 根目录。默认在 AOS 根目录下执行即可（`$aosRoot = "."`），也可由用户指定（如 `$aosRoot = "C:\Users\YourName\AOS"`）。
 >

@@ -46,14 +46,16 @@
 
 ### 方案一：Agent 辅助更新（推荐） ⭐⭐⭐
 
-**适用**：Trae / Claude Code / Codex 用户
+**适用**：Trae / Claude Code / Codex 用户（需 GitHub 网络访问权限）
 
 1. 打开你的 Agent，加载 AOS 工作目录
-2. 在对话框中输入："请读取 `07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md` 并执行其中的更新流程"
+2. 在对话框中输入："请通过 WebFetch 读取 `https://raw.githubusercontent.com/MagicalYuYu/agent-operating-system/main/07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md` 并执行其中的更新流程"
 3. Agent 自动执行 8 步更新流程（扫描 / 备份 / 拉取 / 合并 / 同步 / 生成 / 自检 / 清理）
 4. 遇到冲突时 Agent 会弹窗询问
 
-**优点**：最贴合 AOS 使用习惯，智能处理冲突，全程可视化
+**优点**：最贴合 AOS 使用习惯，智能处理冲突，全程可视化，无需手动下载
+
+**备选**：若 Agent 不支持 WebFetch 或无 GitHub 访问权限，请先从 Release 下载 `aos-1.1.0-source.zip` 解压后，改用本地路径："请读取 `<解压路径>/07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md` 并执行其中的更新流程"
 
 ### 方案二：自动合并脚本（备选） ⭐⭐
 

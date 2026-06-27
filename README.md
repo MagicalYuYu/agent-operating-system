@@ -4,7 +4,7 @@
 
 **AI 助手的操作系统：内核 · 文件系统 · 桌面 · 记忆大脑**
 
-[🌐 官网](https://magicalyuyu.github.io/agent-operating-system/) · [📖 配置指南](docs/trae-setup-guide.md) · [🚀 快速开始](#快速开始)
+[🌐 官网](https://aos.magicalyu.online/) · [📖 配置指南](docs/trae-setup-guide.md) · [🚀 快速开始](#快速开始)
 
 ![Version](https://img.shields.io/badge/version-1.1.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
@@ -19,9 +19,9 @@
 
 如果你用过 AI 编程工具，可能遇到过这些：
 
-- 🔄 每次新对话都要重新介绍项目背景，AI 的"记忆"仅限当前窗口
+- 🧠 每次新对话都要重新介绍项目背景，AI 的"记忆"仅限当前窗口
 - 🔀 同时推进多个项目，AI 经常把 A 项目的配置写到 B 里
-- 🕳️ 上次犯过的错误，下次对话还会再犯
+- 🔄 上次犯过的错误，下次对话还会再犯
 - 📦 好不容易摸索出的经验，对话一关就消失了
 - 👁️ 系统状态全靠脑补，看不到、摸不着，更没法直观操作
 

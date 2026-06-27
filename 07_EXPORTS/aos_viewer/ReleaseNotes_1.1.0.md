@@ -48,11 +48,10 @@
 
 **适用**：Trae / Claude Code / Codex 用户
 
-1. 下载 `AOS_UPDATE_PROMPT_1.1.0.md`
-2. 打开你的 Agent，加载 AOS 工作目录
-3. 将提示词内容粘贴到对话框
-4. Agent 自动执行 8 步更新流程（扫描 / 备份 / 拉取 / 合并 / 同步 / 生成 / 自检 / 清理）
-5. 遇到冲突时 Agent 会弹窗询问
+1. 打开你的 Agent，加载 AOS 工作目录
+2. 在对话框中输入："请读取 `07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md` 并执行其中的更新流程"
+3. Agent 自动执行 8 步更新流程（扫描 / 备份 / 拉取 / 合并 / 同步 / 生成 / 自检 / 清理）
+4. 遇到冲突时 Agent 会弹窗询问
 
 **优点**：最贴合 AOS 使用习惯，智能处理冲突，全程可视化
 
@@ -70,13 +69,13 @@ python aos_migrate_to_1.1.0.py --aos-root /path/to/aos
 
 **适用**：技术用户或特殊情况
 
-详见 `MIGRATION_GUIDE_1.1.0.md`，按 10 步操作指南手动完成升级。
+详见 [MIGRATION_GUIDE_1.1.0.md](https://github.com/MagicalYuYu/agent-operating-system/blob/main/07_EXPORTS/aos_viewer/MIGRATION_GUIDE_1.1.0.md)，按 10 步操作指南手动完成升级。
 
 ---
 
 ## 完整变更日志
 
-详见 `CHANGELOG_1.1.0.md`。
+详见 [CHANGELOG_1.1.0.md](https://github.com/MagicalYuYu/agent-operating-system/blob/main/07_EXPORTS/aos_viewer/CHANGELOG_1.1.0.md)。
 
 ### 新增文件（24 个）
 

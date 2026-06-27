@@ -1,10 +1,23 @@
 # AOS 1.1.0 更新指令（Agent 辅助）
 
-> **用途**：将此文件内容粘贴到 Trae / Claude Code / Codex 对话框，Agent 将自动执行从 1.0.0 到 1.1.0 的更新流程。
+> **用途**：在 Trae / Claude Code / Codex 对话框中输入"请读取 `07_EXPORTS/aos_viewer/AOS_UPDATE_PROMPT_1.1.0.md` 并执行其中的更新流程"，Agent 将自动执行从 1.0.0 到 1.1.0 的更新流程。
 >
-> **前置条件**：Agent 已加载 AOS 工作目录（含 `AGENTS.md`），Python 3.8+ 可用，工作目录默认 `d:\AOS\`（可由用户指定）。
+> **前置条件**：Agent 已加载 AOS 工作目录（含 `AGENTS.md`），Python 3.8+ 可用。
+>
+> **路径约定**：以下脚本中的 `$aosRoot` 变量表示 AOS 根目录。默认在 AOS 根目录下执行即可（`$aosRoot = "."`），也可由用户指定（如 `$aosRoot = "C:\Users\YourName\AOS"`）。
 >
 > **预计耗时**：15-30 分钟（取决于网络下载速度与合并冲突数量）
+
+---
+
+## 路径变量初始化（所有步骤的前提）
+
+**执行命令**（PowerShell，在 AOS 根目录下执行）：
+```powershell
+# 设置 AOS 根目录（默认为当前目录，即 AOS 根目录）
+# 如需指定其他路径，改为：$aosRoot = "C:\path\to\your\AOS"
+$aosRoot = "."
+```
 
 ---
 
@@ -39,13 +52,13 @@
 **执行命令**（PowerShell）：
 ```powershell
 # 1.1 确认当前版本
-Select-String -Path "d:\AOS\00_BOOT\SYSTEM_STATE.md" -Pattern "1\.0\.0" | Select-Object -First 3
+Select-String -Path "$aosRoot\00_BOOT\SYSTEM_STATE.md" -Pattern "1\.0\.0" | Select-Object -First 3
 
 # 1.2 列出用户项目（排除示例项目）
-Get-ChildItem -Path "d:\AOS\01_PROJECTS\" -Directory | Where-Object { $_.Name -ne "_example_project" } | Select-Object Name
+Get-ChildItem -Path "$aosRoot\01_PROJECTS\" -Directory | Where-Object { $_.Name -ne "_example_project" } | Select-Object Name
 
 # 1.3 统计记忆索引条目数
-(Get-Content "d:\AOS\04_MEMORY\INDEX.md" | Measure-Object -Line).Lines
+(Get-Content "$aosRoot\04_MEMORY\INDEX.md" | Measure-Object -Line).Lines
 ```
 
 **扫描清单**：
@@ -77,7 +90,7 @@ Get-ChildItem -Path "d:\AOS\01_PROJECTS\" -Directory | Where-Object { $_.Name -n
 **执行命令**（PowerShell）：
 ```powershell
 # 2.1 创建备份目录（YYYYMMDD 替换为当前日期）
-$backupDir = "d:\AOS\99_ARCHIVE\pre_update_1.1.0_20260625"
+$backupDir = "$aosRoot\99_ARCHIVE\pre_update_1.1.0_20260625"
 New-Item -ItemType Directory -Path $backupDir -Force
 
 # 2.2 备份将被修改的文件（保持相对路径结构）
@@ -95,7 +108,7 @@ $filesToBackup = @(
     "09_REFERENCE\web\web-template-specification.md"
 )
 foreach ($file in $filesToBackup) {
-    $src = "d:\AOS\$file"
+    $src = "$aosRoot\$file"
     $dst = "$backupDir\$file"
     if (Test-Path $src) {
         New-Item -ItemType Directory -Path (Split-Path $dst) -Force | Out-Null
@@ -151,12 +164,12 @@ Get-ChildItem -Path $backupDir -Recurse -File | ForEach-Object {
 ```powershell
 # 3.A.1 下载源码包
 $url = "https://github.com/MagicalYuYu/agent-operating-system/releases/download/v1.1.0/aos-1.1.0-source.zip"
-$zipPath = "d:\AOS\05_CACHE\aos-1.1.0-source.zip"
-New-Item -ItemType Directory -Path "d:\AOS\05_CACHE" -Force | Out-Null
+$zipPath = "$aosRoot\05_CACHE\aos-1.1.0-source.zip"
+New-Item -ItemType Directory -Path "$aosRoot\05_CACHE" -Force | Out-Null
 Invoke-WebRequest -Uri $url -OutFile $zipPath
 
 # 3.A.2 解压到临时目录
-$updateDir = "d:\AOS\05_CACHE\aos_1.1.0_update"
+$updateDir = "$aosRoot\05_CACHE\aos_1.1.0_update"
 Expand-Archive -Path $zipPath -DestinationPath $updateDir -Force
 Write-Host "1.1.0 文件已解压到: $updateDir"
 ```
@@ -166,7 +179,7 @@ Write-Host "1.1.0 文件已解压到: $updateDir"
 **执行命令**（PowerShell）：
 ```powershell
 # 3.B.1 浅克隆 v1.1.0 分支
-$updateDir = "d:\AOS\05_CACHE\aos_1.1.0_update"
+$updateDir = "$aosRoot\05_CACHE\aos_1.1.0_update"
 git clone --depth 1 --branch v1.1.0 https://github.com/MagicalYuYu/agent-operating-system.git $updateDir
 
 # 3.B.2 验证克隆成功
@@ -179,18 +192,18 @@ if (Test-Path "$updateDir\AGENTS.md") {
 
 ### 方式 C：从本地已同步的 GitHub 目录读取（无需联网）
 
-**适用场景**：用户已在 `d:\github\agent-operating-system\` 同步过 1.1.0 版本。
+**适用场景**：用户已在本地 GitHub 目录同步过 1.1.0 版本。
 
 **执行命令**（PowerShell）：
 ```powershell
-# 3.C.1 检查本地 GitHub 目录
-$githubDir = "d:\github\agent-operating-system"
+# 3.C.1 检查本地 GitHub 目录（用户根据实际路径修改）
+$githubDir = "C:\path\to\your\github\agent-operating-system"  # 替换为你的实际路径
 if (Test-Path "$githubDir\AGENTS.md") {
     # 3.C.2 验证版本号
     $versionMatch = Select-String -Path "$githubDir\00_BOOT\SYSTEM_STATE.md" -Pattern "1\.1\.0"
     if ($versionMatch) {
         # 3.C.3 复制到临时目录（避免直接操作 GitHub 目录）
-        $updateDir = "d:\AOS\05_CACHE\aos_1.1.0_update"
+        $updateDir = "$aosRoot\05_CACHE\aos_1.1.0_update"
         New-Item -ItemType Directory -Path $updateDir -Force | Out-Null
         robocopy $githubDir $updateDir /E /XD .git /XF *.log
         Write-Host "已从本地 GitHub 目录复制到: $updateDir"
@@ -232,8 +245,8 @@ if (Test-Path "$githubDir\AGENTS.md") {
 
 **执行命令**（PowerShell）：
 ```powershell
-$updateDir = "d:\AOS\05_CACHE\aos_1.1.0_update"
-$aosRoot = "d:\AOS"
+$updateDir = "$aosRoot\05_CACHE\aos_1.1.0_update"
+$aosRoot = "$aosRoot"
 
 # 新增文件清单（相对路径）
 $newFiles = @(
@@ -286,9 +299,9 @@ Write-Host "已复制 $copiedCount / 24 个新增文件"
 ### 4.3 L2 智能合并：12 个修改文件（三向比对）
 
 对每个 1.0.0 已存在的修改文件，读取三方版本进行比对：
-- **用户版**：`d:\AOS\{path}`（用户当前文件）
+- **用户版**：`$aosRoot\{path}`（用户当前文件）
 - **1.0.0 官方版**：从备份或 GitHub v1.0.0 tag 获取（可参考步骤 2 备份）
-- **1.1.0 官方版**：`d:\AOS\05_CACHE\aos_1.1.0_update\{path}`
+- **1.1.0 官方版**：`$aosRoot\05_CACHE\aos_1.1.0_update\{path}`
 
 **合并原则**：
 - 用户自定义内容（用户有但 1.0.0 官方版没有）→ **保留**
@@ -377,8 +390,8 @@ Write-Host "已复制 $copiedCount / 24 个新增文件"
 - **执行命令**（PowerShell）：
   ```powershell
   # 确认内容已迁移（检查新文件是否存在）
-  if ((Test-Path "d:\AOS\00_BOOT\SYSTEM_INSPECTION.md") -and (Test-Path "d:\AOS\00_BOOT\PROJECT_INSPECTION.md")) {
-      Remove-Item -Path "d:\AOS\00_BOOT\DAILY_INSPECTION.md" -Force
+  if ((Test-Path "$aosRoot\00_BOOT\SYSTEM_INSPECTION.md") -and (Test-Path "$aosRoot\00_BOOT\PROJECT_INSPECTION.md")) {
+      Remove-Item -Path "$aosRoot\00_BOOT\DAILY_INSPECTION.md" -Force
       Write-Host "已删除 DAILY_INSPECTION.md（内容已迁移）"
   } else {
       Write-Host "新文件未就绪，跳过删除" -ForegroundColor Yellow
@@ -409,13 +422,13 @@ Write-Host "已复制 $copiedCount / 24 个新增文件"
 ```powershell
 # 5.1 扫描所有含 1.0.0 的文件（排除归档/项目/缓存/沙箱）
 $excludePaths = @("99_ARCHIVE", "01_PROJECTS", "05_CACHE", "02_SANDBOX", ".git")
-$matches = Get-ChildItem -Path "d:\AOS" -Recurse -Include "*.md", "*.json", "*.html", "*.js", "*.py" -File |
+$matches = Get-ChildItem -Path "$aosRoot" -Recurse -Include "*.md", "*.json", "*.html", "*.js", "*.py" -File |
     Where-Object { $excludePaths -notcontains ($_.FullName.Split("\")[-2]) } |
     ForEach-Object {
         $content = Get-Content $_.FullName -Raw
         if ($content -match "1\.0\.0") {
             [PSCustomObject]@{
-                Path = $_.FullName.Replace("d:\AOS\", "")
+                Path = $_.FullName.Replace("$aosRoot\", "")
                 MatchCount = ([regex]::Matches($content, "1\.0\.0")).Count
             }
         }
@@ -470,7 +483,7 @@ $filesToUpdate = @(
     "03_TOOLS\scripts\aos_generate_data.py"
 )
 foreach ($file in $filesToUpdate) {
-    $path = "d:\AOS\$file"
+    $path = "$aosRoot\$file"
     if (Test-Path $path) {
         $content = Get-Content $path -Raw
         # 仅替换系统版本号引用，保留历史事件中的版本号（需人工复核）
@@ -502,11 +515,11 @@ foreach ($file in $filesToUpdate) {
 **执行命令**（PowerShell）：
 ```powershell
 # 6.1 运行数据生成脚本
-Set-Location "d:\AOS"
+Set-Location "$aosRoot"
 python "03_TOOLS\scripts\aos_generate_data.py"
 
 # 6.2 验证 data.js 生成
-$dataJs = "d:\AOS\03_TOOLS\aos_viewer\prototype\js\data.js"
+$dataJs = "$aosRoot\03_TOOLS\aos_viewer\prototype\js\data.js"
 if (Test-Path $dataJs) {
     $content = Get-Content $dataJs -Raw
     if ($content -match '"version"\s*:\s*"1\.1\.0"') {
@@ -540,7 +553,7 @@ if (Test-Path $dataJs) {
 **执行命令**（PowerShell）：
 ```powershell
 # 7.1 运行一致性自检
-Set-Location "d:\AOS"
+Set-Location "$aosRoot"
 python "03_TOOLS\scripts\aos_check.py"
 
 # 7.2 若自检失败，根据报告修复
@@ -580,8 +593,8 @@ python "03_TOOLS\scripts\aos_check.py"
 **执行命令**（PowerShell）：
 ```powershell
 # 8.1.1 删除临时下载目录
-Remove-Item -Path "d:\AOS\05_CACHE\aos_1.1.0_update" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "d:\AOS\05_CACHE\aos-1.1.0-source.zip" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$aosRoot\05_CACHE\aos_1.1.0_update" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$aosRoot\05_CACHE\aos-1.1.0-source.zip" -Force -ErrorAction SilentlyContinue
 Write-Host "临时目录已清理"
 
 # 8.1.2 保留备份目录（用户可手动清理）
@@ -597,7 +610,7 @@ Write-Host "备份目录保留: 99_ARCHIVE\pre_update_1.1.0_20260625\"
 pip install pywebview
 
 # 启动桌面应用
-Set-Location "d:\AOS"
+Set-Location "$aosRoot"
 python "03_TOOLS\aos_viewer\aos_viewer_server.py" --mode desktop
 # 验证：窗口启动后，确认标题栏/版本号显示 1.1.0
 ```
@@ -669,7 +682,7 @@ python "03_TOOLS\aos_viewer\aos_viewer_server.py" --mode desktop
 Get-Process -Name "python*" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match "aos_viewer" } | Stop-Process -Force
 
 # 2. 从备份恢复
-$backupDir = "d:\AOS\99_ARCHIVE\pre_update_1.1.0_20260625"
+$backupDir = "$aosRoot\99_ARCHIVE\pre_update_1.1.0_20260625"
 $filesToRestore = @(
     "AGENTS.md",
     "00_BOOT\SYSTEM_STATE.md",
@@ -685,7 +698,7 @@ $filesToRestore = @(
 )
 foreach ($file in $filesToRestore) {
     $src = "$backupDir\$file"
-    $dst = "d:\AOS\$file"
+    $dst = "$aosRoot\$file"
     if (Test-Path $src) {
         Copy-Item -Path $src -Destination $dst -Force
         Write-Host "已恢复: $file"
@@ -693,14 +706,14 @@ foreach ($file in $filesToRestore) {
 }
 
 # 3. 删除新增文件
-Remove-Item -Path "d:\AOS\03_TOOLS\aos_viewer" -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "d:\AOS\03_TOOLS\scripts\aos_generate_data.py" -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "d:\AOS\00_BOOT\SYSTEM_INSPECTION.md" -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "d:\AOS\00_BOOT\PROJECT_INSPECTION.md" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$aosRoot\03_TOOLS\aos_viewer" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$aosRoot\03_TOOLS\scripts\aos_generate_data.py" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$aosRoot\00_BOOT\SYSTEM_INSPECTION.md" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$aosRoot\00_BOOT\PROJECT_INSPECTION.md" -Force -ErrorAction SilentlyContinue
 # 07_EXPORTS/aos_viewer/ 下的发布文档可保留或删除
 
 # 4. 运行自检验证回滚
-python "d:\AOS\03_TOOLS\scripts\aos_check.py"
+python "$aosRoot\03_TOOLS\scripts\aos_check.py"
 ```
 
 **回滚检查清单**：

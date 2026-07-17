@@ -30,7 +30,7 @@
 
 ## 核心约束（8条铁律）
 
-1. **Maker/Checker 分离**：同一任务不能在同一会话中执行+验证
+1. **Maker/Checker 分离**：同一任务不能在同一会话由主Agent执行+验证
 2. **Memory 区分记录与状态**：记录型（feedback/经验/坑点/操作日志）只追加不覆盖；状态型（用户画像/项目事实/系统配置）覆盖旧值，保留变更注释（如"React（2026-06-15 更新，原为 Vue）"）
 3. **Skill 必须可演化**：每个 Skill 持续追加经验与坑点
 4. **Loop 必须可恢复**：每个 Loop 支持 checkpoint 和 resume
@@ -254,21 +254,24 @@ AOS 支持两种项目类型，通过 AGENTS.md 的"项目类型"字段区分：
 
 ---
 
-## 启动自检流程（每次会话首条消息时执行）
+## 启动自检流程（每次会话首条消息时执行，不可省略任何步骤）
 
-```
-1. 读取 00_BOOT/SYSTEM_STATE.md → 确认系统状态
-2. 读取 00_BOOT/SKILL_REGISTRY.md → 扫描可用 Skill
-3. 读取 04_MEMORY/INDEX.md → 加载记忆索引
-4. 读取 04_MEMORY/agent_pool/agent_tasks.json → 检查待认领任务
-5. 读取 04_MEMORY/user/user_profile.md → 加载用户画像（偏好/习惯/纠正记录）
-6. 输出自检摘要：
-   ┌─ AOS v1.1.0 启动 ────────────────────────┐
-   │ 系统：ACTIVE | Skill：N 个 | 待办：N 条  │
-   │ 记忆：N 条索引 | 上次：YYYY-MM-DD HH:MM  │
-   │ 画像：N 条偏好 | 最后更新：YYYY-MM-DD    │
-   └──────────────────────────────────────────┘
-```
+每次会话首条消息时**必须**静默执行自检，按顺序读取以下全部文件（禁止省略，禁止跳过）：
+
+1. `00_BOOT/SYSTEM_STATE.md` → 确认系统状态
+2. `00_BOOT/SKILL_REGISTRY.md` → 扫描可用 Skill
+3. `04_MEMORY/INDEX.md` → 加载记忆索引
+4. `04_MEMORY/agent_pool/agent_tasks.json` → 检查待认领任务
+5. `04_MEMORY/user/user_profile.md` → 加载用户画像
+6. `09_REFERENCE/system/system-constraint-rule.md` → **加载系统约束规则（优先级 0，必须读取）**
+7. `09_REFERENCE/system/interaction-loop-rule.md` → **加载交互循环规则（每步确认/状态更新/Checkpoint，必须读取）**
+8. `09_REFERENCE/system/subagent-dispatch-rule.md` → **加载 SubAgent 调度规则（B/C/D/E/F/G/H/I/J，必须读取）**
+
+**⚠ 警告：步骤 6-8 是全局规则文件，TRAE 全局规则注入不稳定，这些文件是规则的唯一可靠来源。不读取将导致后续行为不符合规范。**
+
+**错误处理：若步骤 1-8 中任何文件不存在（例如新机器未同步、目录结构异常），立即停止自检，输出警告并告知缺失文件路径，通过 AskUserQuestion 询问用户是否继续（规则缺失可能导致 Agent 行为不规范）。禁止跳过缺失文件继续执行。**
+
+读取完成后输出自检摘要。详细输出格式模板见 `09_REFERENCE/system/aos-startup-selfcheck.md`（可选读取，仅为格式参考）。
 
 ---
 
@@ -291,18 +294,7 @@ AOS 支持两种项目类型，通过 AGENTS.md 的"项目类型"字段区分：
 
 ## 可视化执行规范
 
-所有操作必须向用户展示执行过程，禁止后台静默运行：
-
-```
-┌─ [步骤 1/5] 网页抓取 ──────────────────────┐
-│ 状态：执行中 ●                               │
-│ 目标：https://example.com/article            │
-│ 耗时：已用 12s                               │
-│ 产出：08_INBOX/raw/20260621_example.md       │
-└──────────────────────────────────────────────┘
-```
-
-每个步骤必须包含：步骤编号/总数、操作名称、状态、目标、耗时、产出路径。
+所有操作必须向用户展示执行过程，禁止后台静默运行。每个步骤必须包含：步骤编号/总数、操作名称、状态、目标、耗时、产出路径。展示模板见 `09_REFERENCE/system/aos-visual-execution-spec.md`。
 
 ---
 
@@ -316,31 +308,52 @@ AOS 支持两种项目类型，通过 AGENTS.md 的"项目类型"字段区分：
 | Harness 六层架构 | `09_REFERENCE/system/aos-harness-framework.md` |
 | 每日系统级巡检（Layer 3 手动触发） | `00_BOOT/SYSTEM_INSPECTION.md` |
 | 每日项目级巡检（Layer 3 手动触发） | `00_BOOT/PROJECT_INSPECTION.md` |
+| 启动自检流程模板 | `09_REFERENCE/system/aos-startup-selfcheck.md` |
+| 可视化执行规范模板 | `09_REFERENCE/system/aos-visual-execution-spec.md` |
+| DMC 双机协调元项目 | `d:\DMC\AGENTS.md`（详见下文"DMC 引用"段落） |
 
 ---
 
-## 双路径环境（强制）
+### MCP 调用方式
 
-AOS 存在两个物理隔离的路径，Agent 必须根据操作类型选择正确路径：
+- Server 名：`mcp_dmc` | 协议：stdio | 配置：TRAE 全局 MCP（所有项目工作区可用，无需项目级配置）
 
-| 路径 | 用途 | 允许的操作 |
-|------|------|----------|
-| `./AOS/` | 工作目录（含实际项目数据、凭据、记忆） | 日常开发、项目操作、Skill 执行、状态读写 |
-| `./github/agent-operating-system/` | GitHub 上传纯净副本（仅框架文件） | git add/commit/push、GitHub Release 操作 |
+### 7 个 MCP 工具
 
-### 路径识别规则
+`get_topology` / `get_service_registry` / `get_constraints` / `check_deployment_safety` / `notify_change` / `query_change_log` / `get_project_intel`
 
-1. **当前工作目录为 `./AOS/`** → 工作模式，执行常规操作
-2. **当前工作目录为 `./github/agent-operating-system/`** → 上传模式，仅执行 git 操作
-3. **用户要求 GitHub 操作** → 切换到 `./github/agent-operating-system/` 执行
-4. **用户要求开发/修改** → 在 `./AOS/` 执行，完成后通过同步脚本更新上传副本
+### 故障降级
 
-### 同步规则
+如 MCP 不可用，参见 `d:\DMC\USER_GUIDE.md` 第 5.4 节。
 
-- 工作目录修改完成后，运行同步脚本将变更同步到上传目录
-- 同步脚本自动排除敏感数据（credentials.json、user_profile.md、feedback/、实际项目数据等）
-- 同步后自动执行安全验证，确认无敏感文件残留
-- **禁止**在工作目录中执行 git push
-- **禁止**将工作目录的敏感文件手动复制到上传目录
+### 硬约束查询
+
+完整硬约束列表参见 `d:\DMC\state\constraints.json` 或调用 `get_constraints` 工具；人类可读版参见 `d:\DMC\docs\约束清单.md`。
 
 ---
+
+## 全局规则摘要与引用
+
+> 以下三条全局规则已录入 TRAE 全局设置，但 TRAE 注入机制不稳定。
+> 完整规则文件存储在 09_REFERENCE/system/ 下，作为权威引用源。
+
+### 1. 系统约束（优先级 0）
+
+- 拒绝想象和猜测：基于实际文件扩展名和代码内容判断技术栈
+- 禁止懒惰和代码截断：输出必须 100% 完整，禁止占位符
+- 质量优先：追求准确性而非速度，禁止奉承
+- 完整规则：09_REFERENCE/system/system-constraint-rule.md
+
+### 2. 交互循环规则
+
+- 每步操作后写文件，通过 AskUserQuestion 确认才继续
+- 不确定进度时先读文件，禁止猜测
+- 任务结束前必须更新状态+Checkpoint+确认结束
+- 完整规则：09_REFERENCE/system/interaction-loop-rule.md
+
+### 3. SubAgent 调度规则
+
+- B 必须调用：对抗性审查/上下文隔离/大范围探索
+- D 明确禁止：单文件简单修改/与用户澄清/跨依赖决策/意图不确定
+- C 默认不调用，需在执行日志写一句话论证理由
+- 完整规则：09_REFERENCE/system/subagent-dispatch-rule.md

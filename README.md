@@ -1,13 +1,25 @@
-# AOS — Agent Operating System
+<p align="center">
+  <img src="docs/assets/aos-banner.png" alt="AOS — Agent Operating System" width="100%">
+</p>
 
-**A file governance layer for AI coding agents.**
+<h1 align="center">AOS — Agent Operating System</h1>
 
-[![Release](https://img.shields.io/badge/Release-v2.0.0--rc.1-blue.svg)](https://github.com/MagicalYuYu/agent-operating-system/releases)
-[![Runtime](https://img.shields.io/badge/Runtime-DeepSeek_Harness-6E40C9.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![Standard](https://img.shields.io/badge/Standard-AGENTS.md-2EA44F.svg)](https://agents.md/)
-[![License: MIT](https://img.shields.io/badge/License-MIT--Additional-informational.svg)](LICENSE)
+<p align="center">
+  <strong>A file governance layer for AI coding agents.</strong>
+</p>
 
-[中文文档](README.zh-CN.md) · [Website](https://aos.magicalyu.online)
+<p align="center">
+  <sub><a href="README.zh-CN.md">中文文档</a> · <a href="https://aos.magicalyu.online">Website</a></sub>
+</p>
+
+<p align="center">
+  <a href="https://github.com/MagicalYuYu/agent-operating-system/releases/tag/v2.0.0-rc.1"><img src="https://img.shields.io/github/v/release/MagicalYuYu/agent-operating-system?style=flat&amp;label=release&amp;color=0969DA" alt="Release v2.0.0-rc.1"></a>
+  <a href="https://github.com/MagicalYuYu/agent-operating-system"><img src="https://img.shields.io/github/stars/MagicalYuYu/agent-operating-system?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="GitHub stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT--Additional-2EA44F?style=flat" alt="License: MIT + Additional Terms"></a>
+  <a href="https://agents.md/"><img src="https://img.shields.io/badge/Standard-AGENTS.md-2EA44F?style=flat" alt="AGENTS.md standard"></a>
+  <a href="https://github.com/deepseek-ai/deepseek-harness"><img src="https://img.shields.io/badge/Runtime-DeepSeek_Harness-6E40C9?style=flat" alt="Runtime: DeepSeek Harness"></a>
+</p>
+
 
 AI coding tools write code and run commands, but they don't manage your files. Deliverables end up scattered across the workspace, knowledge gets saved in three contradictory copies, and constraints are lost when the session context is compressed. AOS addresses this layer: it gives your tools a set of conventions for where files go and where knowledge lives. These conventions are machine-checkable.
 

@@ -1,13 +1,25 @@
-# AOS — Agent Operating System
+<p align="center">
+  <img src="docs/assets/aos-banner.png" alt="AOS — Agent Operating System" width="100%">
+</p>
 
-**运行在类 Claude Code agent harness 上的个人文件治理层。**
+<h1 align="center">AOS — Agent Operating System</h1>
 
-[![Release](https://img.shields.io/badge/Release-v2.0.0--rc.1-blue.svg)](https://github.com/MagicalYuYu/agent-operating-system/releases)
-[![Runtime](https://img.shields.io/badge/Runtime-DeepSeek_Harness-6E40C9.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![Standard](https://img.shields.io/badge/Standard-AGENTS.md-2EA44F.svg)](https://agents.md/)
-[![License: MIT](https://img.shields.io/badge/License-MIT--Additional-informational.svg)](LICENSE)
+<p align="center">
+  <strong>运行在类 Claude Code agent harness 上的个人文件治理层。</strong>
+</p>
 
-[English](README.md) · [官网](https://aos.magicalyu.online)
+<p align="center">
+  <sub><a href="README.md">English</a> · <a href="https://aos.magicalyu.online">官网</a></sub>
+</p>
+
+<p align="center">
+  <a href="https://github.com/MagicalYuYu/agent-operating-system/releases/tag/v2.0.0-rc.1"><img src="https://img.shields.io/github/v/release/MagicalYuYu/agent-operating-system?style=flat&amp;label=release&amp;color=0969DA" alt="Release v2.0.0-rc.1"></a>
+  <a href="https://github.com/MagicalYuYu/agent-operating-system"><img src="https://img.shields.io/github/stars/MagicalYuYu/agent-operating-system?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="GitHub stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT--Additional-2EA44F?style=flat" alt="License: MIT + Additional Terms"></a>
+  <a href="https://agents.md/"><img src="https://img.shields.io/badge/Standard-AGENTS.md-2EA44F?style=flat" alt="AGENTS.md standard"></a>
+  <a href="https://github.com/deepseek-ai/deepseek-harness"><img src="https://img.shields.io/badge/Runtime-DeepSeek_Harness-6E40C9?style=flat" alt="Runtime: DeepSeek Harness"></a>
+</p>
+
 
 AI 编程工具能写代码、跑命令，但不管你的文件：交付物散在工作目录里、知识存了三份彼此矛盾、会话一压缩约束就丢。AOS 解决的是这一层的问题，它给工具一套关于"东西放哪、知识存哪、状态记哪"的约定，并且这些约定可以被脚本检查。
 

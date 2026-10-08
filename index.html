@@ -40,6 +40,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap"></noscript>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#101012">
 <script>document.documentElement.classList.add('js');</script>
@@ -152,21 +153,6 @@ h1 .caret{display:inline-block;width:.52em;height:.98em;background:var(--text);m
 .flow-without{margin-top:12px;font-size:13px;color:var(--faint)}
 .flow-without::before{content:"✕ ";color:var(--faint)}
 
-/* ---------- 对比 ---------- */
-.cmp{border-top:1px solid var(--line);padding-top:14px}
-.cmp-head,.cmp-row{display:grid;grid-template-columns:150px 1fr 1fr}
-.cmp-head{border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
-.cmp-head>div{padding:14px 20px;color:var(--faint)}
-.cmp-head>div:last-child{color:var(--text)}
-.cmp-row{border-bottom:1px solid var(--line)}
-.cmp-row:last-child{border-bottom:none}
-.cmp-row>div{padding:18px 20px;font-size:14px}
-.cmp-task{font-family:var(--mono);font-size:13px;color:var(--text);display:flex;align-items:baseline}
-.cmp-bad{color:var(--faint);border-left:1px solid var(--line)}
-.cmp-bad::before{content:"✕  "}
-.cmp-good{color:var(--muted);border-left:1px solid var(--line);background:rgba(255,255,255,.02)}
-.cmp-good::before{content:"✓  ";color:var(--text)}
-
 /* ---------- 机制卡 ---------- */
 .mech-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .mech-card{border:1px solid var(--line);padding:26px 28px;display:flex;flex-direction:column;transition:border-color .25s var(--ease)}
@@ -261,7 +247,8 @@ footer{border-top:1px solid var(--line);padding:34px 0 44px}
 /* ---------- 入场与降级 ---------- */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .js .reveal{opacity:0;transform:translateY(12px)}
-.js .reveal.in{opacity:1;transform:none;transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.js .reveal.in:not(.fin){opacity:1;transform:none;transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.js .reveal.fin{opacity:1;transform:none}
 :focus-visible{outline:1px solid var(--text);outline-offset:3px}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
@@ -306,13 +293,37 @@ footer{border-top:1px solid var(--line);padding:34px 0 44px}
   .pain-card:hover::after,.mech-card:hover::after,.plat-card:hover::after{opacity:1}
 }
 
-/* ---------- 自定义光标 ---------- */
-.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;z-index:120;pointer-events:none;mix-blend-mode:difference;display:none}
-.cursor-dot{width:6px;height:6px;background:#fff;border-radius:50%;margin:-3px 0 0 -3px}
-.cursor-ring{width:30px;height:30px;border:1px solid #fff;border-radius:50%;margin:-15px 0 0 -15px;transition:opacity .25s var(--ease)}
-body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor summary{cursor:none}
-body.has-cursor .cursor-dot,body.has-cursor .cursor-ring{display:block}
-body.has-cursor .cursor-ring.on{opacity:.65}
+/* ---------- 对比滑杆 ---------- */
+.cmp-wrap{border-top:1px solid var(--line);padding-top:14px}
+.cmp-head{display:grid;grid-template-columns:150px 1fr 1fr;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.cmp-head>div{padding:14px 20px;color:var(--faint)}
+.cmp-head>div:last-child{color:var(--text)}
+.cmp-slider{position:relative;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.cmp-layer .cmp-row{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--line)}
+.cmp-layer .cmp-row>div{padding:18px 20px;font-size:14px;display:flex;align-items:center}
+.cmp-task{font-family:var(--mono);font-size:13px;color:var(--text)}
+.cmp-under{background:rgba(255,255,255,.02)}
+.cmp-under .cmp-good{color:var(--muted)}
+.cmp-under .cmp-good::before{content:"✓  ";color:var(--text)}
+.cmp-over{position:absolute;inset:0;background:var(--bg);clip-path:inset(0 55% 0 0)}
+.cmp-over .cmp-bad{color:var(--faint)}
+.cmp-over .cmp-bad::before{content:"✕  "}
+.cmp-handle{position:absolute;top:0;bottom:0;left:45%;width:1px;background:var(--text);opacity:.55;cursor:ew-resize;touch-action:none}
+.cmp-grip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;border:1px solid var(--text);background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px}
+.cmp-hint{margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+/* ---------- 微演示活性 ---------- */
+.layer-arrow{position:relative}
+.rise-dot{position:absolute;bottom:2px;left:calc(50% - 14px);width:4px;height:4px;background:var(--muted);animation:rise 2.8s var(--ease) infinite}
+.rise-dot.r2{left:calc(50% + 10px);animation-delay:1.4s}
+@keyframes rise{0%{transform:translateY(5px);opacity:0}30%{opacity:.85}100%{transform:translateY(-16px);opacity:0}}
+.demo-note{color:var(--faint);animation:noteCycle 7s ease-in-out infinite}
+@keyframes noteCycle{0%,30%{opacity:0}45%,80%{opacity:1}95%,100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){
+  .demo-note{opacity:1}
+}
+
+html:not(.js) .chaos-band{display:none}
 
 /* ---------- 响应式 ---------- */
 @media (max-width:960px){
@@ -327,10 +338,9 @@ body.has-cursor .cursor-ring.on{opacity:.65}
   .sec{padding:56px 0 60px}
   .flow-step{grid-template-columns:44px 1fr;gap:16px}
   .flow-num{width:32px;height:32px;font-size:11.5px}
-  .cmp-head,.cmp-row{grid-template-columns:1fr}
-  .cmp-bad,.cmp-good{border-left:none;border-top:1px solid var(--line)}
-  .cmp-head>div:first-child{display:none}
-  .cmp-head>div{padding:10px 20px}
+  .cmp-head{grid-template-columns:96px 1fr 1fr}
+  .cmp-layer .cmp-row{grid-template-columns:96px 1fr}
+  .cmp-head>div{padding:10px 14px}
   .row{grid-template-columns:1fr;gap:4px;padding:20px 4px}
   .tree-row{grid-template-columns:44px 1fr 28px;grid-template-rows:auto auto}
   .tree-role{grid-column:2}
@@ -341,8 +351,6 @@ body.has-cursor .cursor-ring.on{opacity:.65}
 </style>
 </head>
 <body>
-<div class="cursor-dot" id="c-dot" aria-hidden="true"></div>
-<div class="cursor-ring" id="c-ring" aria-hidden="true"></div>
 
 <header id="site-header">
   <div class="wrap">
@@ -358,14 +366,14 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       <button class="lang-btn" id="lang-toggle" type="button" aria-label="Switch language / 切换语言">EN</button>
       <a class="gh" href="https://github.com/MagicalYuYu/agent-operating-system" rel="noopener">GitHub ↗</a>
     </div>
-    <span class="progress" id="scroll-progress" aria-hidden="true"></span>
   </div>
+  <span class="progress" id="scroll-progress" aria-hidden="true"></span>
 </header>
 
 <main id="top" class="wrap">
 
   <!-- Hero -->
-  <section class="hero" aria-label="项目简介">
+  <section class="hero" data-i18n-aria="hero.aria" aria-label="项目简介">
     <div class="hero-grid">
       <div>
         <div class="spec-row reveal">
@@ -375,7 +383,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
           <span>STD <b>AGENTS.md</b></span>
         </div>
         <p class="comment reveal">// agent-operating-system</p>
-        <h1 class="reveal" data-i18n-html="hero.h1">运行在 agent harness 上的个人文件治理层<span class="caret" aria-hidden="true"></span></h1>
+        <h1 class="reveal" data-i18n-html="hero.h1"><span class="h1-text">运行在 agent harness 上的个人文件治理层</span><span class="caret" aria-hidden="true"></span></h1>
         <p class="sub reveal" data-i18n="hero.sub">AI 编程工具能写代码、跑命令，但不管你的文件：交付物散在工作目录里、知识存了三份彼此矛盾、会话一压缩约束就丢。AOS 解决的是这一层的问题，它给工具一套关于「东西放哪、知识存哪、状态记哪」的约定，并且这些约定可以被脚本检查。</p>
         <p class="aside reveal" data-i18n="hero.aside">形象点讲，AOS 的定位类似《钢铁侠》里的贾维斯：战衣换了几代，贾维斯一直都在。即便未来 AI 工具不时更换，秩序和记忆也可以持续跟着走。</p>
         <div class="cta reveal">
@@ -383,21 +391,23 @@ body.has-cursor .cursor-ring.on{opacity:.65}
           <a class="btn btn-line" href="#getting-started" data-i18n="hero.cta2">如何上手</a>
         </div>
       </div>
-      <div class="term reveal" aria-label="check_placement.py 运行演示">
+      <div class="term reveal" data-i18n-aria="term.aria" aria-label="check_placement.py 运行演示">
         <div class="term-bar"><span class="term-tag">DEMO</span><span class="term-title">check_placement.py</span></div>
-        <pre class="term-body" id="term-body"></pre>
+        <pre class="term-body" id="term-body"><span class="t-cmd">$ python scripts/check_placement.py</span>
+<span class="t-warn">[warn] 05_CACHE/quicktask/20260601/ 创建时间超 90 天</span>
+<span class="t-dim">error=0 warn=1</span></pre>
       </div>
     </div>
   </section>
 
   <!-- 统计带 -->
-  <div class="stats reveal" aria-label="项目速览">
-    <div class="stat"><span class="stat-num" data-count="8">0</span><span class="stat-label" data-i18n="stats.dirs">编号目录</span></div>
-    <div class="stat"><span class="stat-num" data-count="7">0</span><span class="stat-label" data-i18n="stats.skills">治理 skills</span></div>
-    <div class="stat"><span class="stat-num" data-count="4">0</span><span class="stat-label" data-i18n="stats.scripts">校验脚本</span></div>
-    <div class="stat"><span class="stat-num" data-count="90" data-prefix="≈">0</span><span class="stat-label" data-i18n="stats.kernel">行内核规则</span></div>
-    <div class="stat"><span class="stat-num" data-count="32">0</span><span class="stat-label" data-i18n="stats.kb">KB 单文件上限</span></div>
-    <div class="stat"><span class="stat-num" data-count="200">0</span><span class="stat-label" data-i18n="stats.index">行 INDEX 上限</span></div>
+  <div class="stats reveal" role="group" data-i18n-aria="stats.aria" aria-label="项目速览">
+    <div class="stat"><span class="stat-num" data-count="8">8</span><span class="stat-label" data-i18n="stats.dirs">编号目录</span></div>
+    <div class="stat"><span class="stat-num" data-count="7">7</span><span class="stat-label" data-i18n="stats.skills">治理 skills</span></div>
+    <div class="stat"><span class="stat-num" data-count="4">4</span><span class="stat-label" data-i18n="stats.scripts">scripts/ 脚本</span></div>
+    <div class="stat"><span class="stat-num" data-count="90" data-prefix="≈">≈90</span><span class="stat-label" data-i18n="stats.kernel">行内核规则</span></div>
+    <div class="stat"><span class="stat-num" data-count="32">32</span><span class="stat-label" data-i18n="stats.kb">KB 单文件上限</span></div>
+    <div class="stat"><span class="stat-num" data-count="200">200</span><span class="stat-label" data-i18n="stats.index">行 INDEX 上限</span></div>
   </div>
 
   <!-- § 01 痛点 -->
@@ -466,7 +476,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
         <div class="flow-rail"><span class="flow-num">04</span><span class="flow-wire"></span></div>
         <div class="flow-card">
           <div class="flow-head"><h3 data-i18n="flow.4.t">巡检</h3><span class="flow-tag" data-i18n="flow.4.tag">机器管机器</span></div>
-          <p data-i18n="flow.4.p">校验脚本扫出散落文件、非标命名、结构漂移；巡检 skill 定期产出缓存清理清单。约定不靠自觉，靠脚本检查。</p>
+          <p data-i18n="flow.4.p">校验脚本扫出散落文件、非标命名、结构漂移；巡检 skill 定期产出缓存清理清单。约定由脚本盯着执行。</p>
           <div class="chips"><code>scripts/check_placement.py</code><code data-i18n="flow.4.c2">skill: inspection</code></div>
           <p class="flow-without" data-i18n="flow.4.wo">无 AOS：改了一处忘了十处，问题潜伏到报障才暴露</p>
         </div>
@@ -490,12 +500,24 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       <div class="sec-eyebrow" data-i18n="compare.eyebrow">§ 03 · COMPARE</div>
       <h2 id="compare-label" data-i18n="compare.title">同一件事，两种结果</h2>
     </div>
-    <div class="cmp reveal">
+    <div class="cmp-wrap reveal">
       <div class="cmp-head"><div data-i18n="compare.task">事项</div><div data-i18n="compare.without">无 AOS</div><div data-i18n="compare.with">有 AOS</div></div>
-      <div class="cmp-row"><div class="cmp-task" data-i18n="compare.1.t">建项目</div><div class="cmp-bad" data-i18n="compare.1.b">手动建目录写样板，每个项目从空白开始</div><div class="cmp-good" data-i18n="compare.1.g">两件套模板开局，示例项目可直接复制</div></div>
-      <div class="cmp-row"><div class="cmp-task" data-i18n="compare.2.t">找文件</div><div class="cmp-bad" data-i18n="compare.2.b">靠搜索和记忆，越用越乱</div><div class="cmp-good" data-i18n="compare.2.g">按目录宪章定位，脚本可校验</div></div>
-      <div class="cmp-row"><div class="cmp-task" data-i18n="compare.3.t">记经验</div><div class="cmp-bad" data-i18n="compare.3.b">踩过的坑下次还踩</div><div class="cmp-good" data-i18n="compare.3.g">坑点写进 skill 的 gotchas，按需加载自动生效</div></div>
-      <div class="cmp-row"><div class="cmp-task" data-i18n="compare.4.t">换平台</div><div class="cmp-bad" data-i18n="compare.4.b">规则记忆留在旧工具里</div><div class="cmp-good" data-i18n="compare.4.g">叙事层日志与知识库整体随迁</div></div>
+      <div class="cmp-slider" id="cmp-slider" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45" data-i18n-aria="compare.sliderAria" aria-label="拖动对比无 AOS 与有 AOS">
+        <div class="cmp-layer cmp-under">
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.1.t">建项目</div><div class="cmp-good" data-i18n="compare.1.g">两件套模板开局，示例项目可直接复制</div></div>
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.2.t">找文件</div><div class="cmp-good" data-i18n="compare.2.g">按目录宪章定位，脚本可校验</div></div>
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.3.t">记经验</div><div class="cmp-good" data-i18n="compare.3.g">坑点写进 skill 的 gotchas，按需加载自动生效</div></div>
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.4.t">换平台</div><div class="cmp-good" data-i18n="compare.4.g">叙事层日志与知识库整体随迁</div></div>
+        </div>
+        <div class="cmp-layer cmp-over" aria-hidden="true">
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.1.t">建项目</div><div class="cmp-bad" data-i18n="compare.1.b">手动建目录写样板，每个项目从空白开始</div></div>
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.2.t">找文件</div><div class="cmp-bad" data-i18n="compare.2.b">靠搜索和记忆，越用越乱</div></div>
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.3.t">记经验</div><div class="cmp-bad" data-i18n="compare.3.b">踩过的坑下次还踩</div></div>
+          <div class="cmp-row"><div class="cmp-task" data-i18n="compare.4.t">换平台</div><div class="cmp-bad" data-i18n="compare.4.b">规则记忆留在旧工具里</div></div>
+        </div>
+        <div class="cmp-handle" id="cmp-handle" aria-hidden="true"><span class="cmp-grip">◂▸</span></div>
+      </div>
+      <p class="cmp-hint" data-i18n="compare.hint">◂ 拖动分割线，对比两侧</p>
     </div>
   </section>
 
@@ -518,7 +540,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
         <span class="mech-kicker">02 / 05</span>
         <h3 data-i18n="mech.2.t">指针表记忆</h3>
         <p data-i18n="mech.2.p">INDEX.md 一行一指针加一段短描述，单文件 32KB 上限。状态类记忆覆盖旧值并留变更注释；记录类记忆只追加，历史剪入日志不丢。</p>
-        <div class="mech-demo" aria-hidden="true"><span class="d-dim"># 04_MEMORY/INDEX.md</span><br>- user_profile <span class="d-dim">→</span> user/user_profile.md<br>- proj_aos <span class="d-dim">→</span> project/proj_aos.md <span class="d-hi">▮</span></div>
+        <div class="mech-demo" aria-hidden="true"><span class="d-dim"># 04_MEMORY/INDEX.md</span><br>- user_profile <span class="d-dim">→</span> user/user_profile.md<br>- proj_aos <span class="d-dim">→</span> project/proj_aos.md <span class="demo-note" data-i18n="mech.2.note">（2026-06-15 更新，原为 v1.1.0）</span> <span class="d-hi">▮</span></div>
       </div>
       <div class="mech-card reveal">
         <span class="mech-kicker">03 / 05</span>
@@ -526,7 +548,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
         <p data-i18n="mech.3.p">过程细节交给平台自带的会话档案；治理层面的大事写入人类可直接阅读的 06_LOGS。换平台时，叙事层日志可以整体搬走。</p>
         <div class="layer-demo" aria-hidden="true">
           <div class="layer"><b data-i18n="mech.3.l1">叙事层 · 06_LOGS</b> — <span data-i18n="mech.3.l1d">人类可读，平台无关，只追加</span></div>
-          <div class="layer-arrow">↑ <span data-i18n="mech.3.arrow">治理事件提炼</span></div>
+          <div class="layer-arrow"><span class="rise-dot" aria-hidden="true"></span><span class="rise-dot r2" aria-hidden="true"></span>↑ <span data-i18n="mech.3.arrow">治理事件提炼</span></div>
           <div class="layer"><b data-i18n="mech.3.l2">细节层 · 平台会话档案</b> — <span data-i18n="mech.3.l2d">最全过程，随平台更换</span></div>
         </div>
       </div>
@@ -556,35 +578,35 @@ body.has-cursor .cursor-ring.on{opacity:.65}
     <div class="tree reveal">
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">01</span><span class="tree-path">├─ 01_PROJECTS/</span><span class="tree-role" data-i18n="dir.1.role">项目隔离存放</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.1.p">项目模板两件套 AGENTS.md + README.md；根层禁止代码脚本散放；项目内只引用记忆与知识库路径，不复制内容</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.1.p">项目模板两件套 AGENTS.md + README.md；根层禁止代码脚本散放；项目内只引用记忆与知识库路径，不复制内容</span></p></div></div></div>
       </div>
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">02</span><span class="tree-path">├─ 04_MEMORY/</span><span class="tree-role" data-i18n="dir.2.role">唯一状态持久化中心</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.2.p">状态型文件单文件 ≤32KB，超限剪切历史至日志目录并留指针；INDEX.md 一行一指针，≤200 行</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.2.p">状态型文件单文件 ≤32KB，超限剪切历史至日志目录并留指针；INDEX.md 一行一指针，≤200 行</span></p></div></div></div>
       </div>
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">03</span><span class="tree-path">├─ 05_CACHE/</span><span class="tree-role" data-i18n="dir.3.role">中间产物垃圾场</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.3.p">唯一副本禁入；按项目/日期两级分层；超期由巡检出清理清单；禁止任何长期引用指向此目录</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.3.p">唯一副本禁入；按项目/日期两级分层；超期由巡检出清理清单；禁止任何长期引用指向此目录</span></p></div></div></div>
       </div>
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">04</span><span class="tree-path">├─ 06_LOGS/</span><span class="tree-role" data-i18n="dir.4.role">运行日志 · 叙事层</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.4.p">只追加；治理事件与项目关键节点必写一行；跨平台迁移时本目录随迁</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.4.p">只追加；治理事件与项目关键节点必写一行；跨平台迁移时本目录随迁</span></p></div></div></div>
       </div>
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">05</span><span class="tree-path">├─ 07_EXPORTS/</span><span class="tree-role" data-i18n="dir.5.role">交付物唯一出口</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.5.p">按项目分层；无项目的轻量任务进 quicktasks 日期分层目录</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.5.p">按项目分层；无项目的轻量任务进 quicktasks 日期分层目录</span></p></div></div></div>
       </div>
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">06</span><span class="tree-path">├─ 08_INBOX/</span><span class="tree-role" data-i18n="dir.6.role">重量级输入中转区</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.6.p">按日期分层；处理完必须迁往真正归宿，原处只留去向指针</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.6.p">按日期分层；处理完必须迁往真正归宿，原处只留去向指针</span></p></div></div></div>
       </div>
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">07</span><span class="tree-path">├─ 09_REFERENCE/</span><span class="tree-role" data-i18n="dir.7.role">唯一参考知识库</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.7.p">知识只存一份，他处只写路径引用</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.7.p">知识只存一份，他处只写路径引用</span></p></div></div></div>
       </div>
       <div class="tree-item">
         <button class="tree-row" type="button" aria-expanded="false"><span class="tree-idx">08</span><span class="tree-path">└─ 99_ARCHIVE/</span><span class="tree-role" data-i18n="dir.8.role">历史归档</span><span class="tree-plus" aria-hidden="true">+</span></button>
-        <div class="tree-detail"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.8.p">只读；只增不减</span></p></div></div></div>
+        <div class="tree-detail" aria-hidden="true"><div class="tree-detail-clip"><div class="tree-detail-in"><p><b data-i18n="dir.constraint">关键约束：</b><span data-i18n="dir.8.p">只读；只增不减</span></p></div></div></div>
       </div>
     </div>
   </section>
@@ -677,7 +699,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
 <footer>
   <div class="wrap">
     <div class="foot-v1 reveal">
-      <span data-i18n="foot.v1p">在找 v1（TRAE 时代，含 AOS Viewer 可视化桌面）的内容？旧站三页已完整保留。</span>
+      <span data-i18n="foot.v1p">在找 v1（TRAE 时代，含 AOS Viewer 可视化桌面）的内容？旧站内容已完整保留。</span>
       <a href="/v1/" data-i18n="foot.v1a">进入 v1 旧站存档 →</a>
     </div>
     <div class="foot-rows">
@@ -705,8 +727,8 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       "meta.title": "AOS — Agent Operating System · 个人文件治理层",
       "nav.label": "页面导航",
       "nav.flow": "流程", "nav.mech": "机制", "nav.dirs": "目录", "nav.start": "上手", "nav.docs": "文档",
-      "hero.license": "MIT + 附加条款",
-      "hero.h1": "运行在 agent harness 上的个人文件治理层<span class=\"caret\" aria-hidden=\"true\"></span>",
+      "hero.license": "MIT + 附加条款", "hero.aria": "项目简介", "stats.aria": "项目速览", "term.aria": "check_placement.py 运行演示",
+      "hero.h1": "<span class=\"h1-text\">运行在 agent harness 上的个人文件治理层</span><span class=\"caret\" aria-hidden=\"true\"></span>",
       "hero.sub": "AI 编程工具能写代码、跑命令，但不管你的文件：交付物散在工作目录里、知识存了三份彼此矛盾、会话一压缩约束就丢。AOS 解决的是这一层的问题，它给工具一套关于「东西放哪、知识存哪、状态记哪」的约定，并且这些约定可以被脚本检查。",
       "hero.aside": "形象点讲，AOS 的定位类似《钢铁侠》里的贾维斯：战衣换了几代，贾维斯一直都在。即便未来 AI 工具不时更换，秩序和记忆也可以持续跟着走。",
       "hero.cta1": "GitHub 仓库", "hero.cta2": "如何上手",
@@ -719,16 +741,16 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       "flow.1.t": "立项", "flow.1.tag": "模板起步", "flow.1.p": "新项目按标准两件套（AGENTS.md + README.md）开局，目录骨架由 project-init skill 生成，也可以直接复制示例项目改名起步。", "flow.1.c3": "skill: project-init", "flow.1.wo": "无 AOS：手动建目录写样板，每个项目从空白开始",
       "flow.2.t": "工作过程", "flow.2.tag": "落位与记忆", "flow.2.p": "创建任何文件前先查落位约定；状态类记忆覆盖旧值留注释，记录类只追加；关键会话一行写入叙事层索引。", "flow.2.c3": "skill: file-placement", "flow.2.wo": "无 AOS：上下文只存于对话窗口，关闭即失忆",
       "flow.3.t": "交付", "flow.3.tag": "唯一出口", "flow.3.p": "交付物一律经 07_EXPORTS 按项目分层导出，禁止散落在工作目录；项目状态同步写回记忆中心，下次接手不用翻聊天记录。", "flow.3.wo": "无 AOS：交付物散落各处，进度追溯靠考古",
-      "flow.4.t": "巡检", "flow.4.tag": "机器管机器", "flow.4.p": "校验脚本扫出散落文件、非标命名、结构漂移；巡检 skill 定期产出缓存清理清单。约定不靠自觉，靠脚本检查。", "flow.4.c2": "skill: inspection", "flow.4.wo": "无 AOS：改了一处忘了十处，问题潜伏到报障才暴露",
+      "flow.4.t": "巡检", "flow.4.tag": "机器管机器", "flow.4.p": "校验脚本扫出散落文件、非标命名、结构漂移；巡检 skill 定期产出缓存清理清单。约定由脚本盯着执行。", "flow.4.c2": "skill: inspection", "flow.4.wo": "无 AOS：改了一处忘了十处，问题潜伏到报障才暴露",
       "flow.5.t": "归档与迁移", "flow.5.tag": "换平台随迁", "flow.5.p": "废弃不删，进只读归档；叙事层日志与知识库是人类可读的纯文本，换平台时整体搬走，新工具读完约定即可接手。", "flow.5.wo": "无 AOS：一切留在旧工具里，换平台从零开始",
-      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "同一件事，两种结果", "compare.task": "事项", "compare.without": "无 AOS", "compare.with": "有 AOS",
+      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "同一件事，两种结果", "compare.task": "事项", "compare.without": "无 AOS", "compare.with": "有 AOS", "compare.hint": "◂ 拖动分割线，对比两侧", "compare.sliderAria": "拖动对比无 AOS 与有 AOS",
       "compare.1.t": "建项目", "compare.1.b": "手动建目录写样板，每个项目从空白开始", "compare.1.g": "两件套模板开局，示例项目可直接复制",
       "compare.2.t": "找文件", "compare.2.b": "靠搜索和记忆，越用越乱", "compare.2.g": "按目录宪章定位，脚本可校验",
       "compare.3.t": "记经验", "compare.3.b": "踩过的坑下次还踩", "compare.3.g": "坑点写进 skill 的 gotchas，按需加载自动生效",
       "compare.4.t": "换平台", "compare.4.b": "规则记忆留在旧工具里", "compare.4.g": "叙事层日志与知识库整体随迁",
       "mech.eyebrow": "§ 04 · MECHANISMS", "mech.title": "五个机制，各司其职", "mech.desc": "它们怎么协同运转，见仓库里的架构参考文档。",
       "mech.1.t": "目录宪章", "mech.1.p": "8 个编号目录，每个一行职责和几条约束，写在 AGENTS.md 里。AI 在创建任何文件之前先查约定，你不再需要反复纠正「这个文件不要放这里」。", "mech.1.d1": "项目隔离", "mech.1.d2": "状态中心", "mech.1.d3": "唯一出口",
-      "mech.2.t": "指针表记忆", "mech.2.p": "INDEX.md 一行一指针加一段短描述，单文件 32KB 上限。状态类记忆覆盖旧值并留变更注释；记录类记忆只追加，历史剪入日志不丢。",
+      "mech.2.t": "指针表记忆", "mech.2.p": "INDEX.md 一行一指针加一段短描述，单文件 32KB 上限。状态类记忆覆盖旧值并留变更注释；记录类记忆只追加，历史剪入日志不丢。", "mech.2.note": "（2026-06-15 更新，原为 v1.1.0）",
       "mech.3.t": "双层日志", "mech.3.p": "过程细节交给平台自带的会话档案；治理层面的大事写入人类可直接阅读的 06_LOGS。换平台时，叙事层日志可以整体搬走。", "mech.3.l1": "叙事层 · 06_LOGS", "mech.3.l1d": "人类可读，平台无关，只追加", "mech.3.arrow": "治理事件提炼", "mech.3.l2": "细节层 · 平台会话档案", "mech.3.l2d": "最全过程，随平台更换",
       "mech.4.t": "治理 skills", "mech.4.p": "落位判定、知识入库、子代理调度、巡检流程等，各自是一个按需加载的技能文件，带实战沉淀的 gotchas 段落。犯错沉淀进 skill，比在提示词里纠正更持久。",
       "mech.5.t": "环境对齐", "mech.5.p": "一份 manifest 登记所有依赖组件，换机器或迁移环境时跑一个脚本即可检测缺什么。", "mech.5.d1": "缺失项按 manifest 列出",
@@ -762,26 +784,23 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       "docs.2.t": "设计思路", "docs.2.p": "完整的设计论证：为什么这样设计、依据与数据、其他技术方向为什么没有采用",
       "docs.3.t": "文件落位约定", "docs.3.p": "每类文件放哪、目录怎么命名、轻量任务与项目的分界",
       "docs.4.t": "从 v1 迁移", "docs.4.p": "v1 用户升级指南，含让 AI 代为部署的提示词",
-      "foot.v1p": "在找 v1（TRAE 时代，含 AOS Viewer 可视化桌面）的内容？旧站三页已完整保留。", "foot.v1a": "进入 v1 旧站存档 →",
+      "foot.v1p": "在找 v1（TRAE 时代，含 AOS Viewer 可视化桌面）的内容？旧站内容已完整保留。", "foot.v1a": "进入 v1 旧站存档 →",
       "foot.license": "MIT + 附加条款（禁止单独封装商用售卖） · © 2026 MagicalYuYu",
       "chaos.a": "无约定的工作目录", "chaos.b": "AOS 目录宪章",
-      "stats.dirs": "编号目录", "stats.skills": "治理 skills", "stats.scripts": "校验脚本", "stats.kernel": "行内核规则", "stats.kb": "KB 单文件上限", "stats.index": "行 INDEX 上限",
+      "stats.dirs": "编号目录", "stats.skills": "治理 skills", "stats.scripts": "scripts/ 脚本", "stats.kernel": "行内核规则", "stats.kb": "KB 单文件上限", "stats.index": "行 INDEX 上限",
       "term.lines": [
         ["cmd", "$ python scripts/check_placement.py"],
-        ["ok",   "[OK]   目录宪章 8/8 就位"],
-        ["ok",   "[OK]   INDEX.md 在 200 行上限内"],
-        ["ok",   "[OK]   无散落交付物"],
-        ["warn", "[WARN] 05_CACHE 有超期缓存 → 巡检清单已生成"],
-        ["dim",  "exit 0 · 结构合规"]
+        ["warn", "[warn] 05_CACHE/quicktask/20260601/ 创建时间超 90 天"],
+        ["dim",  "error=0 warn=1"]
       ]
     },
     en: {
       "meta.title": "AOS — Agent Operating System · Personal File Governance Layer",
       "nav.label": "Page navigation",
       "nav.flow": "Flow", "nav.mech": "Mechanisms", "nav.dirs": "Directories", "nav.start": "Start", "nav.docs": "Docs",
-      "hero.license": "MIT + Additional Terms",
-      "hero.h1": "A personal file governance layer for agent harnesses<span class=\"caret\" aria-hidden=\"true\"></span>",
-      "hero.sub": "AI coding tools can write code and run commands, but they don't manage your files: deliverables scatter across the working directory, knowledge is saved three times with three different versions, and one context compression wipes your constraints. AOS solves this layer — it gives the tool a set of conventions about where things go, where knowledge lives, and where state is recorded, and those conventions can be checked by scripts.",
+      "hero.license": "MIT + Additional Terms", "hero.aria": "Project intro", "stats.aria": "Project at a glance", "term.aria": "check_placement.py demo run",
+      "hero.h1": "<span class=\"h1-text\">A personal file governance layer for agent harnesses</span><span class=\"caret\" aria-hidden=\"true\"></span>",
+      "hero.sub": "AI coding tools can write code and run commands, but they don't manage your files: deliverables scatter across the working directory, knowledge is stored in three conflicting copies, and one context compression wipes your constraints. AOS solves this layer — it gives the tool a set of conventions about where things go, where knowledge lives, and where state is recorded, and those conventions can be checked by scripts.",
       "hero.aside": "Think of AOS as J.A.R.V.I.S. in Iron Man: the suits keep changing, but Jarvis stays. Even as AI tools come and go, your order and memory can follow along.",
       "hero.cta1": "GitHub Repo", "hero.cta2": "Get Started",
       "pain.eyebrow": "§ 01 · PAIN", "pain.title": "Capable tools, unmanaged files", "pain.desc": "If you work with AI assistants regularly, these scenes should feel familiar.",
@@ -793,16 +812,16 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       "flow.1.t": "Project setup", "flow.1.tag": "Templated start", "flow.1.p": "A new project starts with the standard two-file kit (AGENTS.md + README.md). The project-init skill generates the skeleton, or you can copy an example project and rename it.", "flow.1.c3": "skill: project-init", "flow.1.wo": "Without AOS: hand-made folders and boilerplate, every project starts from zero",
       "flow.2.t": "Doing the work", "flow.2.tag": "Placement & memory", "flow.2.p": "Before creating any file, the placement rules are consulted. State memory overwrites old values with change notes; records are append-only; key sessions get one line in the narrative index.", "flow.2.c3": "skill: file-placement", "flow.2.wo": "Without AOS: context lives only in the chat window — close it and it's gone",
       "flow.3.t": "Delivery", "flow.3.tag": "Single exit", "flow.3.p": "Deliverables always leave through 07_EXPORTS, layered by project — never scattered in the working directory. Project state is synced back to the memory center, so the next handover needs no chat archaeology.", "flow.3.wo": "Without AOS: outputs scattered everywhere, progress tracked by digging through chats",
-      "flow.4.t": "Inspection", "flow.4.tag": "Machines check machines", "flow.4.p": "A checker script finds stray files, non-standard names, and structural drift; the inspection skill periodically produces cache cleanup lists. Conventions are enforced by scripts, not by discipline.", "flow.4.c2": "skill: inspection", "flow.4.wo": "Without AOS: fix one place, forget ten — issues surface only when users complain",
+      "flow.4.t": "Inspection", "flow.4.tag": "Machines check machines", "flow.4.p": "A checker script finds stray files, non-standard names, and structural drift; the inspection skill periodically produces cache cleanup lists. Conventions are watched by scripts.", "flow.4.c2": "skill: inspection", "flow.4.wo": "Without AOS: fix one place, forget ten — issues surface only when users complain",
       "flow.5.t": "Archive & migrate", "flow.5.tag": "Portable by design", "flow.5.p": "Nothing is deleted — retired material goes to a read-only archive. Narrative logs and the knowledge base are plain human-readable text: when you switch platforms, they move as-is, and the new tool takes over after reading the conventions.", "flow.5.wo": "Without AOS: everything stays in the old tool — a platform switch means starting over",
-      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "Same task, two outcomes", "compare.task": "Task", "compare.without": "Without AOS", "compare.with": "With AOS",
+      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "Same task, two outcomes", "compare.task": "Task", "compare.without": "Without AOS", "compare.with": "With AOS", "compare.hint": "Drag the divider to compare ▸", "compare.sliderAria": "Drag to compare without vs with AOS",
       "compare.1.t": "New project", "compare.1.b": "Hand-made folders and boilerplate, starting from zero every time", "compare.1.g": "Two-file template start; example projects ready to copy",
       "compare.2.t": "Find a file", "compare.2.b": "Search and memory — messier over time", "compare.2.g": "Located by the directory charter, verifiable by script",
       "compare.3.t": "Keep lessons", "compare.3.b": "The same pitfalls get stepped on again", "compare.3.g": "Pitfalls are written into skill gotchas and take effect on demand",
       "compare.4.t": "Switch platform", "compare.4.b": "Rules and memory stay in the old tool", "compare.4.g": "Narrative logs and the knowledge base move as-is",
       "mech.eyebrow": "§ 04 · MECHANISMS", "mech.title": "Five mechanisms, one job each", "mech.desc": "How they work together is documented in the architecture reference in the repo.",
       "mech.1.t": "Directory charter", "mech.1.p": "Eight numbered directories, each with one line of responsibility and a few constraints, written in AGENTS.md. The AI checks the convention before creating any file — no more repeating “don't put this file here.”", "mech.1.d1": "projects", "mech.1.d2": "state hub", "mech.1.d3": "single exit",
-      "mech.2.t": "Pointer-table memory", "mech.2.p": "INDEX.md holds one pointer and one short hook per line, capped at 32KB per file. State memory overwrites with change notes; records are append-only; overflow history is cut into logs, never lost.",
+      "mech.2.t": "Pointer-table memory", "mech.2.p": "INDEX.md holds one pointer and one short hook per line, capped at 32KB per file. State memory overwrites with change notes; records are append-only; overflow history is cut into logs, never lost.", "mech.2.note": "(updated 2026-06-15, was v1.1.0)",
       "mech.3.t": "Two-layer logs", "mech.3.p": "Process details stay in the platform's session archives; governance events go into 06_LOGS, readable by humans directly. On migration, the narrative layer moves as a whole.", "mech.3.l1": "Narrative · 06_LOGS", "mech.3.l1d": "human-readable, platform-agnostic, append-only", "mech.3.arrow": "governance events distilled", "mech.3.l2": "Detail · platform session archives", "mech.3.l2d": "full process, changes with the platform",
       "mech.4.t": "Governance skills", "mech.4.p": "Placement judgment, knowledge ingestion, subagent dispatch, inspection routines — each is an on-demand skill file with battle-tested gotchas. Mistakes are distilled into skills, which outlasts correcting in prompts.",
       "mech.5.t": "Environment alignment", "mech.5.p": "One manifest registers every dependency; on a new machine or migration, one script tells you what's missing.", "mech.5.d1": "missing items listed per manifest",
@@ -822,7 +841,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       "plat.note": "General support is not a second-class experience: hand the repo to your AI tool, and after one read of the conventions it adapts the rules to its own platform — no manual edits needed.",
       "start.eyebrow": "§ 07 · GETTING STARTED", "start.title": "Get started", "start.desc": "The most direct way: send this sentence to the AI tool you use (DSH, Claude Code, Codex — any of them) and let it do the work.",
       "start.tag": "PROMPT · HAND THIS TO YOUR AI",
-      "start.prompt": "Deploy AOS: clone https://github.com/MagicalYuYu/agent-operating-system to &lt;your target path&gt;, read AGENTS.md at the repo root to understand the directory conventions, run <code>python scripts/check_placement.py</code> to verify the structure (fix anything it reports), then tell me the key conventions I should know when using it.",
+      "start.prompt": "Deploy AOS: clone https://github.com/MagicalYuYu/agent-operating-system to &lt;your target path&gt;, read the AGENTS.md at the repository root to understand the directory conventions, run <code>python scripts/check_placement.py</code> to validate the structure and fix any errors, then tell me the key conventions I should know about.",
       "start.copy": "Copy", "start.copied": "Copied", "start.copyAria": "Copy the deployment prompt", "start.copiedLive": "Deployment prompt copied to clipboard",
       "start.manual": "Do it manually (6 steps)",
       "start.s1": "<b>Environment</b>: Python 3.10+. Any tool that reads AGENTS.md gets general support; full support requires DSH.",
@@ -836,17 +855,14 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       "docs.2.t": "Design rationale", "docs.2.p": "The complete argument: why it is designed this way, evidence and data, and why other directions were not taken",
       "docs.3.t": "File conventions", "docs.3.p": "Where each kind of file goes, how directories are named, and the line between quick tasks and projects",
       "docs.4.t": "Migrating from v1", "docs.4.p": "Upgrade guide for v1 users, including the prompt that lets your AI deploy it for you",
-      "foot.v1p": "Looking for v1 (the TRAE era, with the AOS Viewer desktop)? The three original pages are preserved in full.", "foot.v1a": "Enter the v1 archive →",
+      "foot.v1p": "Looking for v1 (the TRAE era, with the AOS Viewer desktop)? The original content is preserved in full.", "foot.v1a": "Enter the v1 archive →",
       "foot.license": "MIT + Additional Terms (no standalone commercial resale) · © 2026 MagicalYuYu",
       "chaos.a": "A working directory without conventions", "chaos.b": "The AOS directory charter",
-      "stats.dirs": "numbered directories", "stats.skills": "governance skills", "stats.scripts": "checker scripts", "stats.kernel": "kernel rules, lines (approx.)", "stats.kb": "KB per-file cap", "stats.index": "INDEX line cap",
+      "stats.dirs": "numbered directories", "stats.skills": "governance skills", "stats.scripts": "repo scripts", "stats.kernel": "lines of kernel rules (approx.)", "stats.kb": "KB per-file cap", "stats.index": "INDEX line cap",
       "term.lines": [
         ["cmd", "$ python scripts/check_placement.py"],
-        ["ok",   "[OK]   directory charter 8/8 in place"],
-        ["ok",   "[OK]   INDEX.md within the 200-line cap"],
-        ["ok",   "[OK]   no stray deliverables"],
-        ["warn", "[WARN] expired cache in 05_CACHE → cleanup list ready"],
-        ["dim",  "exit 0 · structure compliant"]
+        ["warn", "[warn] 05_CACHE/quicktask/20260601/ older than 90 days"],
+        ["dim",  "error=0 warn=1"]
       ]
     }
   };
@@ -865,7 +881,8 @@ body.has-cursor .cursor-ring.on{opacity:.65}
     document.querySelectorAll('[data-i18n-aria]').forEach(function(el){ el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria'))); });
     var btn = document.getElementById('lang-toggle');
     btn.textContent = (lang === 'zh') ? 'EN' : '中';
-    renderTerm(true);
+    if (window.syncCmpHeights) window.syncCmpHeights();
+    renderTerm();
   }
 
   document.getElementById('lang-toggle').addEventListener('click', function(){
@@ -879,10 +896,10 @@ body.has-cursor .cursor-ring.on{opacity:.65}
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var termTimer = null;
 
-  function renderTerm(staticOnly){
+  function renderTerm(){
     if (termTimer) { clearTimeout(termTimer); termTimer = null; }
     var lines = t('term.lines');
-    if (reduced || staticOnly === 'static') {
+    if (reduced) {
       termEl.innerHTML = lines.map(function(l){ return '<span class="t-' + l[0] + '">' + escapeHtml(l[1]) + '</span>'; }).join('\n');
       return;
     }
@@ -917,6 +934,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       header.classList.toggle('scrolled', y > 8);
       var max = document.documentElement.scrollHeight - window.innerHeight;
       progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+      spyUpdate(y);
       ticking = false;
     });
   }
@@ -928,7 +946,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
   var secEls = Array.prototype.slice.call(document.querySelectorAll('.sec'));
   var flowSteps = Array.prototype.slice.call(document.querySelectorAll('[data-flow]'));
   if (reduced || !('IntersectionObserver' in window)) {
-    revealEls.forEach(function(el){ el.classList.add('in'); });
+    revealEls.forEach(function(el){ el.classList.add('in'); el.classList.add('fin'); });
     secEls.forEach(function(el){ el.classList.add('sec-line-in'); });
     flowSteps.forEach(function(el){ el.classList.add('in'); });
   } else {
@@ -940,6 +958,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
         var idx = Math.max(siblings.indexOf(el), 0);
         el.style.transitionDelay = (idx * 70) + 'ms';
         el.classList.add('in');
+        setTimeout(function(){ el.style.transitionDelay = ''; el.classList.add('fin'); }, idx * 70 + 500);
         io.unobserve(el);
       });
     }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
@@ -958,19 +977,13 @@ body.has-cursor .cursor-ring.on{opacity:.65}
     flowSteps.forEach(function(el){ ioFlow.observe(el); });
   }
 
-  /* ================= Scrollspy ================= */
+  /* ================= Scrollspy（滚动重算） ================= */
   var spyLinks = Array.prototype.slice.call(document.querySelectorAll('[data-spy]'));
   var targets = spyLinks.map(function(a){ return document.getElementById(a.getAttribute('data-spy')); }).filter(Boolean);
-  if ('IntersectionObserver' in window && targets.length) {
-    var spy = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if (!entry.isIntersecting) return;
-        spyLinks.forEach(function(a){
-          a.setAttribute('aria-current', a.getAttribute('data-spy') === entry.target.id ? 'true' : 'false');
-        });
-      });
-    }, {rootMargin:'-30% 0px -55% 0px'});
-    targets.forEach(function(tg){ spy.observe(tg); });
+  function spyUpdate(y){
+    var current = '';
+    targets.forEach(function(tg){ if (tg.offsetTop <= y + 90) current = tg.id; });
+    spyLinks.forEach(function(a){ a.setAttribute('aria-current', a.getAttribute('data-spy') === current ? 'true' : 'false'); });
   }
 
   /* ================= 目录树手风琴 ================= */
@@ -979,6 +992,7 @@ body.has-cursor .cursor-ring.on{opacity:.65}
       var item = btn.parentElement;
       var open = item.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      item.querySelector('.tree-detail').setAttribute('aria-hidden', open ? 'false' : 'true');
     });
   });
 
@@ -1009,27 +1023,8 @@ body.has-cursor .cursor-ring.on{opacity:.65}
     });
   }
 
-  /* ================= 自定义光标 ================= */
+  /* ================= 指针环境 ================= */
   var finePointer = window.matchMedia('(pointer: fine)').matches;
-  if (finePointer && !reduced) {
-    var cDot = document.getElementById('c-dot'), cRing = document.getElementById('c-ring');
-    document.body.classList.add('has-cursor');
-    var mx = -100, my = -100, rx = -100, ry = -100;
-    document.addEventListener('mousemove', function(e){
-      mx = e.clientX; my = e.clientY;
-      cDot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
-    }, {passive:true});
-    (function loop(){
-      rx += (mx - rx) * .16; ry += (my - ry) * .16;
-      cRing.style.transform = 'translate(' + rx + 'px,' + ry + 'px)' + (ringOn ? ' scale(1.5)' : '');
-      requestAnimationFrame(loop);
-    })();
-    var ringOn = false;
-    document.addEventListener('mouseover', function(e){
-      ringOn = !!(e.target.closest && e.target.closest('a,button,summary'));
-      cRing.classList.toggle('on', ringOn);
-    }, {passive:true});
-  }
 
   /* ================= 卡片聚光灯 ================= */
   if (finePointer) {
@@ -1042,9 +1037,11 @@ body.has-cursor .cursor-ring.on{opacity:.65}
     });
   }
 
-  /* ================= 混沌→秩序 canvas ================= */
+  /* ================= 混沌→秩序 canvas（鼠标搓动，可反复） ================= */
   var chaosCanvas = document.getElementById('chaos-canvas');
+  var chaosBand = document.getElementById('chaos-band');
   var chaosDirs = ['01','04','05','06','07','08','09','99'];
+  var chaosL = null, chaosP = 0, chaosTarget = 0, chaosRaf = null, chaosInView = false;
   function chaosSeed(){
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var w = chaosCanvas.clientWidth, h = chaosCanvas.clientHeight;
@@ -1059,51 +1056,158 @@ body.has-cursor .cursor-ring.on{opacity:.65}
         sx: Math.random() * w, sy: Math.random() * (h - padBot) + 6,
         tx: padX + gw * c + gw / 2 + (Math.random() * 10 - 5),
         ty: padTop + (r % 12) * 11 + (Math.random() * 4 - 2),
-        d: Math.random() * 480, s: Math.random() * 1.6 + 1.2, a: Math.random() * .5 + .35
+        i: Math.random() * .3, s: Math.random() * 1.6 + 1.2, a: Math.random() * .5 + .35
       });
     }
-    return {dpr: dpr, w: w, h: h, gw: gw, dots: dots};
+    chaosL = {dpr: dpr, w: w, h: h, gw: gw, dots: dots};
   }
-  function chaosDraw(progress, L){
-    var ctx = chaosCanvas.getContext('2d');
+  function chaosDraw(p){
+    if (!chaosL) return;
+    var L = chaosL, ctx = chaosCanvas.getContext('2d');
     ctx.setTransform(L.dpr, 0, 0, L.dpr, 0, 0);
     ctx.clearRect(0, 0, L.w, L.h);
-    L.dots.forEach(function(p){
-      var pe = Math.min(Math.max((progress * 1500 - p.d) / 1020, 0), 1);
-      pe = 1 - Math.pow(1 - pe, 3);
-      var x = p.sx + (p.tx - p.sx) * pe;
-      var y = p.sy + (p.ty - p.sy) * pe;
-      ctx.globalAlpha = p.a * (0.5 + 0.5 * pe);
+    L.dots.forEach(function(d){
+      var pe = Math.min(Math.max(p * (1 + d.i) - d.i, 0), 1);
+      pe = pe * pe * (3 - 2 * pe);
+      var x = d.sx + (d.tx - d.sx) * pe;
+      var y = d.sy + (d.ty - d.sy) * pe;
+      ctx.globalAlpha = d.a * (0.5 + 0.5 * pe);
       ctx.fillStyle = '#E8E8EA';
-      ctx.fillRect(x, y, p.s, p.s);
+      ctx.fillRect(x, y, d.s, d.s);
     });
-    ctx.globalAlpha = Math.min(progress * 1.8, 1);
+    ctx.globalAlpha = Math.min(p * 1.8, 1);
     ctx.fillStyle = '#83838B';
     ctx.font = '10px "JetBrains Mono", monospace';
     for (var c2 = 0; c2 < 8; c2++) { ctx.fillText(chaosDirs[c2] + '_', 34 + L.gw * c2 + L.gw / 2 - 8, L.h - 16); }
     ctx.globalAlpha = 1;
   }
-  if (chaosCanvas && document.getElementById('chaos-band')) {
-    var chaosPlayed = false;
-    function chaosPlay(){
-      var L = chaosSeed();
-      if (reduced) { chaosDraw(1, L); chaosPlayed = true; return; }
-      var t0 = null;
-      (function frame(ts){
-        if (!t0) t0 = ts;
-        var p = Math.min((ts - t0) / 1500, 1);
-        chaosDraw(p, L);
-        if (p < 1) requestAnimationFrame(frame); else chaosPlayed = true;
-      })(performance.now());
+  function chaosLoop(){
+    chaosP += (chaosTarget - chaosP) * .14;
+    if (Math.abs(chaosTarget - chaosP) < .002) chaosP = chaosTarget;
+    chaosDraw(chaosP);
+    if (chaosP !== chaosTarget) { chaosRaf = requestAnimationFrame(chaosLoop); }
+    else { chaosRaf = null; }
+  }
+  function chaosKick(){ if (!chaosRaf && chaosInView) chaosRaf = requestAnimationFrame(chaosLoop); }
+  if (chaosCanvas && chaosBand) {
+    if (reduced) {
+      chaosSeed(); chaosP = 1; chaosTarget = 1; chaosDraw(1);
+    } else {
+      chaosSeed();
+      chaosDraw(0);
+      var chaosIO = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting) {
+            chaosInView = true;
+            if (chaosP === 0 && chaosTarget === 0) { chaosTarget = 1; }
+            chaosKick();
+          } else {
+            chaosInView = false;
+            if (chaosRaf) { cancelAnimationFrame(chaosRaf); chaosRaf = null; }
+          }
+        });
+      }, {threshold:.25});
+      chaosIO.observe(chaosBand);
+      chaosBand.addEventListener('pointermove', function(e){
+        var r = chaosBand.getBoundingClientRect();
+        chaosTarget = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
+        chaosKick();
+      }, {passive:true});
+      var rzT = null;
+      window.addEventListener('resize', function(){
+        clearTimeout(rzT);
+        rzT = setTimeout(function(){ chaosSeed(); chaosDraw(chaosP); }, 200);
+      });
     }
-    var chaosIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ if (en.isIntersecting) { chaosPlay(); chaosIO.disconnect(); } });
-    }, {threshold:.3});
-    chaosIO.observe(document.getElementById('chaos-band'));
-    var rzT = null;
-    window.addEventListener('resize', function(){
-      clearTimeout(rzT);
-      rzT = setTimeout(function(){ if (chaosPlayed) chaosDraw(1, chaosSeed()); }, 200);
+  }
+
+  /* ================= 文字解码 ================= */
+  var SCRAM = '01<>/\\_[]§#*+=';
+  function scramble(el){
+    if (reduced || !el) return;
+    var final = el.textContent;
+    if (!final || !final.replace(/\s/g, '')) return;
+    var len = final.length, frame = 0, total = Math.max(14, Math.min(30, len + 8));
+    (function step(){
+      frame++;
+      var out = '';
+      for (var i = 0; i < len; i++) {
+        var rev = (frame / total) * (len * 1.5) - i * .5;
+        out += (i < rev) ? final[i] : (final[i] === ' ' ? ' ' : SCRAM[(Math.random() * SCRAM.length) | 0]);
+      }
+      el.textContent = out;
+      if (frame < total) requestAnimationFrame(step);
+      else el.textContent = final;
+    })();
+  }
+  var h1Text = document.querySelector('.h1-text');
+  if (h1Text) setTimeout(function(){ scramble(h1Text); }, 300);
+  if ('IntersectionObserver' in window) {
+    var ioH2 = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if (en.isIntersecting) { scramble(en.target); ioH2.unobserve(en.target); } });
+    }, {threshold:.7});
+    document.querySelectorAll('.sec-head h2').forEach(function(h){ ioH2.observe(h); });
+  }
+
+  /* ================= 对比滑杆 ================= */
+  var cmpSlider = document.getElementById('cmp-slider');
+  if (cmpSlider) {
+    var cmpOver = cmpSlider.querySelector('.cmp-over');
+    var cmpHandle = document.getElementById('cmp-handle');
+    var cmpPct = 45;
+    function cmpRender(){
+      cmpOver.style.clipPath = 'inset(0 ' + (100 - cmpPct) + '% 0 0)';
+      cmpHandle.style.left = cmpPct + '%';
+      cmpSlider.setAttribute('aria-valuenow', Math.round(cmpPct));
+    }
+    function cmpSet(clientX){
+      var r = cmpSlider.getBoundingClientRect();
+      cmpPct = Math.min(Math.max((clientX - r.left) / r.width * 100, 0), 100);
+      cmpRender();
+    }
+    cmpSlider.addEventListener('pointerdown', function(e){
+      try { cmpSlider.setPointerCapture(e.pointerId); } catch(err) {}
+      cmpSet(e.clientX);
+      e.preventDefault();
+    });
+    cmpSlider.addEventListener('pointermove', function(e){
+      if (e.buttons) cmpSet(e.clientX);
+    });
+    cmpSlider.addEventListener('keydown', function(e){
+      if (e.key === 'ArrowLeft') { cmpPct = Math.max(cmpPct - 4, 0); cmpRender(); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { cmpPct = Math.min(cmpPct + 4, 100); cmpRender(); e.preventDefault(); }
+    });
+    window.syncCmpHeights = function(){
+      var u = cmpSlider.querySelectorAll('.cmp-under .cmp-row');
+      var o = cmpSlider.querySelectorAll('.cmp-over .cmp-row');
+      for (var i = 0; i < u.length; i++) {
+        u[i].style.height = ''; o[i].style.height = '';
+        var h = Math.max(u[i].offsetHeight, o[i].offsetHeight);
+        u[i].style.height = h + 'px'; o[i].style.height = h + 'px';
+      }
+    };
+    syncCmpHeights();
+    cmpRender();
+    var cmpT = null;
+    window.addEventListener('resize', function(){ clearTimeout(cmpT); cmpT = setTimeout(syncCmpHeights, 200); });
+  }
+
+  /* ================= 卡片微倾斜 ================= */
+  if (finePointer && !reduced) {
+    document.querySelectorAll('.pain-card,.mech-card,.plat-card').forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        if (!card.classList.contains('in')) return;
+        var r = card.getBoundingClientRect();
+        var dx = (e.clientX - r.left) / r.width - .5;
+        var dy = (e.clientY - r.top) / r.height - .5;
+        card.style.transition = 'transform .12s ease-out';
+        card.style.transform = 'perspective(700px) rotateX(' + (-dy * 3).toFixed(2) + 'deg) rotateY(' + (dx * 3).toFixed(2) + 'deg)';
+      }, {passive:true});
+      card.addEventListener('mouseleave', function(){
+        card.style.transition = 'transform .45s cubic-bezier(.22,1,.36,1)';
+        card.style.transform = '';
+        setTimeout(function(){ card.style.transition = ''; }, 480);
+      });
     });
   }
 
@@ -1127,13 +1231,12 @@ body.has-cursor .cursor-ring.on{opacity:.65}
           ioStat.unobserve(el);
         });
       }, {threshold:.6});
-      statNums.forEach(function(el){ ioStat.observe(el); });
+      statNums.forEach(function(el){ el.textContent = (el.getAttribute('data-prefix') || '') + '0'; ioStat.observe(el); });
     }
   }
 
   /* ================= init ================= */
   applyLang();
-  if (!reduced) { renderTerm(false); }
 })();
 </script>
 </body>

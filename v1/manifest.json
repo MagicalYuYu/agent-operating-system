@@ -2,7 +2,7 @@
   "name": "AOS — Agent Operating System",
   "short_name": "AOS",
   "description": "纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力",
-  "start_url": "/",
+  "start_url": "/v1/",
   "display": "standalone",
   "background_color": "#08080d",
   "theme_color": "#08080d",

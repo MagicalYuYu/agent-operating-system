@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.1",
+  "updated_at": "2026-10-07",
+  "purpose": "AOS 环境对齐清单（示例版）：新环境部署时由 scripts/align_environment.py 读取本清单，检测并补齐缺失组件。条目按需增删，示例值用 x.y.z 占位。",
+  "notes": "①pin 字段：安装后补录版本/commit，多端对齐以 pin 为准（示例统一占位 x.y.z）；②新增用户级 skill 必须登记 user_skills；③本清单是唯一事实源；④修改本文件禁用 shell 字符串操作，只准 write/edit/python json；⑤组件名/安装命令替换为你实际使用的插件后，detect 路径风格保持不变（project-skill 相对 AOS 根，其余相对用户目录）",
+  "components": [
+    { "name": "file-placement", "kind": "project-skill", "required": true, "detect": ".dsh/skills/file-placement/SKILL.md", "install": null, "purpose": "文件落位/quicktask/建项目阈值" },
+    { "name": "knowledge-ingest", "kind": "project-skill", "required": true, "detect": ".dsh/skills/knowledge-ingest/SKILL.md", "install": null, "purpose": "知识入库格式与调研渠道纪律" },
+    { "name": "project-init", "kind": "project-skill", "required": true, "detect": ".dsh/skills/project-init/SKILL.md", "install": null, "purpose": "新建项目两件套" },
+    { "name": "subagent-dispatch", "kind": "project-skill", "required": true, "detect": ".dsh/skills/subagent-dispatch/SKILL.md", "install": null, "purpose": "委派决策表" },
+    { "name": "inspection", "kind": "project-skill", "required": true, "detect": ".dsh/skills/inspection/SKILL.md", "install": null, "purpose": "双频巡检/缓存淘汰" },
+    { "name": "dual-machine", "kind": "project-skill", "required": false, "detect": ".dsh/skills/dual-machine/SKILL.md", "install": null, "purpose": "多机协同扩展点说明" },
+    { "name": "exa-search", "kind": "project-skill", "required": false, "detect": ".dsh/skills/exa-search/SKILL.md", "install": null, "purpose": "高质量搜索直调路径与渠道质量表" },
+    { "name": "example-search-plugin", "kind": "dsh-plugin", "required": false, "detect": "%USERPROFILE%/.dsh/profiles/*/node_modules/example-search-plugin", "install": "dsh plugin add example-search-plugin", "pin": "x.y.z", "purpose": "示例条目：高质量外部搜索插件（替换为你实际使用的搜索插件）" },
+    { "name": "example-context-dashboard", "kind": "dsh-plugin", "required": false, "detect": "%USERPROFILE%/.dsh/profiles/*/node_modules/example-context-dashboard", "install": "dsh plugin add example-context-dashboard", "pin": "x.y.z", "purpose": "示例条目：上下文预算仪表盘" },
+    { "name": "example-context-imports", "kind": "dsh-plugin", "required": false, "detect": "%USERPROFILE%/.dsh/profiles/*/node_modules/example-context-imports", "install": "dsh plugin add example-context-imports", "pin": "x.y.z", "purpose": "示例条目：AGENTS.md @path 引用注入（context-anchor.md 依赖此类能力）" }
+  ],
+  "user_skills": [
+    { "name": "example-user-skill", "kind": "user-skill", "required": false, "detect": "%USERPROFILE%/.agents/skills/example-user-skill/SKILL.md", "install": "复制到 ~/.agents/skills/example-user-skill", "pin": "x.y.z", "purpose": "示例条目：登记换任何工作区都有用的用户级通用 skill" }
+  ],
+  "server_skills": []
+}

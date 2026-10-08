@@ -2,6 +2,9 @@
 
 > 本文件由 AOS 管理，Agent 操作本项目时自动加载
 
+> 状态：翻译流程 6 阶段全部完成，示例就绪 ｜ 更新 2026-10
+> `lang/en/ui.json` 与 `lang/zh-cn/ui.json` 各含 6 个键值对，键名对照、UTF-8 编码、术语一致性验证全部通过。项目作为 AOS 单一项目结构范例展示，无活跃任务。
+
 ---
 
 ## 项目基本信息
@@ -15,6 +18,20 @@
 | AOS 项目路径 | 01_PROJECTS/_example_game_localization/ |
 
 ---
+
+## 状态记录
+
+| 项 | 值 |
+|----|-----|
+| 状态载体 | 本文件头部「状态摘要」节（v2 项目两件套：AGENTS.md + README.md，不设独立状态文件） |
+| 更新规则 | 阶段切换或关键节点时覆盖更新摘要；过程历史追加至 `06_LOGS/{project}/` |
+
+---
+
+## 命令地图
+- 构建命令: 无构建（lang/ 下 JSON 翻译文件即产物）
+- 测试命令: `python -X utf8 -c "import json,glob;[json.load(open(f,encoding='utf-8')) for f in glob.glob('lang/**/*.json',recursive=True)];print('JSON OK')"`（语法+编码校验）
+- 运行命令: 无可执行；翻译工作流 = 对照 `lang/en/ui.json` 编辑 `lang/zh-cn/ui.json`，术语对齐 docs/ 规范，翻译前备份原始英文文件
 
 ## 项目专属约束
 

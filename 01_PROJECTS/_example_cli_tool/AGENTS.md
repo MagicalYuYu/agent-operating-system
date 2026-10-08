@@ -2,6 +2,9 @@
 
 > 本文件由 AOS 管理，Agent 操作本项目时自动加载
 
+> 状态：全部阶段完成（开发 / 测试 / 文档），示例就绪 ｜ 更新 2026-10
+> 单元测试 4/4 通过（`src/tests/test_parser.py`）；parser / filters / reporter 三模块结构，零外部依赖。项目作为 AOS 单一项目结构范例展示，无活跃任务。
+
 ---
 
 ## 项目基本信息
@@ -15,6 +18,20 @@
 | AOS 项目路径 | 01_PROJECTS/_example_cli_tool/ |
 
 ---
+
+## 状态记录
+
+| 项 | 值 |
+|----|-----|
+| 状态载体 | 本文件头部「状态摘要」节（v2 项目两件套：AGENTS.md + README.md，不设独立状态文件） |
+| 更新规则 | 阶段切换或关键节点时覆盖更新摘要；过程历史追加至 `06_LOGS/{project}/` |
+
+---
+
+## 命令地图
+- 构建命令: `pip install -e src/`（setuptools，安装出 `loganalyzer` 命令；零外部依赖）
+- 测试命令: `python -m unittest discover -s src/tests -t src`（unittest 标准库，test_parser.py 4 个用例）
+- 运行命令: 已安装则 `loganalyzer --help`；未安装在 `src/` 目录下 `python -m loganalyzer --help`
 
 ## 项目专属约束
 

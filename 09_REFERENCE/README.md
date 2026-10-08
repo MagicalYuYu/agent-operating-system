@@ -1,25 +1,7 @@
-# AOS v1.1.0 — 09_REFERENCE
+# 09_REFERENCE — 唯一参考知识库
 
-唯一参考知识库入口，知识只存一份，禁止重复。
+每份知识只存一份（铁律 3：Reference 唯一化），他处只写路径引用，禁止复制内容；`research/` 存调研成果。
 
-## 应放什么
-- system/ — 系统级参考（AOS设计文档、Trae官方指南等）
-- web/ — Web知识（从网页抓取入库的结构化知识）
-- _index.md — 知识索引（所有条目的可搜索索引）
+入库走 knowledge-ingest skill：文件头部写来源 URL、抓取日期、可信度备注；`_index.md` 加一行指针（主题 + 一句话 hook），超 200 行启用父子索引。
 
-## 禁止放什么
-- 知识内容的副本（其他位置只能引用路径）
-- 项目专属数据（应放 01_PROJECTS/）
-- 临时文件
-
-## 入库规则
-- 使用 WKIS (SK_0001) 入库
-- 入库前检查 _index.md 防重复
-- 已存在文件不可静默覆盖
-- 每个知识文件旁生成 metadata.json
-
-## 引用方式
-其他位置引用知识时只写路径，不复制内容：
-```markdown
-参考：09_REFERENCE/web/{slug}.md
-```
+示例：`09_REFERENCE/web/http-caching.md` + `_index.md` 一行：`- [http-caching](web/http-caching.md) — 缓存策略速查（官方文档核对，2026-10）`

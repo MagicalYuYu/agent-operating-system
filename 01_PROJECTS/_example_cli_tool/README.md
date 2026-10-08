@@ -145,7 +145,6 @@ loganalyzer /var/log/server.log --level WARN --format json --output warn_report.
 _example_cli_tool/
 ├── AGENTS.md                       # 项目专属配置（AOS 管理）
 ├── README.md                       # 项目说明文档（本文件）
-├── STATUS.md                       # 项目状态跟踪
 ├── docs/
 │   └── usage.md                    # 详细使用教程
 └── src/
@@ -157,6 +156,7 @@ _example_cli_tool/
     │   ├── filters.py              # 过滤规则 LogFilter
     │   └── reporter.py             # 报告生成器 Reporter
     └── tests/
+        ├── __init__.py             # 包初始化（unittest discover 需要）
         └── test_parser.py          # 单元测试（unittest）
 ```
 

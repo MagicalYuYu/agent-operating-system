@@ -1,250 +1,93 @@
-# AOS v1.1.0 — Agent Operating System
-> 自我拆任务 → 自我执行 → 自我验证 → 自我进化
----
-## 执行模型（强制）
-**AOS 是单次对话触发式 Agent，不是持续运行系统。**
-- 不存在后台监听 / 常驻执行
-- 所有任务必须由用户显式触发，Agent 不会自主行动
-- 所有状态必须写入磁盘，不能依赖运行时内存
-- 每次会话启动时从磁盘读取状态，会话结束时状态必须落盘
-- 多会话 = 变相并行：不同对话独立 Agent 实例，通过文件系统交互
----
-## 运行时铁律（强制）
-以下规则源于 Trae CODE 模式的实际能力边界，不可违反：
-1. **用户是唯一调度器**：所有任务由用户触发，AOS 不假设 Agent 会自主行动或自主协调
-2. **状态更新是步骤的一部分**：写入 Skill/流程的强制步骤，不是可选的事后动作。Agent 不会"记得"回头更新文件，所以更新必须嵌入执行流程
-3. **事前声明优于事后记录**：执行前声明"即将做什么"并写入文件，执行本身就是完成证明
-4. **文件是唯一的跨会话通道**：不依赖 Agent 记忆，只依赖磁盘上的文件传递上下文
-5. **禁止假设 Agent 会自觉更新**：任何设计如果依赖"Agent 执行完后主动更新状态"，则该设计不可靠。必须将状态更新作为 Skill 步骤序列中的强制步骤
----
-## 核心约束（8条铁律）
-1. **Maker/Checker 分离**：同一任务不能在同一会话由主Agent执行+验证
-2. **Memory 区分记录与状态**：记录型（feedback/经验/坑点/操作日志）只追加不覆盖；状态型（用户画像/项目事实/系统配置）覆盖旧值，保留变更注释（如"React（2026-06-15 更新，原为 Vue）"）
-3. **Skill 必须可演化**：每个 Skill 持续追加经验与坑点
-4. **Loop 必须可恢复**：每个 Loop 支持 checkpoint 和 resume
-5. **输出必须隔离**：禁止直接 export，必须经过 Project→Export 流程
-6. **Reference 唯一化**：所有知识只允许存在一份，其他位置只能引用路径
-7. **项目不可复制知识**：PROJECTS 只能通过 reference link 使用知识，禁止复制内容
-8. **目录职责强约束**：每个目录有且仅有一个职责，不可被业务污染
----
-## 版本一致性规则（强制）
-当 AOS 执行版本更新或任何结构性变更时，必须同步更新所有受影响的文件：
-1. **版本号同步**：更新版本号时，必须扫描全部文件中的版本引用并逐一更新，包括：00_BOOT/ 下所有文件标题、各目录 README.md、04_MEMORY/ 下的项目状态文件、agent_pool/ 下的 schema_version
-2. **交叉引用同步**：当新增/删除/重命名文件时，必须更新所有引用该路径的文件（如 _index.md、SKILL_REGISTRY.md、AGENTS.md 引用表）
-3. **状态同步**：当系统状态发生变化时，必须更新 SYSTEM_STATE.md 和 04_MEMORY/project/ 下的对应文件
-4. **自检验证**：每次结构性变更完成后，必须执行一次全文扫描验证一致性，输出验证结果
----
-## 目录强约束
-| 目录 | 职责 | 强约束 |
-|------|------|--------|
-| 00_BOOT | 系统规则层 | 不可被业务污染 |
-| 01_PROJECTS | 项目隔离存放 | 禁止存放非项目内容，引用知识用路径 |
-| 02_SANDBOX | 不确定实验 | 所有不确定操作必须进入这里 |
-| 03_TOOLS | Skill/Loop/Agent 模块库 | 禁止 skill/loop/project 混合存储 |
-| 04_MEMORY | 唯一状态持久化中心 | 所有状态必须写入此目录 |
-| 05_CACHE | 纯临时数据 | 可随时删除，不可存放重要数据 |
-| 06_LOGS | 运行日志 | 只追加不修改 |
-| 07_EXPORTS | 输出导出 | 所有输出必须从这里导出 |
-| 08_INBOX | 外部输入入口 | 所有外部输入必须先进这里 |
-| 09_REFERENCE | 唯一参考知识库入口 | 知识只存一份，禁止重复 |
-| 99_ARCHIVE | 不可修改历史归档 | 归档内容只读 |
----
-## 执行模式
-| 模式 | 触发条件 | 行为 | 对应命令 |
-|------|----------|------|----------|
-| PLAN | 复杂任务、架构决策 | 只读探索+生成计划 | `/spec` 或 `/plan` |
-| EXECUTE | 计划确认后、简单任务 | 读写操作+工具调用 | 默认模式 |
-| VERIFY | 任务完成前、用户要求审查 | 只读验证+输出报告 | **新会话中发起** |
----
-## 项目识别与配置加载（强制）
-AOS 管理多个项目，每个项目在 `01_PROJECTS/{name}/` 下有独立的 `AGENTS.md`。Agent 必须自动识别当前对话涉及的项目，无需用户主动声明。
-### 识别规则（按优先级从高到低）
-1. **文件路径匹配**：用户指令中提到的文件路径包含 `01_PROJECTS/{name}/` → 识别为 {name} 项目
-2. **上下文关键词匹配**：用户指令中的关键词与 `01_PROJECTS/` 下某项目的 README.md 或 AGENTS.md 内容匹配 → 识别为该项目
-3. **项目目录扫描**：列出 `01_PROJECTS/` 下所有子目录，向用户确认当前操作涉及哪个项目
-4. **无法识别**：提示用户指定项目名称
-### 识别后的动作
-1. 读取 `01_PROJECTS/{name}/AGENTS.md` → 加载项目专属配置
-2. 读取 `01_PROJECTS/{name}/STATUS.md` → 了解项目当前状态
-3. 后续操作遵循项目级约束（项目 AGENTS.md 中的规则优先于系统默认）
----
-## 新建项目流程（强制）
-创建新项目时必须执行以下步骤，不可省略：
-1. 在 `01_PROJECTS/{name}/` 下创建目录
-2. 创建 `AGENTS.md`（项目专属配置，使用 `03_TOOLS/skills/legacy_migration/templates/project_agents_template.md` 模板）
-3. 创建 `README.md`（项目基本信息）
-4. 创建 `STATUS.md`（项目状态跟踪）
-5. 更新 `04_MEMORY/project/proj_{name}.md`
-6. 更新 `04_MEMORY/INDEX.md`
-⚠ 缺少 AGENTS.md 的项目视为未完成初始化，Agent 在操作该项目时必须先提醒用户补全
-### 导入已有项目流程
-对于已有运行服务的项目导入（非从零创建），需额外执行以下步骤：
-1. **服务发现与采集**：扫描 NSSM 服务（`nssm list`）、Docker 容器（`docker ps -a`）、端口监听（`netstat -tlnp`），自动生成项目配置清单
-2. **凭据提取**：从运行中的配置文件提取端口/Token/密码，自动填入 AGENTS.md 敏感信息表，同时写入 `04_MEMORY/credentials.json`（引用路径，不复制内容）
-3. **依赖关系推断**：根据端口连接关系、配置文件引用、环境变量自动推断项目间依赖（如 ProtocolBridge → ExampleBot 的 WS 连接），记录到项目 AGENTS.md 的"相关项目"部分
-4. **执行新建项目流程**：完成上述采集后，按标准 6 步流程创建项目目录和文件
-### 项目内标准结构
-AOS 支持两种项目类型，通过 AGENTS.md 的"项目类型"字段区分：
-#### 类型一：单一项目
-适用于独立项目（如浏览器扩展、单机应用、工具脚本）。`src/` 直接存放源代码文件。
-```
-01_PROJECTS/{name}/
-├── AGENTS.md               ← 项目专属配置（必须）
-├── README.md               ← 项目基本信息（必须）
-├── STATUS.md               ← 项目状态跟踪（必须）
-├── docs/                   ← 项目文档（讨论记录、开发规划、设计文档）
-├── src/                    ← 源代码/工作文件（直接存放代码文件）
-│   ├── extension/          ← 示例：扩展源码
-│   ├── native-host/        ← 示例：Native Host 脚本
-│   └── CHANGELOG.md        ← 示例：变更日志
-├── config/                 ← 项目配置
-└── reference_links.md      ← 知识引用路径（不复制内容）
-```
-#### 类型二：项目集
-适用于包含多个子项目的集合（如插件集、微服务集、多模块项目）。`src/` 存放多个子项目目录，每个子项目有独立的结构。
-```
-01_PROJECTS/{name}/
-├── AGENTS.md               ← 项目专属配置（必须，含子项目清单）
-├── README.md               ← 项目基本信息（必须）
-├── STATUS.md               ← 项目状态跟踪（必须）
-├── docs/                   ← 项目文档（共享开发规范、教程）
-├── src/                    ← 源代码/工作文件（存放多个子项目）
-│   ├── sub_project_1/      ← 子项目1（独立目录）
-│   ├── sub_project_2/      ← 子项目2（独立目录）
-│   └── sub_project_3/      ← 子项目3（独立目录）
-├── backup/                 ← 备份文件（可选）
-├── config/                 ← 项目配置
-└── reference_links.md      ← 知识引用路径（不复制内容）
-```
-#### 规范说明
-- 子目录按需创建，非强制
-- `docs/` 存放项目相关的讨论文档、开发规划等 MD 文件
-- `src/` 存放实际工作文件：单一项目直接存放代码，项目集存放子项目目录
-- `config/` 存放项目专属配置
-- 项目集的 AGENTS.md 必须包含子项目清单（名称/路径/状态/说明）
-- 禁止在 src/ 下再嵌套与项目同名的目录（如 `src/{name}/`），避免冗余层级
----
-## 用户画像更新规则（强制）
-当用户在对话中表达以下信息时，必须主动更新 04_MEMORY/user/user_profile.md（状态型，覆盖旧值并保留变更注释）：
-1. **明确的偏好声明**（"我喜欢..."、"我讨厌..."、"请用..."）
-2. **技术栈选择**（"这个项目用 React"）
-3. **工作习惯**（"我习惯先看测试再改代码"）
-4. **纠正 Agent 行为**（"不要这样做"）
-5. **隐式偏好信号**（通过反馈内容、纠正动作、行为模式推断，例如"你管的太多了"反映巡检范围偏好）
-更新方式：在对应分类下覆盖旧值，标注更新日期。不保留旧值全文，仅保留变更注释。
-### 强制检查点（2026-06-26 新增，解决画像数据不更新问题）
-以下场景必须执行"用户画像更新检查"，不可省略：
-1. **收到用户反馈后**：分析反馈内容，判断是否包含新的偏好/习惯/纠正信号 → 如有，立即更新 user_profile.md
-2. **完成任务前**：回顾本轮对话，检查用户是否表达了未记录的偏好 → 如有，立即更新
-3. **用户纠正 Agent 行为时**：纠正内容必须同步到 user_profile.md 的"纠正记录"表
-**禁止依赖运行时记忆**：不得假设"下次会话会记得更新"，必须在当前会话内完成更新。
----
-## 凭据管理规则（强制）
-凭据（密码/Token/密钥）必须集中管理，禁止多处复制：
-1. **唯一存储点**：所有凭据存储在 `04_MEMORY/credentials.json`，遵循铁律 6（Reference 唯一化）
-2. **引用而非复制**：项目 AGENTS.md 的敏感信息表必须引用 `04_MEMORY/credentials.json` 中的路径，不复制内容
-3. **Schema 定义**：credentials.json 必须包含 `schema_version`、`updated_at`、`credentials` 数组（每项含 `id`、`type`、`project`、`description`、`value`、`source_path`）
-4. **安全提醒**：credentials.json 为明文存储，禁止上传至 GitHub（.gitignore 已排除），后续版本应引入加密机制
----
-## 项目状态同步规则（强制）
-当对 01_PROJECTS/ 下任何项目执行修改操作时，必须同步更新（不限于 Skill 调用，包括直接代码修改、配置调整、文档更新等所有操作）：
-1. `01_PROJECTS/{name}/STATUS.md` — 更新对应阶段的状态
-2. `04_MEMORY/project/proj_{name}.md` — 更新项目动态事实
----
-## 文件分层规则（强制）
-多项目/多来源的文件必须按层级存放，禁止混杂：
-| 目录 | 分层规则 | 示例 |
-|------|----------|------|
-| 07_EXPORTS/ | 按项目名分层 | 07_EXPORTS/{project_name}/{deliverable}/ |
-| 08_INBOX/raw/ | 按日期分层 | 08_INBOX/raw/{YYYYMMDD}/ |
-| 06_LOGS/ | 按项目名+日期分层 | 06_LOGS/{project_name}/{YYYYMMDD}.log |
----
-## 功能触发机制一览
-| 功能 | 自动触发 | 触发层级 | 触发机制 | 说明 |
-|------|----------|----------|----------|------|
-| 启动自检 | ✅ | Layer 1 | AGENTS.md 每次会话首条消息时执行 | 静默执行，输出摘要 |
-| 项目识别与配置加载 | ✅ | Layer 1 | AGENTS.md 识别规则 | 按优先级自动识别 |
-| 版本一致性检查 | ✅ | Layer 1+2 | AGENTS.md + Trae Rules (aos-consistency-guard) | 修改文件时触发 |
-| Skill 调用后状态更新 | ✅ | Layer 2 | Trae Rules (aos-skill-rules) 第6条 | Skill 流程最后一步 |
-| 记忆规则遵守 | ✅ | Layer 2 | Trae Rules (aos-memory-rules) | 读取/修改 04_MEMORY 时触发 |
-| 可视化执行规范 | ✅ | Layer 1 | AGENTS.md 强制 | 所有操作必须展示 |
-| 新建项目流程 | ✅ | Layer 1 | AGENTS.md 强制 | 创建项目时触发 |
-| 用户画像更新 | ✅ | Layer 1 | AGENTS.md 用户画像更新规则 | 检测到偏好信息时触发 |
-| 项目状态同步 | ✅ | Layer 1 | AGENTS.md 项目状态同步规则 | 修改项目文件时触发 |
-| 文件分层存放 | ✅ | Layer 1 | AGENTS.md 文件分层规则 | 创建文件时触发 |
-| Memory 记录/状态区分 | ✅ | Layer 1 | AGENTS.md 铁律2 | 写入记忆时自动区分 |
-| feedback 记忆积累 | ❌ | Layer 3 | 用户调用 `/aos-learn` 命令 | Agent 不主动判断"是否值得记" |
-| Loop 执行 | ❌ | Layer 3 | 用户触发或 Schedule cron | 单次触发模式设计如此 |
-| 迁移流程 | ❌ | Layer 3 | 用户运行脚本 | 需用户指定源路径 |
-| 自检脚本 | ❌ | Layer 3 | 用户运行 `python aos_check.py` | 独立验证，不依赖 Agent |
-| 知识入库 | ❌ | Layer 3 | 用户提供 URL 触发 WKIS | 需用户指定来源 |
-**层级说明**：Layer 1 = AGENTS.md（每次会话加载），Layer 2 = Trae Rules（路径限定触发），Layer 3 = 用户指令（显式触发）
----
-## 启动自检流程（每次会话首条消息时执行，不可省略任何步骤）
-每次会话首条消息时**必须**静默执行自检，按顺序读取以下全部文件（禁止省略，禁止跳过）：
-1. `00_BOOT/SYSTEM_STATE.md` → 确认系统状态
-2. `00_BOOT/SKILL_REGISTRY.md` → 扫描可用 Skill
-3. `04_MEMORY/INDEX.md` → 加载记忆索引
-4. `04_MEMORY/agent_pool/agent_tasks.json` → 检查待认领任务
-5. `04_MEMORY/user/user_profile.md` → 加载用户画像
-6. `09_REFERENCE/system/system-constraint-rule.md` → **加载系统约束规则（优先级 0，必须读取）**
-7. `09_REFERENCE/system/interaction-loop-rule.md` → **加载交互循环规则（每步确认/状态更新/Checkpoint，必须读取）**
-8. `09_REFERENCE/system/subagent-dispatch-rule.md` → **加载 SubAgent 调度规则（B/C/D/E/F/G/H/I/J，必须读取）**
-**⚠ 警告：步骤 6-8 是全局规则文件，TRAE 全局规则注入不稳定，这些文件是规则的唯一可靠来源。不读取将导致后续行为不符合规范。**
-**错误处理：若步骤 1-8 中任何文件不存在（例如新机器未同步、目录结构异常），立即停止自检，输出警告并告知缺失文件路径，通过 AskUserQuestion 询问用户是否继续（规则缺失可能导致 Agent 行为不规范）。禁止跳过缺失文件继续执行。**
-读取完成后输出自检摘要。详细输出格式模板见 `09_REFERENCE/system/aos-startup-selfcheck.md`（可选读取，仅为格式参考）。
----
-## 压缩指令
-压缩时，始终保留：
-- 当前任务目标和验收标准
-- 本会话中修改的文件路径及行号
-- 未解决的错误消息
-- 架构决策及其理由
-- 用户明确给出的约束
----
-## 两次纠正规则
-同一错误纠正两次失败后，不再继续纠正。将失败原因写成 3-5 行简报，建议用户开启新会话并将简报贴入。
----
-## 可视化执行规范
-所有操作必须向用户展示执行过程，禁止后台静默运行。每个步骤必须包含：步骤编号/总数、操作名称、状态、目标、耗时、产出路径。展示模板见 `09_REFERENCE/system/aos-visual-execution-spec.md`。
----
-## 详细规则引用
-| 领域 | 详细文档 |
-|------|----------|
-| Agent 执行模式与多会话协同 | `09_REFERENCE/system/aos-agent-execution-model.md` |
-| Loop Engine 适配方案 | `09_REFERENCE/system/aos-loop-engine-v2.md` |
-| Skill 开发规范 | `03_TOOLS/skills/` 下各 Skill 的 SKILL.md |
-| Harness 六层架构 | `09_REFERENCE/system/aos-harness-framework.md` |
-| 每日系统级巡检（Layer 3 手动触发） | `00_BOOT/SYSTEM_INSPECTION.md` |
-| 每日项目级巡检（Layer 3 手动触发） | `00_BOOT/PROJECT_INSPECTION.md` |
-| 启动自检流程模板 | `09_REFERENCE/system/aos-startup-selfcheck.md` |
-| 可视化执行规范模板 | `09_REFERENCE/system/aos-visual-execution-spec.md` |
-| DMC 双机协调元项目 | `d:\DMC\AGENTS.md`（详见下文"DMC 引用"段落） |
----
-### MCP 调用方式
-- Server 名：`mcp_dmc` | 协议：stdio | 配置：TRAE 全局 MCP（所有项目工作区可用，无需项目级配置）
-### 7 个 MCP 工具
-`get_topology` / `get_service_registry` / `get_constraints` / `check_deployment_safety` / `notify_change` / `query_change_log` / `get_project_intel`
-### 故障降级
-如 MCP 不可用，参见 `d:\DMC\USER_GUIDE.md` 第 5.4 节。
-### 硬约束查询
-完整硬约束列表参见 `d:\DMC\state\constraints.json` 或调用 `get_constraints` 工具；人类可读版参见 `d:\DMC\docs\约束清单.md`。
----
-## 全局规则摘要与引用
-> 以下三条全局规则已录入 TRAE 全局设置，但 TRAE 注入机制不稳定。
-> 完整规则文件存储在 09_REFERENCE/system/ 下，作为权威引用源。
-### 1. 系统约束（优先级 0）
-- 拒绝想象和猜测：基于实际文件扩展名和代码内容判断技术栈
-- 禁止懒惰和代码截断：输出必须 100% 完整，禁止占位符
-- 质量优先：追求准确性而非速度，禁止奉承
-- 完整规则：09_REFERENCE/system/system-constraint-rule.md
-### 2. 交互循环规则
-- 每步操作后写文件，通过 AskUserQuestion 确认才继续
-- 不确定进度时先读文件，禁止猜测
-- 任务结束前必须更新状态+Checkpoint+确认结束
-- 完整规则：09_REFERENCE/system/interaction-loop-rule.md
-### 3. SubAgent 调度规则
-- B 必须调用：对抗性审查/上下文隔离/大范围探索
-- D 明确禁止：单文件简单修改/与用户澄清/跨依赖决策/意图不确定
-- C 默认不调用，需在执行日志写一句话论证理由
-- 完整规则：09_REFERENCE/system/subagent-dispatch-rule.md
+# AOS 2.0 — Agent Operating System
+
+@.dsh/context-anchor.md
+
+> 版本 2.0.0-rc.1 | 2026-10-07 | 本文件硬上限 200 行，溢出内容必须降级为 skill
+> 前身：AOS v1（已冻结归档）
+
+## 定位
+
+AOS 是运行在类 Claude Code agent harness 上的个人文件治理层：**harness 提供运行时（调度、编排、沙箱、记忆通道），AOS 提供数据治理与工作流约定**。规则只写不变量，一切按需知识通过指针表和 skills 检索。
+
+## 铁律（4 条，平台无关）
+
+1. **记忆分型**：记录型（feedback/经验/坑点/日志）只追加；状态型（画像/项目事实/配置）覆盖旧值并留变更注释（如"React（2026-06-15 更新，原为 Vue）"）
+2. **输出隔离**：交付物一律经 `07_EXPORTS/{project}/` 导出，禁止散落在工作目录
+3. **Reference 唯一化**：每份知识只存一处，他处只写路径引用；禁止复制内容
+4. **项目不复制知识**：01_PROJECTS 内只能引用 04_MEMORY / 09_REFERENCE 的路径
+
+## 目录宪章（8 个）
+
+| 目录 | 职责 | 关键约束 |
+|---|---|---|
+| 01_PROJECTS | 项目隔离存放 | 项目模板两件套：AGENTS.md + README.md |
+| 04_MEMORY | 唯一状态持久化中心 | 状态型文件单文件 ≤32KB，超限剪切历史至 06_LOGS/{project}/memory_history.md 并留指针 |
+| 05_CACHE | Agent 中间产物垃圾场 | ①唯一副本禁入（备份去 99_ARCHIVE 或异地）②两级分层：项目/日期③创建时间超 90 天由巡检 skill 出清理清单④禁止任何长期引用指向此目录 |
+| 06_LOGS | 运行日志（平台无关叙事层） | 只追加；治理事件（巡检/事故/发布/决策）+ 项目关键节点（立项/阶段切换/交付）必写一行；重要会话一行入 `/aos/session_index.md`；跨平台迁移时本目录随迁（过程细节层归 harness 会话档案）；/memory_history.md 承接状态文件剪切的历史（裁剪前必须先归档，顺序不可倒） |
+| 07_EXPORTS | 输出导出 | 按项目分层 |
+| 08_INBOX | 重量级输入鲁棒入口 | ①中转区语义：处理完必须迁往真正归宿，原处只留去向指针②按 YYYYMMDD 分层③收到 INBOX 路径 → 读取 → 处理 → 主动归位 → 留去向记录 |
+| 09_REFERENCE | 唯一参考知识库 | 知识只存一份；research/ 存调研成果 |
+| 99_ARCHIVE | 不可修改历史归档 | 只读；只增不减 |
+
+## 记忆体系
+
+- **Semantic**（状态）：`04_MEMORY/INDEX.md`（一行一指针+150 字 hook，≤200 行）→ user/project/credentials
+- **Episodic**（记录）：双层——细节层 = harness 会话档案 + goal 事件流（最全、平台绑定）；叙事层 = 06_LOGS 追加（人类可读、平台无关，跨平台迁移保险）
+- **Procedural**（程序性）：`.dsh/skills/*/SKILL.md` 的 gotchas 段落，犯错沉淀到对应 skill，不只靠提示词纠正
+- **Working**：harness 会话上下文，不手工维护
+- 记忆写作纪律：经验条目三要素（规则+Why+How to apply）；能从现有规则推导的内容不入库（防冗余腐化）
+
+## 落位速查（高频规则内联；细则见 file-placement skill）
+
+| 产出什么 | 放哪 |
+|---|---|
+| 项目交付物 | `07_EXPORTS/{project}/`；无项目的轻量任务 → `07_EXPORTS/quicktasks/{YYYYMMDD}_{slug}/` |
+| 临时/中间产物 | `05_CACHE/{project|quicktask}/{YYYYMMDD}/`（唯一副本禁入） |
+| 外部给的大文件 | `08_INBOX/{YYYYMMDD}/`（处理完迁往归宿留指针） |
+| 长期知识 | `09_REFERENCE/{domain}/` + INDEX 钩子 |
+| 状态/偏好 | `04_MEMORY/`；日志与历史 → `06_LOGS/`；废弃不删 → `99_ARCHIVE/` |
+| 项目内文件 | 按 file-placement skill §2 骨架；根层禁止代码/脚本散放 |
+| 第三方组件 | 用户级 `~/.agents/skills` / harness profile，**不入 AOS**（自研才进 `.dsh/skills`） |
+
+判定存疑（quicktask 阈值/建项目条件/项目内细分/判别式）→ 读 file-placement skill。
+
+## 文件操作铁律（无条件生效）
+
+1. 中文内容文件**只准 write/edit 工具**（或 python 显式 utf-8），禁用 shell 管道/重定向写入
+2. JSON/YAML 写入 UTF-8 带 BOM；读取按 `utf-8-sig`
+3. YAML description 以 `[` 开头必须加引号；含反斜杠路径用单引号串
+4. 结构化文件（manifest 等）修改禁用 shell 字符串替换，只准 write/edit/python json
+
+## 指针表（需要 X 时查 Y）
+
+| 需要 | 查 |
+|---|---|
+| 用户偏好/画像 | `04_MEMORY/user/user_profile.md` |
+| 项目动态 | `04_MEMORY/project/proj_{name}.md`（经 INDEX.md 定位） |
+| 凭据 | `04_MEMORY/credentials.json`（引用 id，不复制 value；禁止上传公开仓库） |
+| 知识入库/调研方法 | skill: knowledge-ingest |
+| 子代理调度判断 | skill: subagent-dispatch |
+| 新建项目 | skill: project-init |
+| 文件放哪/轻量任务归档/是否建项目 | skill: file-placement |
+| 多机协同（可选扩展） | skill: dual-machine（扩展点说明，见 docs/design-rationale.md） |
+
+## 行为不变量
+
+1. **对抗审查**：重大方案/高风险改动必须以独立上下文（fork 子代理或审查团队 review）做红队；写码者不认证自己的 diff
+2. **两次纠正**：同一错误两次纠正失败 → 写 3-5 行简报，建议新会话贴入。载体是 feedback 同名条目：条目**第二次**更新时，回复必须附「建议新会话」提示；纠正计数不依赖模型记忆
+3. **模型路由**：低推理批量任务（枚举/统计/文本整理/识图）路由低成本批量模型；强推理与决策用主模型
+4. **批量清理**：批量模型产 manifest → 主会话复核 → 用户终审；唯一副本先异地备份+哈希校验
+5. **运行时数据禁区**：生产服务运行时数据、数据库、日志内容绝不动
+6. **AGENTS.md 防蠕变**：本文件 ≤200 行；季度检查，新增规则优先考虑写成 skill
+7. **对外发布门禁**：公开仓库 push / Release / 任何公开渠道发布必须用户当次显式批准；计划批准不等于发布授权
+8. **落盘前查路由**：创建/移动任何文件前，先查上方"落位速查"表；表格未覆盖或存疑时读 skill: file-placement 细则（高频规则内联、低频细则下沉）
+
+## 多机协同（可选扩展；不需要可整段删除，不影响其余部分）
+
+AOS 单机即可完整运行。跨机协作按扩展点对待：状态以 06_LOGS 叙事层与同步目录保持一致；命令走受控通道；部署前核对目标机约束。本发布包不附带跨机实现，设计讨论见 docs/design-rationale.md。
+
+## 压缩保留项
+
+压缩会话时保留：任务目标与验收标准、修改过的文件路径、未解决错误、架构决策及理由、用户明确约束。
+
+压缩后恢复 4 步（防旧事件误判）：① 读 summary 的 Current Work → ② 读用户最新消息 → ③ 两者一致则继续 → ④ 不一致（质问旧事/新需求）先确认意图再行动。

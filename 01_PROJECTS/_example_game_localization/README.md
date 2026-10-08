@@ -36,7 +36,6 @@
 _example_game_localization/
 ├── AGENTS.md                 # 项目专属配置（AOS 必需）
 ├── README.md                 # 项目说明文档（本文件）
-├── STATUS.md                 # 项目状态跟踪（AOS 必需）
 └── lang/                     # 翻译文件目录
     ├── en/                   # 英文原文（源语言）
     │   └── ui.json           # UI 模块文本
@@ -98,7 +97,7 @@ _example_game_localization/
 
 ## 翻译流程示例
 
-本项目的翻译流程分为 6 个阶段（对应 STATUS.md 中的阶段跟踪）：
+本项目的翻译流程分为 6 个阶段（阶段进展记录于 AGENTS.md 头部状态摘要）：
 
 ### 阶段 1：术语表提取
 

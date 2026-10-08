@@ -159,7 +159,6 @@ for msg in messages:
 _example_plugin_suite/
 ├── AGENTS.md                          # 项目专属配置（AOS 必需）
 ├── README.md                          # 项目说明（本文件）
-├── STATUS.md                          # 项目状态跟踪（AOS 必需）
 ├── docs/
 │   └── plugin_dev_guide.md            # 插件开发指南
 ├── config/

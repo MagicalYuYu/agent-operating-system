@@ -1,15 +1,15 @@
 {
   "name": "AOS — Agent Operating System",
   "short_name": "AOS",
-  "description": "纯文件系统的 Agent 运行时框架，让 AI 助手拥有跨会话记忆、项目隔离和技能复用能力",
+  "description": "运行在类 Claude Code agent harness 上的个人文件治理层",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#08080d",
-  "theme_color": "#08080d",
+  "background_color": "#101012",
+  "theme_color": "#101012",
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23101012'/%3E%3Cg stroke='%23E8E8EA' stroke-width='4'%3E%3Cline x1='14' y1='19' x2='50' y2='19'/%3E%3Cline x1='14' y1='32' x2='42' y2='32'/%3E%3Cline x1='14' y1='45' x2='32' y2='45'/%3E%3C/g%3E%3Crect x='36' y='41' width='14' height='8' fill='%23E8E8EA'/%3E%3C/svg%3E",
       "sizes": "any",
       "type": "image/svg+xml"
     }

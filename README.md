@@ -14,7 +14,6 @@
 
 <p align="center">
   <a href="https://github.com/MagicalYuYu/agent-operating-system/releases/tag/v2.0.0-rc.1"><img src="https://img.shields.io/github/v/release/MagicalYuYu/agent-operating-system?style=flat&amp;label=release&amp;color=0969DA" alt="Release v2.0.0-rc.1"></a>
-  <a href="https://github.com/MagicalYuYu/agent-operating-system"><img src="https://img.shields.io/github/stars/MagicalYuYu/agent-operating-system?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="GitHub stars"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT--Additional-2EA44F?style=flat" alt="License: MIT + Additional Terms"></a>
   <a href="https://agents.md/"><img src="https://img.shields.io/badge/Standard-AGENTS.md-2EA44F?style=flat" alt="AGENTS.md standard"></a>
   <a href="https://github.com/deepseek-ai/deepseek-harness"><img src="https://img.shields.io/badge/Runtime-DeepSeek_Harness-6E40C9?style=flat" alt="Runtime: DeepSeek Harness"></a>

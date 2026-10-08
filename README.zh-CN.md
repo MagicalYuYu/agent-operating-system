@@ -1,11 +1,13 @@
 # AOS — Agent Operating System
 
-[![License: MIT](https://img.shields.io/badge/License-MIT--Additional-informational.svg)](LICENSE)
+**运行在类 Claude Code agent harness 上的个人文件治理层。**
+
 [![Release](https://img.shields.io/badge/Release-v2.0.0--rc.1-blue.svg)](https://github.com/MagicalYuYu/agent-operating-system/releases)
 [![Runtime](https://img.shields.io/badge/Runtime-DeepSeek_Harness-6E40C9.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![Also works with](https://img.shields.io/badge/Also_works_with-AGENTS.md_tools-2EA44F.svg)](https://agents.md/)
+[![Standard](https://img.shields.io/badge/Standard-AGENTS.md-2EA44F.svg)](https://agents.md/)
+[![License: MIT](https://img.shields.io/badge/License-MIT--Additional-informational.svg)](LICENSE)
 
-> 运行在类 Claude Code agent harness 上的个人文件治理层。
+[English](README.md) · [官网](https://aos.magicalyu.online)
 
 AI 编程工具能写代码、跑命令，但不管你的文件：交付物散在工作目录里、知识存了三份彼此矛盾、会话一压缩约束就丢。AOS 解决的是这一层的问题，它给工具一套关于"东西放哪、知识存哪、状态记哪"的约定，并且这些约定可以被脚本检查。
 

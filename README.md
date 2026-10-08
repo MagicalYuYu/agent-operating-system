@@ -1,13 +1,13 @@
 # AOS — Agent Operating System
 
-[![License: MIT](https://img.shields.io/badge/License-MIT--Additional-informational.svg)](LICENSE)
+**A file governance layer for AI coding agents.**
+
 [![Release](https://img.shields.io/badge/Release-v2.0.0--rc.1-blue.svg)](https://github.com/MagicalYuYu/agent-operating-system/releases)
 [![Runtime](https://img.shields.io/badge/Runtime-DeepSeek_Harness-6E40C9.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![Also works with](https://img.shields.io/badge/Also_works_with-AGENTS.md_tools-2EA44F.svg)](https://agents.md/)
+[![Standard](https://img.shields.io/badge/Standard-AGENTS.md-2EA44F.svg)](https://agents.md/)
+[![License: MIT](https://img.shields.io/badge/License-MIT--Additional-informational.svg)](LICENSE)
 
-> A file governance layer for AI coding agents.
-
-[中文文档](README.zh-CN.md)
+[中文文档](README.zh-CN.md) · [Website](https://aos.magicalyu.online)
 
 AI coding tools write code and run commands, but they don't manage your files. Deliverables end up scattered across the workspace, knowledge gets saved in three contradictory copies, and constraints are lost when the session context is compressed. AOS addresses this layer: it gives your tools a set of conventions for where files go and where knowledge lives. These conventions are machine-checkable.
 

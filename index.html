@@ -60,6 +60,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 a{color:inherit}
 .wrap{max-width:1080px;margin:0 auto;padding:0 32px}
 section{scroll-margin-top:calc(var(--nav-h) + 16px)}
+p,li,.plat-note,.sec-desc,.flow-card>p,.pain-card p,.mech-card>p,.row p,.tree-detail p,.foot-v1 span{text-wrap:pretty;overflow-wrap:break-word}
+h2,h3{text-wrap:balance}
 code{font-family:var(--mono)}
 
 /* ---------- Nav ---------- */
@@ -199,7 +201,7 @@ h1 .caret{display:inline-block;width:.52em;height:.98em;background:var(--text);m
 .plat-badge{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase}
 .plat-card h3{font-family:var(--mono);font-size:16px;font-weight:600;margin:10px 0 10px}
 .plat-card p{color:var(--muted);font-size:14px}
-.plat-note{margin-top:18px;color:var(--faint);font-size:13.5px;max-width:720px}
+.plat-note{margin-top:18px;color:var(--faint);font-size:13.5px;max-width:760px}
 
 /* ---------- 上手 ---------- */
 .prompt-block{position:relative;border:1px solid var(--line);padding:22px 24px;font-size:14px;line-height:1.8}
@@ -270,7 +272,10 @@ footer{border-top:1px solid var(--line);padding:34px 0 44px}
 .chaos-labels{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
 .chaos-labels .c-a{color:var(--faint)}
 .chaos-labels .c-b{color:var(--text)}
-.chaos-labels .c-arrow{color:var(--faint)}
+.chaos-hint{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;transition:opacity .6s var(--ease)}
+.chaos-hint .h-arr{display:inline-block;animation:hintSlide 1.8s var(--ease) infinite}
+@keyframes hintSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+.chaos-band.ordered-once .chaos-hint{opacity:0}
 #chaos-canvas{display:block;width:100%;height:220px}
 
 /* ---------- 幽灵节号 ---------- */
@@ -307,7 +312,7 @@ footer{border-top:1px solid var(--line);padding:34px 0 44px}
 .cmp-under{background:rgba(255,255,255,.02)}
 .cmp-under .cmp-good{color:var(--muted)}
 .cmp-under .cmp-good::before{content:"✓  ";color:var(--text)}
-.cmp-over{position:absolute;inset:0;background:var(--bg);clip-path:inset(0 55% 0 0)}
+.cmp-over{position:absolute;inset:0;background:var(--bg);clip-path:inset(0 0% 0 0)}
 .cmp-over .cmp-bad{color:var(--faint)}
 .cmp-over .cmp-bad::before{content:"✕  "}
 .cmp-handle{position:absolute;top:0;bottom:0;left:45%;width:1px;background:var(--text);opacity:.55;cursor:ew-resize;touch-action:none}
@@ -332,6 +337,10 @@ html:not(.js) .chaos-band{display:none}
   .hero-grid{grid-template-columns:1fr;gap:44px}
   .pain-grid,.mech-grid,.plat-grid{grid-template-columns:1fr}
   .mech-card:last-child{grid-column:auto}
+  .stats{grid-template-columns:repeat(3,1fr);row-gap:28px}
+  .stat{padding:0 16px}
+  .stat:nth-child(3n+1){border-left:none;padding-left:0}
+  .ghost{font-size:84px;top:-24px}
 }
 @media (max-width:680px){
   .wrap{padding:0 22px}
@@ -349,6 +358,16 @@ html:not(.js) .chaos-band{display:none}
   .tree-idx{grid-row:1}
   .copy-btn{position:static;margin-top:14px}
   .prompt-block{padding:18px}
+  .stats{grid-template-columns:repeat(2,1fr);row-gap:24px}
+  .stat{padding:0 14px}
+  .stat:nth-child(odd){border-left:none;padding-left:0}
+  .stat-num{font-size:24px}
+  .ghost{font-size:60px;top:-14px}
+  .tree-detail-in{grid-template-columns:1fr}
+  .tree-detail-in::before{content:none}
+  .chaos-labels{flex-wrap:wrap;gap:6px 14px}
+  .term-body{font-size:12px;min-height:150px}
+  .cmp-head,.cmp-layer .cmp-row{grid-template-columns:76px 1fr 1fr}
 }
 </style>
 </head>
@@ -432,7 +451,7 @@ html:not(.js) .chaos-band{display:none}
   <div class="chaos-band reveal" id="chaos-band" aria-hidden="true">
     <div class="chaos-labels">
       <span class="c-a" data-i18n="chaos.a">无约定的工作目录</span>
-      <span class="c-arrow">→</span>
+      <span class="chaos-hint" id="chaos-hint" data-i18n-html="chaos.hint">向右滑动，看它们归位 <span class="h-arr">→</span></span>
       <span class="c-b" data-i18n="chaos.b">AOS 目录宪章</span>
     </div>
     <canvas id="chaos-canvas"></canvas>
@@ -504,7 +523,7 @@ html:not(.js) .chaos-band{display:none}
     </div>
     <div class="cmp-wrap reveal">
       <div class="cmp-head"><div data-i18n="compare.task">事项</div><div data-i18n="compare.without">无 AOS</div><div data-i18n="compare.with">有 AOS</div></div>
-      <div class="cmp-slider" id="cmp-slider" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45" data-i18n-aria="compare.sliderAria" aria-label="拖动对比无 AOS 与有 AOS">
+      <div class="cmp-slider" id="cmp-slider" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" data-i18n-aria="compare.sliderAria" aria-label="拖动对比无 AOS 与有 AOS">
         <div class="cmp-layer cmp-under">
           <div class="cmp-row"><div class="cmp-task" data-i18n="compare.1.t">建项目</div><div class="cmp-good" data-i18n="compare.1.g">两件套模板开局，示例项目可直接复制</div></div>
           <div class="cmp-row"><div class="cmp-task" data-i18n="compare.2.t">找文件</div><div class="cmp-good" data-i18n="compare.2.g">按目录宪章定位，脚本可校验</div></div>
@@ -519,7 +538,7 @@ html:not(.js) .chaos-band{display:none}
         </div>
         <div class="cmp-handle" id="cmp-handle" aria-hidden="true"><span class="cmp-grip">◂▸</span></div>
       </div>
-      <p class="cmp-hint" data-i18n="compare.hint">◂ 拖动分割线，对比两侧</p>
+      <p class="cmp-hint" data-i18n="compare.hint">◂ 向左拖动，看看有 AOS 的同一件事</p>
     </div>
   </section>
 
@@ -745,7 +764,7 @@ html:not(.js) .chaos-band{display:none}
       "flow.3.t": "交付", "flow.3.tag": "唯一出口", "flow.3.p": "交付物一律经 07_EXPORTS 按项目分层导出，禁止散落在工作目录；项目状态同步写回记忆中心，下次接手不用翻聊天记录。", "flow.3.wo": "无 AOS：交付物散落各处，进度追溯靠考古",
       "flow.4.t": "巡检", "flow.4.tag": "机器管机器", "flow.4.p": "校验脚本扫出散落文件、非标命名、结构漂移；巡检 skill 定期产出缓存清理清单。约定由脚本盯着执行。", "flow.4.c2": "skill: inspection", "flow.4.wo": "无 AOS：改了一处忘了十处，问题潜伏到报障才暴露",
       "flow.5.t": "归档与迁移", "flow.5.tag": "换平台随迁", "flow.5.p": "废弃不删，进只读归档；叙事层日志与知识库是人类可读的纯文本，换平台时整体搬走，新工具读完约定即可接手。", "flow.5.wo": "无 AOS：一切留在旧工具里，换平台从零开始",
-      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "同一件事，两种结果", "compare.task": "事项", "compare.without": "无 AOS", "compare.with": "有 AOS", "compare.hint": "◂ 拖动分割线，对比两侧", "compare.sliderAria": "拖动对比无 AOS 与有 AOS",
+      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "同一件事，两种结果", "compare.task": "事项", "compare.without": "无 AOS", "compare.with": "有 AOS", "compare.hint": "◂ 向左拖动，看看有 AOS 的同一件事", "compare.sliderAria": "拖动对比无 AOS 与有 AOS",
       "compare.1.t": "建项目", "compare.1.b": "手动建目录写样板，每个项目从空白开始", "compare.1.g": "两件套模板开局，示例项目可直接复制",
       "compare.2.t": "找文件", "compare.2.b": "靠搜索和记忆，越用越乱", "compare.2.g": "按目录宪章定位，脚本可校验",
       "compare.3.t": "记经验", "compare.3.b": "踩过的坑下次还踩", "compare.3.g": "坑点写进 skill 的 gotchas，按需加载自动生效",
@@ -788,12 +807,21 @@ html:not(.js) .chaos-band{display:none}
       "docs.4.t": "从 v1 迁移", "docs.4.p": "v1 用户升级指南，含让 AI 代为部署的提示词",
       "foot.v1p": "在找 v1（TRAE 时代，含 AOS Viewer 可视化桌面）的内容？旧站内容已完整保留。", "foot.v1a": "进入 v1 旧站存档 →",
       "foot.license": "MIT + 附加条款（禁止单独封装商用售卖） · © 2026 MagicalYuYu",
-      "chaos.a": "无约定的工作目录", "chaos.b": "AOS 目录宪章",
+      "chaos.a": "无约定的工作目录", "chaos.b": "AOS 目录宪章", "chaos.hint": "向右滑动，看它们归位 <span class=\"h-arr\">→</span>",
       "stats.dirs": "编号目录", "stats.skills": "治理 skills", "stats.scripts": "scripts/ 脚本", "stats.kernel": "行内核规则", "stats.kb": "KB 单文件上限", "stats.index": "行 INDEX 上限",
-      "term.lines": [
-        ["cmd", "$ python scripts/check_placement.py"],
-        ["warn", "[warn] 05_CACHE/quicktask/20260601/ 创建时间超 90 天"],
-        ["dim",  "error=0 warn=1"]
+      "term.scenes": [
+        [["cmd","$ python scripts/check_placement.py"],["warn","[warn] 05_CACHE/quicktask/20260601/ 创建时间超 90 天"],["dim","error=0 warn=1"]],
+        [["cmd","$ python scripts/check_placement.py"],["ok","error=0 warn=0"],["dim","结构合规，无需人工干预"]],
+        [["cmd","$ python scripts/check_placement.py"],["warn","[error] 交付物未走 07_EXPORTS：./final_v2.docx"],["dim","error=1 · 按提示归位即可"]],
+        [["cmd","$ python scripts/align_environment.py"],["ok","[OK] skills 7/7 · scripts 4/4"],["dim","依赖对齐，缺项一目了然"]],
+        [["cmd","$ tree 01_PROJECTS/demo -L 1"],["ok","AGENTS.md  README.md"],["dim","两件套开局，示例可直接复制"]],
+        [["cmd","$ cat 04_MEMORY/INDEX.md"],["ok","- user_profile → user/user_profile.md"],["ok","- proj_aos → project/proj_aos.md"],["dim","一行一指针，200 行上限"]],
+        [["cmd","$ tail -1 06_LOGS/aos/session_index.md"],["ok","20261008 官网重构交付"],["dim","关键会话一行入索引，只追加"]],
+        [["cmd","$ wc -l AGENTS.md"],["ok","93 AGENTS.md"],["dim","内核全文 93 行，一次可读"]],
+        [["cmd","$ ls .dsh/skills"],["ok","file-placement  inspection  project-init"],["dim","7 个治理 skills，按需加载"]],
+        [["cmd","$ cat 09_REFERENCE/README.md"],["ok","知识只存一份"],["dim","他处只写路径引用，不复制内容"]],
+        [["cmd","$ python scripts/session_index_update.py"],["ok","session_index.md 已更新"],["dim","叙事层索引，跨平台随迁"]],
+        [["cmd","$ cat 06_LOGS/aos/20261008.md"],["ok","[WEBSITE] 官网 v2 重构交付"],["dim","治理大事，人类可读"]]
       ]
     },
     en: {
@@ -816,7 +844,7 @@ html:not(.js) .chaos-band{display:none}
       "flow.3.t": "Delivery", "flow.3.tag": "Single exit", "flow.3.p": "Deliverables always leave through 07_EXPORTS, layered by project — never scattered in the working directory. Project state is synced back to the memory center, so the next handover needs no chat archaeology.", "flow.3.wo": "Without AOS: outputs scattered everywhere, progress tracked by digging through chats",
       "flow.4.t": "Inspection", "flow.4.tag": "Machines check machines", "flow.4.p": "A checker script finds stray files, non-standard names, and structural drift; the inspection skill periodically produces cache cleanup lists. Conventions are watched by scripts.", "flow.4.c2": "skill: inspection", "flow.4.wo": "Without AOS: fix one place, forget ten — issues surface only when users complain",
       "flow.5.t": "Archive & migrate", "flow.5.tag": "Portable by design", "flow.5.p": "Nothing is deleted — retired material goes to a read-only archive. Narrative logs and the knowledge base are plain human-readable text: when you switch platforms, they move as-is, and the new tool takes over after reading the conventions.", "flow.5.wo": "Without AOS: everything stays in the old tool — a platform switch means starting over",
-      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "Same task, two outcomes", "compare.task": "Task", "compare.without": "Without AOS", "compare.with": "With AOS", "compare.hint": "Drag the divider to compare ▸", "compare.sliderAria": "Drag to compare without vs with AOS",
+      "compare.eyebrow": "§ 03 · COMPARE", "compare.title": "Same task, two outcomes", "compare.task": "Task", "compare.without": "Without AOS", "compare.with": "With AOS", "compare.hint": "◂ drag left — same tasks, with AOS", "compare.sliderAria": "Drag to compare without vs with AOS",
       "compare.1.t": "New project", "compare.1.b": "Hand-made folders and boilerplate, starting from zero every time", "compare.1.g": "Two-file template start; example projects ready to copy",
       "compare.2.t": "Find a file", "compare.2.b": "Search and memory — messier over time", "compare.2.g": "Located by the directory charter, verifiable by script",
       "compare.3.t": "Keep lessons", "compare.3.b": "The same pitfalls get stepped on again", "compare.3.g": "Pitfalls are written into skill gotchas and take effect on demand",
@@ -859,18 +887,27 @@ html:not(.js) .chaos-band{display:none}
       "docs.4.t": "Migrating from v1", "docs.4.p": "Upgrade guide for v1 users, including the prompt that lets your AI deploy it for you",
       "foot.v1p": "Looking for v1 (the TRAE era, with the AOS Viewer desktop)? The original content is preserved in full.", "foot.v1a": "Enter the v1 archive →",
       "foot.license": "MIT + Additional Terms (no standalone commercial resale) · © 2026 MagicalYuYu",
-      "chaos.a": "A working directory without conventions", "chaos.b": "The AOS directory charter",
+      "chaos.a": "A working directory without conventions", "chaos.b": "The AOS directory charter", "chaos.hint": "slide right to bring order <span class=\"h-arr\">→</span>",
       "stats.dirs": "numbered directories", "stats.skills": "governance skills", "stats.scripts": "repo scripts", "stats.kernel": "lines of kernel rules (approx.)", "stats.kb": "KB per-file cap", "stats.index": "INDEX line cap",
-      "term.lines": [
-        ["cmd", "$ python scripts/check_placement.py"],
-        ["warn", "[warn] 05_CACHE/quicktask/20260601/ older than 90 days"],
-        ["dim",  "error=0 warn=1"]
+      "term.scenes": [
+        [["cmd","$ python scripts/check_placement.py"],["warn","[warn] 05_CACHE/quicktask/20260601/ older than 90 days"],["dim","error=0 warn=1"]],
+        [["cmd","$ python scripts/check_placement.py"],["ok","error=0 warn=0"],["dim","compliant — zero manual policing"]],
+        [["cmd","$ python scripts/check_placement.py"],["warn","[error] deliverable outside 07_EXPORTS: ./final_v2.docx"],["dim","error=1 · fix as instructed"]],
+        [["cmd","$ python scripts/align_environment.py"],["ok","[OK] skills 7/7 · scripts 4/4"],["dim","dependencies aligned, gaps listed"]],
+        [["cmd","$ tree 01_PROJECTS/demo -L 1"],["ok","AGENTS.md  README.md"],["dim","two-file start · examples ready to copy"]],
+        [["cmd","$ cat 04_MEMORY/INDEX.md"],["ok","- user_profile → user/user_profile.md"],["ok","- proj_aos → project/proj_aos.md"],["dim","one pointer per line, 200-line cap"]],
+        [["cmd","$ tail -1 06_LOGS/aos/session_index.md"],["ok","20261008 website v2 shipped"],["dim","key sessions indexed, append-only"]],
+        [["cmd","$ wc -l AGENTS.md"],["ok","93 AGENTS.md"],["dim","the whole kernel in 93 lines"]],
+        [["cmd","$ ls .dsh/skills"],["ok","file-placement  inspection  project-init"],["dim","7 governance skills, loaded on demand"]],
+        [["cmd","$ cat 09_REFERENCE/README.md"],["ok","knowledge stored exactly once"],["dim","everywhere else holds a path reference"]],
+        [["cmd","$ python scripts/session_index_update.py"],["ok","session_index.md updated"],["dim","the narrative index travels platforms"]],
+        [["cmd","$ cat 06_LOGS/aos/20261008.md"],["ok","[WEBSITE] website v2 rebuild shipped"],["dim","governance events, human-readable"]]
       ]
     }
   };
 
   var lang = 'zh';
-  try { lang = localStorage.getItem('aos-lang') || ((navigator.language || 'zh').toLowerCase().indexOf('en') === 0 ? 'en' : 'zh'); } catch(e) {}
+  try { lang = localStorage.getItem('aos-lang') || 'en'; } catch(e) {}
   if (!I18N[lang]) lang = 'zh';
 
   function t(key){ var d = I18N[lang]; return (key in d) ? d[key] : (I18N.zh[key] || key); }
@@ -898,27 +935,29 @@ html:not(.js) .chaos-band{display:none}
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var termTimer = null;
 
+  var termSi = 0;
   function renderTerm(){
     if (termTimer) { clearTimeout(termTimer); termTimer = null; }
-    var lines = t('term.lines');
+    var scenes = t('term.scenes');
     if (reduced) {
-      termEl.innerHTML = lines.map(function(l){ return '<span class="t-' + l[0] + '">' + escapeHtml(l[1]) + '</span>'; }).join('\n');
+      termEl.innerHTML = scenes[0].map(function(l){ return '<span class="t-' + l[0] + '">' + escapeHtml(l[1]) + '</span>'; }).join('\n');
       return;
     }
+    var lines = scenes[termSi % scenes.length];
     termEl.innerHTML = '';
     var li = 0, ci = 0, cur = null;
     function step(){
-      if (li >= lines.length) { termTimer = setTimeout(function(){ renderTerm(false); }, 5200); return; }
-      var line = lines[li];
-      if (ci === 0) {
-        cur = document.createElement('span');
-        cur.className = 't-' + line[0];
-        termEl.appendChild(cur);
+      if (li >= lines.length) {
+        termSi = (termSi + 1) % scenes.length;
+        termTimer = setTimeout(renderTerm, 4200);
+        return;
       }
+      var line = lines[li];
+      if (ci === 0) { cur = document.createElement('span'); cur.className = 't-' + line[0]; termEl.appendChild(cur); }
       cur.textContent = line[1].slice(0, ci + 1);
       ci++;
-      if (ci >= line[1].length) { li++; ci = 0; termEl.appendChild(document.createTextNode('\n')); termTimer = setTimeout(step, line[0] === 'cmd' ? 500 : 300); }
-      else { termTimer = setTimeout(step, line[0] === 'cmd' ? 34 : 12); }
+      if (ci >= line[1].length) { li++; ci = 0; termEl.appendChild(document.createTextNode('\n')); termTimer = setTimeout(step, line[0] === 'cmd' ? 460 : 240); }
+      else { termTimer = setTimeout(step, line[0] === 'cmd' ? 30 : 11); }
     }
     step();
   }
@@ -1058,13 +1097,15 @@ html:not(.js) .chaos-band{display:none}
         sx: Math.random() * w, sy: Math.random() * (h - padBot) + 6,
         tx: padX + gw * c + gw / 2 + (Math.random() * 10 - 5),
         ty: padTop + (r % 12) * 11 + (Math.random() * 4 - 2),
-        i: Math.random() * .3, s: Math.random() * 1.6 + 1.2, a: Math.random() * .5 + .35
+        i: Math.random() * .3, s: Math.random() * 1.6 + 1.2, a: Math.random() * .5 + .35,
+        ph: Math.random() * 6.283, sp: .6 + Math.random() * .8
       });
     }
     chaosL = {dpr: dpr, w: w, h: h, gw: gw, dots: dots};
   }
-  function chaosDraw(p){
+  function chaosDraw(p, now){
     if (!chaosL) return;
+    now = now || 0;
     var L = chaosL, ctx = chaosCanvas.getContext('2d');
     ctx.setTransform(L.dpr, 0, 0, L.dpr, 0, 0);
     ctx.clearRect(0, 0, L.w, L.h);
@@ -1072,7 +1113,7 @@ html:not(.js) .chaos-band{display:none}
       var pe = Math.min(Math.max(p * (1 + d.i) - d.i, 0), 1);
       pe = pe * pe * (3 - 2 * pe);
       var x = d.sx + (d.tx - d.sx) * pe;
-      var y = d.sy + (d.ty - d.sy) * pe;
+      var y = d.sy + (d.ty - d.sy) * pe + Math.sin(now / 1000 * d.sp + d.ph) * (3 - 2.4 * pe);
       ctx.globalAlpha = d.a * (0.5 + 0.5 * pe);
       ctx.fillStyle = '#E8E8EA';
       ctx.fillRect(x, y, d.s, d.s);
@@ -1084,11 +1125,12 @@ html:not(.js) .chaos-band{display:none}
     ctx.globalAlpha = 1;
   }
   function chaosLoop(){
-    chaosP += (chaosTarget - chaosP) * .14;
+    if (!finePointer) chaosTarget = (Math.sin(performance.now() / 2800) + 1) / 2;
+    chaosP += (chaosTarget - chaosP) * .12;
     if (Math.abs(chaosTarget - chaosP) < .002) chaosP = chaosTarget;
-    chaosDraw(chaosP);
-    if (chaosP !== chaosTarget) { chaosRaf = requestAnimationFrame(chaosLoop); }
-    else { chaosRaf = null; }
+    chaosDraw(chaosP, performance.now());
+    if (chaosP > .98) chaosBand.classList.add('ordered-once');
+    chaosRaf = chaosInView ? requestAnimationFrame(chaosLoop) : null;
   }
   function chaosKick(){ if (!chaosRaf && chaosInView) chaosRaf = requestAnimationFrame(chaosLoop); }
   if (chaosCanvas && chaosBand) {
@@ -1101,7 +1143,6 @@ html:not(.js) .chaos-band{display:none}
         entries.forEach(function(en){
           if (en.isIntersecting) {
             chaosInView = true;
-            if (chaosP === 0 && chaosTarget === 0) { chaosTarget = 1; }
             chaosKick();
           } else {
             chaosInView = false;
@@ -1112,13 +1153,13 @@ html:not(.js) .chaos-band{display:none}
       chaosIO.observe(chaosBand);
       chaosBand.addEventListener('pointermove', function(e){
         var r = chaosBand.getBoundingClientRect();
-        chaosTarget = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
+        chaosTarget = Math.min(Math.max((e.clientX - r.left - r.width * .08) / (r.width * .7), 0), 1);
         chaosKick();
       }, {passive:true});
       var rzT = null;
       window.addEventListener('resize', function(){
         clearTimeout(rzT);
-        rzT = setTimeout(function(){ chaosSeed(); chaosDraw(chaosP); }, 200);
+        rzT = setTimeout(function(){ chaosSeed(); chaosDraw(chaosP, performance.now()); }, 200);
       });
     }
   }
@@ -1156,7 +1197,7 @@ html:not(.js) .chaos-band{display:none}
   if (cmpSlider) {
     var cmpOver = cmpSlider.querySelector('.cmp-over');
     var cmpHandle = document.getElementById('cmp-handle');
-    var cmpPct = 45;
+    var cmpPct = 100;
     function cmpRender(){
       cmpOver.style.clipPath = 'inset(0 ' + (100 - cmpPct) + '% 0 0)';
       cmpHandle.style.left = cmpPct + '%';
